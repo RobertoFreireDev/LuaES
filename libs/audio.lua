@@ -24,42 +24,40 @@ SOFTWARE.
 
 Modifications:
 - Fix clicks/abrupt sounds generated when sound starts and/or ends at a non-zero sample value
+- Mormalize amplitude of wave type sounds
+- Add noise wave form
+- Add effects
 ]]
 
 local floor = math.floor
+local sin   = math.sin
+local pi    = math.pi
+local exp   = math.exp
 
 local notes = {}; do
     local A4 = 440.0
-    local note_names = {
-        "C","Cs","D","Ds","E","F",
-        "Fs","G","Gs","A","As","B"
-    }
+    local names = {"C","Cs","D","Ds","E","F","Fs","G","Gs","A","As","B"}
 
-    for n = 12, 131 do -- C0 → B9
+    for n = 12, 131 do
         local freq = A4 * 2 ^ ((n - 69) / 12)
         local octave = floor(n / 12) - 1
-        local name = note_names[n % 12 + 1] .. octave
-        notes[name] = freq
+        notes[names[n % 12 + 1] .. octave] = freq
     end
 end
 
 local function envelope(i, total, rate, fadeLength)
     if not fadeLength then return 1 end
+    local fs = floor(fadeLength * rate)
 
-    local fadeSamples = floor(fadeLength * rate)
-
-    if i < fadeSamples then
-        return i / fadeSamples
+    if i < fs then
+        return i / fs
+    elseif i > total - fs then
+        return (total - i) / fs
     end
-
-    if i > total - fadeSamples then
-        return (total - i) / fadeSamples
-    end
-
     return 1
 end
 
-local function genSound(length, tone, rate, p, waveType, fadeLength, getData)
+local function genSound(length, tone, rate, p, waveType, fadeLength, getData, effects)
 
     if type(tone) == "string" then
         tone = notes[tone]
@@ -68,48 +66,95 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData)
     length     = length     or 1/32
     tone       = tone       or 440
     rate       = rate       or 44100
-    p          = p          or floor(rate / tone)
     waveType   = waveType   or "square"
     fadeLength = fadeLength or 1/200
+    effects    = effects    or {}
 
     local sampleCount = floor(length * rate)
-
-    local soundData = love.sound.newSoundData(
-        sampleCount, rate, 16, 1
-    )
+    local soundData = love.sound.newSoundData(sampleCount, rate, 16, 1)
 
     local phase = 0
-    local phaseInc = (2 * math.pi) / p
+    local t  = 0
+    local dt = 1 / rate
+    local baseFreq = tone
 
     for i = 0, sampleCount - 1 do
-        local env = envelope(i, sampleCount, rate, fadeLength)
+        local freq = baseFreq
+        local k = i / sampleCount
+
+        if effects.arp then
+            local spd = effects.arpSpeed or 0.05
+            local step = floor(t / spd)
+            local semi = effects.arp[(step % #effects.arp) + 1]
+            freq = freq * (2 ^ (semi / 12))
+        end
+
+        if effects.slide then
+            freq = freq * (2 ^ ((effects.slide * k) / 12))
+        end
+
+        if effects.drop then
+            freq = freq * exp(-effects.drop * k)
+        end
+
+        if effects.vibrato then
+            freq = freq * (1 + sin(t * effects.vibrato.speed * 2*pi)
+                * effects.vibrato.depth)
+        end
+
+        local phaseInc = 2 * pi * freq * dt
+
         local v = 0
 
         if waveType == "sine" then
-            v = math.sin(phase) * 1.0
+            v = sin(phase)
 
         elseif waveType == "square" then
-            v = (math.sin(phase) >= 0 and 1 or -1) * 0.4
+            local duty = effects.duty or 0.5
+            v = (phase % (2*pi) < 2*pi*duty) and 1 or -1
+            v = v * 0.4
 
         elseif waveType == "triangle" then
-            v = ((2 / math.pi) * math.asin(math.sin(phase))) * 0.8
+            v = (2/pi) * math.asin(sin(phase)) * 0.8
 
         elseif waveType == "sawtooth" then
-            v = (2 * (phase / (2 * math.pi)
-                - math.floor(0.5 + phase / (2 * math.pi)))) * 0.5
+            v = (2 * (phase/(2*pi) - floor(0.5 + phase/(2*pi)))) * 0.5
 
         elseif waveType == "pulser" then
-            v = (math.sin(phase) * math.sin(phase * 10)) * 0.7
+            v = sin(phase) * sin(phase * 10) * 0.7
 
         elseif waveType == "noise" then
             v = (love.math.random() * 2 - 1) * 0.35
 
         elseif waveType == "composite" then
-            v = (math.sin(phase) + 0.5 * math.sin(phase * 2)) * 0.5
+            v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
+        end
+
+        local env = envelope(i, sampleCount, rate, fadeLength)
+
+        if effects.fade_in then
+            env = math.min(env, t / effects.fade_in)
+        end
+
+        if effects.fade_out then
+            env = math.min(env, (length - t) / effects.fade_out)
+        end
+
+        if effects.tremolo then
+            env = env * (1 - effects.tremolo.depth *
+                (0.5 + 0.5 * sin(t * effects.tremolo.speed * 2*pi)))
+        end
+        
+        if effects.repeatRate then
+            if (t % effects.repeatRate) < dt then
+                phase = 0
+            end
         end
 
         soundData:setSample(i, v * env)
+
         phase = phase + phaseInc
+        t = t + dt
     end
 
     if getData then return soundData end
@@ -120,7 +165,6 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData)
 end
 
 local function genMusic(sounds, consts, rate)
-
     rate = rate or 44100
 
     local totalLen = 0
@@ -139,10 +183,11 @@ local function genMusic(sounds, consts, rate)
             consts and consts.length     or s.length,
             consts and consts.tone       or s.tone,
             rate,
-            consts and consts.p          or s.p,
+            nil,
             consts and consts.waveType   or s.waveType,
             consts and consts.fadeLength or s.fadeLength,
-            true
+            true,
+            consts and consts.effects    or s.effects
         )
 
         for i = 0, data:getSampleCount() - 1 do
