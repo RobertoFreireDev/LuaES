@@ -62,6 +62,7 @@ function love.load()
         sawtooth = audio.genSound(1/8, 440, 44100, nil, "sawtooth");
         pulser = audio.genSound(1/8, 440, 44100, nil, "pulser");
         composite = audio.genSound(1/8, 440, 44100, nil, "composite");
+        noise = audio.genSound(1/8, 440, 44100, nil, "noise");
     }
 
     BW, BH = 192, 92
@@ -76,7 +77,8 @@ function love.load()
         {(GW-BW)*.25, (GH-BH)*.5, {0,0,1}},
         {(GW-BW)*.75, (GH-BH)*.5, {1,1,0}},
         {(GW-BW)*.25, (GH-BH)*.75, {1,0,1}},
-        {(GW-BW)*.75, (GH-BH)*.75, {0,1,1}}
+        {(GW-BW)*.75, (GH-BH)*.75, {0,1,1}},
+        {(GW-BW)*.75, (GH-BH), {0,0.5,1}}
     }
 
     FONT = love.graphics.getFont()

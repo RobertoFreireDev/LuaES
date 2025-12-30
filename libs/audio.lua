@@ -101,6 +101,9 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData)
         elseif waveType == "pulser" then
             v = (math.sin(phase) * math.sin(phase * 10)) * 0.7
 
+        elseif waveType == "noise" then
+            v = (love.math.random() * 2 - 1) * 0.35
+
         elseif waveType == "composite" then
             v = (math.sin(phase) + 0.5 * math.sin(phase * 2)) * 0.5
         end
