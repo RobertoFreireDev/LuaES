@@ -86,23 +86,23 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData)
         local v = 0
 
         if waveType == "sine" then
-            v = math.sin(phase)
+            v = math.sin(phase) * 1.0
 
         elseif waveType == "square" then
-            v = math.sin(phase) >= 0 and 1 or -1
+            v = (math.sin(phase) >= 0 and 1 or -1) * 0.4
 
         elseif waveType == "triangle" then
-            v = (2 / math.pi) * math.asin(math.sin(phase))
+            v = ((2 / math.pi) * math.asin(math.sin(phase))) * 0.8
 
         elseif waveType == "sawtooth" then
-            v = 2 * (phase / (2 * math.pi)
-                - math.floor(0.5 + phase / (2 * math.pi)))
+            v = (2 * (phase / (2 * math.pi)
+                - math.floor(0.5 + phase / (2 * math.pi)))) * 0.5
 
         elseif waveType == "pulser" then
-            v = math.sin(phase) * math.sin(phase * 10)
+            v = (math.sin(phase) * math.sin(phase * 10)) * 0.7
 
         elseif waveType == "composite" then
-            v = math.sin(phase) + 0.5 * math.sin(phase * 2)
+            v = (math.sin(phase) + 0.5 * math.sin(phase * 2)) * 0.5
         end
 
         soundData:setSample(i, v * env)
