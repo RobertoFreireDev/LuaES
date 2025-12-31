@@ -26,10 +26,9 @@ Modifications:
 - Fix clicks/abrupt sounds generated when sound starts and/or ends at a non-zero sample value
 - Mormalize amplitude of wave type sounds
 - Add noise wave form
-- Add effects
+- Add effects as a number parameter
 - Use integer number for length
 - Make rate and default sound constants
-- Make EFFECTS a number parameter and remove repeatRate effect
 - Make fadeLength a constant
 - Add volume
 ]]
@@ -52,7 +51,6 @@ local notes = {}; do
 end
 
 local EFFECTS = {
-    [0] = {},
     [1] = {
         arp = {0, 4, 7},
         arpSpeed = 0.06,
@@ -79,6 +77,16 @@ local EFFECTS = {
     } -- Pitch drop
 }
 
+local WAVES = {
+    [1] = "sine",
+    [2] = "square",
+    [3] = "triangle",
+    [4] = "sawtooth",
+    [5] = "pulser",
+    [6] = "noise",
+    [7] = "composite",
+}
+
 local function envelope(i, total)
     local fs = floor(fadeLength * rate)
 
@@ -95,15 +103,14 @@ local function normalizeLength(length)
     return length / 32
 end
 
-local function genSound(length, tone, waveType, getData, effects, volume)
-
+local function genSound(length, tone, waveType, effects, volume)
     if type(tone) == "string" then
         tone = notes[tone]
     end
 
     length     = normalizeLength(length)
     tone       = tone       or 440
-    waveType   = waveType   or "square"
+    waveType   = type(waveType) == "number" and WAVES[waveType] or "square"
     effects = type(effects) == "number" and EFFECTS[effects] or {}
     volume = volume or 1.0
     volume = math.max(0, math.min(volume or 1.0, 1.0))
@@ -189,11 +196,7 @@ local function genSound(length, tone, waveType, getData, effects, volume)
         t = t + dt
     end
 
-    if getData then return soundData end
-
-    local src = love.audio.newSource(soundData)
-    soundData:release()
-    return src
+    return soundData
 end
 
 local function genMusic(sounds)
