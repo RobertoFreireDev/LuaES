@@ -106,7 +106,7 @@ end
 local VIRTUAL_WIDTH = 160
 local VIRTUAL_HEIGHT = 120
 local window_width, window_height = VIRTUAL_WIDTH, VIRTUAL_HEIGHT
-local scaleX, scaleY, scale
+local scale
 local offsetX, offsetY
 
 _init = function() end
@@ -123,15 +123,13 @@ function updateScale()
     local scaleXRaw = math.floor(window_width / VIRTUAL_WIDTH)
     local scaleYRaw = math.floor(window_height / VIRTUAL_HEIGHT)
     scale = math.min(scaleXRaw, scaleYRaw)
-    scaleX = scale
-    scaleY = scale
     offsetX = (window_width - VIRTUAL_WIDTH * scale) / 2
     offsetY = (window_height - VIRTUAL_HEIGHT * scale) / 2
 end
 
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
-    love.window.setMode(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, {resizable = true, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
+    love.window.setMode(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
     love.graphics.setFont(love.graphics.newFont("fonts/Pixelzone.ttf", 16))
     updateScale()
     loadsfxdata()
@@ -145,13 +143,15 @@ end
 
 function love.draw()
     love.graphics.clear(0, 0, 0)
+    love.graphics.setScissor(offsetX, offsetY, scale*VIRTUAL_WIDTH, scale*VIRTUAL_HEIGHT)
     love.graphics.push()
     love.graphics.translate(offsetX, offsetY)
-    love.graphics.scale(scaleX, scaleY)
+    love.graphics.scale(scale, scale)
 
     _draw()
 
     love.graphics.pop()
+    love.graphics.setScissor()
 end
 
 return {
