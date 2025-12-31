@@ -298,10 +298,19 @@ function love.load()
 end
 
 local pressed;
+
 function love.update(dt)
 
     if love.mouse.isDown(1) or love.mouse.isDown(2) then
         local mx, my = love.mouse.getPosition()
+
+        local i = 1;
+        for k, sound in pairs(SOUNDS) do
+            local x, y = BUTTONS[i][1], BUTTONS[i][2]
+            if mx > x and mx < x+BW and my > y and my < y+BH then
+                sound:play(); pressed = true; break
+            end;i = i + 1
+        end
 
         if not pressed then
             pressed = true
