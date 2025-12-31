@@ -6,6 +6,11 @@ function add(t, v)
     return v
 end
 
+---------- math functions --------------
+function mid(min, v, max)
+    return math.max(min, math.min(max, v))
+end
+
 ---------- sfx functions ----------------
 local SFX = {}  -- 128 indexes x 16 notes
 
@@ -59,11 +64,66 @@ function sfx(index)
 end
 
 ---------- draw functions ----------------
-function print(text, x, y, color)
-    color = color or {1, 1, 1} -- default white
-    love.graphics.setColor(color)
+local function hexToRGB(hex)
+    hex = hex:gsub("#","")
+    local r = tonumber(hex:sub(1,2), 16)/255
+    local g = tonumber(hex:sub(3,4), 16)/255
+    local b = tonumber(hex:sub(5,6), 16)/255
+    return {r, g, b}
+end
+
+local PALETTE = {
+    hexToRGB("#f4f4f4"), -- 0
+    hexToRGB("#5d275d"), -- 1
+    hexToRGB("#b13e53"), -- 2
+    hexToRGB("#ef7d57"), -- 3
+    hexToRGB("#ffcd75"), -- 4
+    hexToRGB("#a7f070"), -- 5
+    hexToRGB("#38b764"), -- 6
+    hexToRGB("#257179"), -- 7
+    hexToRGB("#29366f"), -- 8
+    hexToRGB("#3b5dc9"), -- 9
+    hexToRGB("#41a6f6"), -- 10
+    hexToRGB("#73eff7"), -- 11
+    hexToRGB("#94b0c2"), -- 12
+    hexToRGB("#566c86"), -- 13
+    hexToRGB("#333c57"), -- 14
+    hexToRGB("#1a1c2c"), -- 15
+}
+
+local defaultColor = 1
+
+local function setcolor(c)
+    c = (c ~= nil and type(c) == "number") and c or defaultColor
+    love.graphics.setColor(PALETTE[mid(0, c, 15)])
+end
+
+local function getRect(x0, y0, x1, y1)
+    local x = math.min(x0, x1)
+    local y = math.min(y0, y1)
+    local w = math.abs(x1 - x0)
+    local h = math.abs(y1 - y0)
+    return x, y, w, h
+end
+
+function print(text, x, y, c)
+    setcolor(c)
     love.graphics.print(text, x, y)
-    love.graphics.setColor(1, 1, 1) -- reset to white
+    setcolor()
+end
+
+function rect(x0, y0, x1, y1, c)   
+    setcolor(c)
+    local x, y, w, h = getRect(x0, y0, x1, y1)
+    love.graphics.rectangle("line", x, y, w, h)
+    setcolor()
+end
+
+function rectfill(x0, y0, x1, y1, c)
+    setcolor(c)
+    local x, y, w, h = getRect(x0, y0, x1, y1)
+    love.graphics.rectangle("fill", x, y, w, h)
+    setcolor()
 end
 
 ---------- system functions ----------------
@@ -105,8 +165,9 @@ end
 ---------- main functions ----------------
 local VIRTUAL_WIDTH = 160
 local VIRTUAL_HEIGHT = 120
-local window_width, window_height = VIRTUAL_WIDTH, VIRTUAL_HEIGHT
-local scale
+local scale = 4
+local window_width = VIRTUAL_WIDTH*scale
+local window_height = VIRTUAL_HEIGHT*scale
 local offsetX, offsetY
 
 _init = function() end
@@ -129,7 +190,7 @@ end
 
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
-    love.window.setMode(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
+    love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
     love.graphics.setFont(love.graphics.newFont("fonts/Pixelzone.ttf", 16))
     updateScale()
     loadsfxdata()
@@ -163,6 +224,8 @@ return {
     gfps = gfps,
     -- draw functions --
     print = print,
+    rect = rect,
+    rectfill = rectfill,
     -- input functions --
     btn = btn,
     btnp = btnp,
