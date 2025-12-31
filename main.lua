@@ -251,7 +251,21 @@ function love.load()
         { tone="C1", length=12, waveType="sine",     effects=7 },
     })
 
-    MUSIC = MUSIC_CHAOS
+    MUSIC_LIST = {
+        { name = "Base melody",        src = MUSIC },
+        { name = "With effects",       src = MUSICWITHEFFECTS },
+        { name = "With effects 2",     src = MUSICWITHEFFECTS2 },
+        { name = "With effects 3",     src = MUSICWITHEFFECTS3 },
+        { name = "Stress stack",       src = MUSIC_STRESS_STACK },
+        { name = "Envelope test",      src = MUSIC_ENVELOPE_TEST },
+        { name = "Pitch test",         src = MUSIC_PITCH_TEST },
+        { name = "Wave compare",       src = MUSIC_WAVE_COMPARE },
+        { name = "Timing test",        src = MUSIC_TIMING_TEST },
+        { name = "Chaos",              src = MUSIC_CHAOS },
+    }
+
+    MUSIC_INDEX = #MUSIC_LIST
+    MUSIC = MUSIC_LIST[MUSIC_INDEX].src
 
     SOUNDS = {
         sine = audio.genSound(4, "C5", "sine");
@@ -286,32 +300,34 @@ end
 local pressed;
 function love.update(dt)
 
-    if love.mouse.isDown(1) then
-
+    if love.mouse.isDown(1) or love.mouse.isDown(2) then
         local mx, my = love.mouse.getPosition()
-
-        local i = 1;
-        for k, sound in pairs(SOUNDS) do
-            local x, y = BUTTONS[i][1], BUTTONS[i][2]
-            if mx > x and mx < x+BW and my > y and my < y+BH then
-                sound:play(); pressed = true; break
-            end;i = i + 1
-        end
 
         if not pressed then
             pressed = true
             local x, y = BTN_MUSIC[1], BTN_MUSIC[2]
+
             if mx > x and mx < x+BW and my > y and my < y+BH then
-                if MUSIC:isPlaying() then
-                    MUSIC:stop()
-                else
-                    MUSIC:play()
+
+                -- LEFT CLICK → play / stop
+                if love.mouse.isDown(1) then
+                    if MUSIC:isPlaying() then
+                        MUSIC:stop()
+                    else
+                        MUSIC:play()
+                    end
+                end
+
+                -- RIGHT CLICK → next music
+                if love.mouse.isDown(2) then
+                    if MUSIC:isPlaying() then MUSIC:stop() end
+
+                    MUSIC_INDEX = MUSIC_INDEX % #MUSIC_LIST + 1
+                    MUSIC = MUSIC_LIST[MUSIC_INDEX].src
                 end
             end
         end
-
     end
-
 end
 
 function love.mousereleased()
@@ -319,9 +335,6 @@ function love.mousereleased()
 end
 
 function love.draw()
-
-    -- Draw buttons
-
     local i = 1;
     for k, sound in pairs(SOUNDS) do
 
@@ -338,10 +351,8 @@ function love.draw()
         i = i + 1
 
     end
-
-    -- Draw music button
-
-    local str = (MUSIC:isPlaying()) and "Stop music" or "Play music"
+    local current = MUSIC_LIST[MUSIC_INDEX].name
+    local str = (MUSIC:isPlaying() and "Stop: " or "Play: ") .. current
 
     local x, y = BTN_MUSIC[1], BTN_MUSIC[2]
     local fw, fh = FONT:getWidth(str), FONT:getHeight()
