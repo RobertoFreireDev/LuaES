@@ -11,10 +11,10 @@ function _update(dt)
 end
 
 function _draw()
-    print("!#$%&'()*+,-./0123456789:;", 10, 10)
-    print("<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10, 30)
-    print("[^_`abcdefghijklmnopqrstuvwxyz{|}~", 10, 50)
-    print("FPS: " .. gfps(), 140, 110, 4)
-    rect(10, 10, 50, 50, 3)
-    rectfill(60, 10, 100, 50, 2)
+    line(20, 80, 80, 120, 4)
+    circ(10, 30, 20, 5)
+    circfill(20, 30, 10, 6)
+    line(50, 10, 60, 80)
+    circ(100, 20, 40)
+    circfill(120, 120, 20)
 end

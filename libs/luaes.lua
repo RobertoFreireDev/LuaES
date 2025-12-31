@@ -112,7 +112,7 @@ function print(text, x, y, c)
     setcolor()
 end
 
-function rect(x0, y0, x1, y1, c)   
+function rect(x0, y0, x1, y1, c)
     setcolor(c)
     local x, y, w, h = getRect(x0, y0, x1, y1)
     love.graphics.rectangle("line", x, y, w, h)
@@ -123,6 +123,24 @@ function rectfill(x0, y0, x1, y1, c)
     setcolor(c)
     local x, y, w, h = getRect(x0, y0, x1, y1)
     love.graphics.rectangle("fill", x, y, w, h)
+    setcolor()
+end
+
+function line(x0, y0, x1, y1, c)
+    setcolor(c)
+    love.graphics.line(x0, y0, x1, y1)
+    setcolor()
+end
+
+function circ(x, y, r, c)
+    setcolor(c)
+    love.graphics.circle("line", x, y, r)
+    setcolor()
+end
+
+function circfill(x, y, r, c)
+    setcolor(c)
+    love.graphics.circle("fill", x, y, r)
     setcolor()
 end
 
@@ -226,6 +244,9 @@ return {
     print = print,
     rect = rect,
     rectfill = rectfill,
+    line = line,
+    circ = circ,
+    circfill = circfill,
     -- input functions --
     btn = btn,
     btnp = btnp,
