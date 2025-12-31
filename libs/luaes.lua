@@ -54,15 +54,23 @@ local function loadsfxdata()
     end
 end
 
+local lastPlayedTime = {}
+local MIN_DELAY = 0.1
+
 function sfx(index)
-     if SOUNDS[index]:isPlaying() then
+    local currentTime = os.clock()
+    if lastPlayedTime[index] and (currentTime - lastPlayedTime[index] < MIN_DELAY) then
+        return
+    end
+    lastPlayedTime[index] = currentTime
+    
+    if SOUNDS[index]:isPlaying() then
         SOUNDS[index]:stop()
         SOUNDS[index]:play()
     else
         SOUNDS[index]:play()
     end
 end
-
 ---------- draw functions ----------------
 local function hexToRGB(hex)
     hex = hex:gsub("#","")
