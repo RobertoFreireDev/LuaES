@@ -31,6 +31,7 @@ Modifications:
 - Make rate and default sound constants
 - Make EFFECTS a number parameter and remove repeatRate effect
 - Make fadeLength a constant
+- Add volume
 ]]
 
 local floor = math.floor
@@ -94,7 +95,7 @@ local function normalizeLength(length)
     return length / 32
 end
 
-local function genSound(length, tone, waveType, getData, effects)
+local function genSound(length, tone, waveType, getData, effects, volume)
 
     if type(tone) == "string" then
         tone = notes[tone]
@@ -104,6 +105,8 @@ local function genSound(length, tone, waveType, getData, effects)
     tone       = tone       or 440
     waveType   = waveType   or "square"
     effects = type(effects) == "number" and EFFECTS[effects] or {}
+    volume = volume or 1.0
+    volume = math.max(0, math.min(volume or 1.0, 1.0))
 
     local sampleCount = floor(length * rate)
     local soundData = love.sound.newSoundData(sampleCount, rate, 16, 1)
@@ -180,7 +183,7 @@ local function genSound(length, tone, waveType, getData, effects)
                 (0.5 + 0.5 * sin(t * effects.tremolo.speed * 2*pi)))
         end
 
-        soundData:setSample(i, v * env)
+        soundData:setSample(i, v * env * volume)
 
         phase = phase + phaseInc
         t = t + dt
@@ -211,7 +214,8 @@ local function genMusic(sounds)
             s.tone,
             s.waveType,
             true,
-            s.effects
+            s.effects,
+            s.volume
         )
 
         for i = 0, data:getSampleCount() - 1 do

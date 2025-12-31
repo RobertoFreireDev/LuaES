@@ -7,37 +7,48 @@ function love.load()
     GW, GH = love.graphics.getDimensions()
 
     MUSIC = audio.genMusic({
-        {tone = "C5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "E5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "G5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "E5", length = 8},
+        { tone = "C5", length = 8, volume = 0.4 },
+        { tone = 0,    length = 1 },
 
-        {tone = "D5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "F5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "A5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "F5", length = 8},
+        { tone = "E5", length = 8, volume = 0.75 },
+        { tone = 0,    length = 1 },
 
-        {tone = "E5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "G5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "C6", length = 12},
+        { tone = "G5", length = 8, volume = 0.85 },
+        { tone = 0,    length = 1 },
 
-        {tone = 0,    length = 2},
+        { tone = "E5", length = 8, volume = 0.75 },
 
-        {tone = "B5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "G5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "E5", length = 8},
-        {tone = 0,    length = 1},
-        {tone = "C5", length = 16},
+        { tone = "D5", length = 8, volume = 0.7 },
+        { tone = 0,    length = 1 },
+
+        { tone = "F5", length = 8, volume = 0.75 },
+        { tone = 0,    length = 1 },
+
+        { tone = "A5", length = 8, volume = 0.9 },
+        { tone = 0,    length = 1 },
+
+        { tone = "F5", length = 8, volume = 0.75 },
+
+        { tone = "E5", length = 8, volume = 0.4 },
+        { tone = 0,    length = 1 },
+
+        { tone = "G5", length = 8, volume = 0.45 },
+        { tone = 0,    length = 1 },
+
+        { tone = "C6", length = 12, volume = 1.0 },
+
+        { tone = 0,    length = 2 },
+
+        { tone = "B5", length = 8, volume = 0.85 },
+        { tone = 0,    length = 1 },
+
+        { tone = "G5", length = 8, volume = 0.75 },
+        { tone = 0,    length = 1 },
+
+        { tone = "E5", length = 8, volume = 0.7 },
+        { tone = 0,    length = 1 },
+
+        { tone = "C5", length = 16, volume = 0.9 },
     })
 
     MUSICWITHEFFECTS = audio.genMusic({
@@ -251,6 +262,47 @@ function love.load()
         { tone="C1", length=12, waveType="sine",     effects=7 },
     })
 
+    MUSIC_VOLUME = audio.genMusic({
+         { tone="C4", length=6, waveType="sine", volume = 1 },
+        { tone="C4", length=6, waveType="square", volume = 0.2 },
+        { tone="C4", length=6, waveType="triangle", volume = 0.8 },
+        { tone="C4", length=6, waveType="sawtooth", volume = 0 },
+        { tone="C4", length=6, waveType="pulser", volume = 0.2 },
+        { tone="C4", length=6, waveType="composite", volume = 0.4 },
+        { tone="C4", length=6, waveType="noise", volume = 1 },
+        { tone=0,    length=32 },
+        { tone="C5", length=1, volume = 0.2 },
+        { tone=0, length=1/64, volume = 0.2 },
+        { tone="C5", length=1, volume = 0.2 },
+        { tone=0, length=1/64, volume = 0.6 },
+        { tone="C5", length=1, volume = 0.2 },
+        { tone=0, length=1/32, volume = 1 },
+        { tone="G4", length=2, volume = 0.1 },
+        { tone=0, length=1/16, volume = 1 },
+        { tone="E4", length=2, volume = 0.4 },
+        { tone=0, length=1/16, volume = 1 },
+        { tone="C4", length=8, volume = 0.4 },
+        { tone=0,    length=32, volume = 0 },
+        { tone="C4", length=8, volume = 1 },
+        { tone="Cs4", length=8, volume = 1 },
+        { tone="D4", length=8, volume = 0.4 },
+        { tone="Ds4", length=8, volume = 0.2 },
+        { tone="E4", length=8, volume = 0 },
+        { tone="F4", length=8, volume = 0 },
+        { tone="Fs4", length=8, volume = 0.1 },
+        { tone="G4", length=8, volume = 0.2 },
+        { tone="Gs4", length=8, volume = 0.6 },
+        { tone="A4", length=8, volume = 0.8 },
+        { tone="As4", length=8, volume = 1 },
+        { tone="B4", length=8, volume = 0.8 },
+        { tone="C5", length=16, volume = 0.4 },
+        { tone=0,    length=32, volume = 0.2 },
+        { tone = "C5", length = 1, volume = 0 },
+        { tone = "G4", length = 1, volume = 0.2 },
+        { tone = "E4", length = 1, volume = 0.4 },
+        { tone = "C4", length = 2, volume = 1 }
+    })
+
     MUSIC_LIST = {
         { name = "Base melody",        src = MUSIC },
         { name = "With effects",       src = MUSICWITHEFFECTS },
@@ -262,6 +314,7 @@ function love.load()
         { name = "Wave compare",       src = MUSIC_WAVE_COMPARE },
         { name = "Timing test",        src = MUSIC_TIMING_TEST },
         { name = "Chaos",              src = MUSIC_CHAOS },
+        { name = "Volume",             src = MUSIC_VOLUME },
     }
 
     MUSIC_INDEX = #MUSIC_LIST
