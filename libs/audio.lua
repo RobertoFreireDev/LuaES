@@ -29,6 +29,7 @@ Modifications:
 - Add effects
 - Use integer number for length
 - Make rate and default sound constants
+- Make EFFECTS a number parameter and remove repeatRate effect
 ]]
 
 local floor = math.floor
@@ -46,6 +47,34 @@ local notes = {}; do
         notes[names[n % 12 + 1] .. octave] = freq
     end
 end
+
+local EFFECTS = {
+    [0] = {},
+    [1] = {
+        arp = {0, 4, 7},
+        arpSpeed = 0.06,
+        duty = 0.25
+    }, -- Arpeggio
+    [2] = {
+        vibrato = { depth = 0.02, speed = 6 },
+        duty = 0.5
+    }, -- Vibrato    
+    [3] = {
+        slide = 0.4
+    }, -- Slide    
+    [4] = {
+        fade_out = 0.1
+    }, -- Fade out
+    [5] = {
+        fade_in = 0.1
+    }, -- Fade in
+    [6] = {
+        tremolo = { depth = 0.8, speed = 6 }
+    }, -- Tremolo
+    [7] = {
+        drop = 2.0
+    } -- Pitch drop
+}
 
 local function envelope(i, total, fadeLength)
     if not fadeLength then return 1 end
@@ -74,7 +103,7 @@ local function genSound(length, tone, waveType, fadeLength, getData, effects)
     tone       = tone       or 440
     waveType   = waveType   or "square"
     fadeLength = fadeLength or 1/200
-    effects    = effects    or {}
+    effects = type(effects) == "number" and EFFECTS[effects] or {}
 
     local sampleCount = floor(length * rate)
     local soundData = love.sound.newSoundData(sampleCount, rate, 16, 1)
@@ -149,12 +178,6 @@ local function genSound(length, tone, waveType, fadeLength, getData, effects)
         if effects.tremolo then
             env = env * (1 - effects.tremolo.depth *
                 (0.5 + 0.5 * sin(t * effects.tremolo.speed * 2*pi)))
-        end
-        
-        if effects.repeatRate then
-            if (t % effects.repeatRate) < dt then
-                phase = 0
-            end
         end
 
         soundData:setSample(i, v * env)
