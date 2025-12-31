@@ -216,7 +216,6 @@ local function genMusic(sounds)
             s.length,
             s.tone,
             s.waveType,
-            true,
             s.effects,
             s.volume
         )

@@ -19,9 +19,9 @@ local function parseSFX(str, length)
 
     return {
         tone = tone,
+        volume = volume,
         waveType = waveType,
         effects = effects,
-        volume = volume,
         length = length
     }
 end
