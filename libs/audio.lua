@@ -57,13 +57,18 @@ local function envelope(i, total, rate, fadeLength)
     return 1
 end
 
+local function normalizeLength(length)
+    length = length or 1
+    return length / 32
+end
+
 local function genSound(length, tone, rate, p, waveType, fadeLength, getData, effects)
 
     if type(tone) == "string" then
         tone = notes[tone]
     end
 
-    length     = length     or 1/32
+    length     = normalizeLength(length)
     tone       = tone       or 440
     rate       = rate       or 44100
     waveType   = waveType   or "square"
@@ -169,7 +174,7 @@ local function genMusic(sounds, consts, rate)
 
     local totalLen = 0
     for _, s in ipairs(sounds) do
-        totalLen = totalLen + (s.length or 1/32)
+        totalLen = totalLen + normalizeLength(s.length)
     end
 
     local soundData = love.sound.newSoundData(
@@ -180,7 +185,7 @@ local function genMusic(sounds, consts, rate)
 
     for _, s in ipairs(sounds) do
         local data = genSound(
-            consts and consts.length     or s.length,
+            s.length,
             consts and consts.tone       or s.tone,
             rate,
             nil,

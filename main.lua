@@ -7,169 +7,155 @@ function love.load()
     GW, GH = love.graphics.getDimensions()
 
     MUSIC = audio.genMusic({
-        {tone = "C5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "E5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "G5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "E5", length = 1/4},
+        {tone = "C5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "E5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "G5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "E5", length = 8},
 
-        {tone = "D5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "F5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "A5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "F5", length = 1/4},
+        {tone = "D5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "F5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "A5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "F5", length = 8},
 
-        {tone = "E5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "G5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "C6", length = 1/3},
+        {tone = "E5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "G5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "C6", length = 12},
 
-        {tone = 0,    length = 1/16},
+        {tone = 0,    length = 2},
 
-        {tone = "B5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "G5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "E5", length = 1/4},
-        {tone = 0,    length = 1/32},
-        {tone = "C5", length = 1/2},
+        {tone = "B5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "G5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "E5", length = 8},
+        {tone = 0,    length = 1},
+        {tone = "C5", length = 16},
     }, nil, 44100)
 
     MUSICWITHEFFECTS = audio.genMusic({
         {
             tone = "C5",
-            length = 1/4,
+            length = 8,
             effects = {
                 arp = {0, 4, 7},
                 arpSpeed = 0.06,
                 vibrato = { depth = 0.015, speed = 6 }
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "E5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = -0.5,
                 duty = 0.25
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "G5",
-            length = 1/4,
+            length = 8,
             effects = {
                 vibrato = { depth = 0.02, speed = 8 }
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "E5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = 0.4
             }
         },
-
         {
             tone = "D5",
-            length = 1/4,
+            length = 8,
             effects = {
                 arp = {0, 3, 7},
                 arpSpeed = 0.05
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "F5",
-            length = 1/4,
+            length = 8,
             effects = {
                 vibrato = { depth = 0.02, speed = 10 }
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "A5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = -0.7,
                 fade_out = 0.05
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "F5",
-            length = 1/4
+            length = 8
         },
-
         {
             tone = "E5",
-            length = 1/4,
+            length = 8,
             effects = {
                 arp = {0, 7, 12},
                 arpSpeed = 0.04
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "G5",
-            length = 1/4,
+            length = 8,
             effects = {
                 vibrato = { depth = 0.015, speed = 5 }
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "C6",
-            length = 1/3,
+            length = 12,
             effects = {
                 slide = 0.8,
                 fade_out = 0.1
             }
         },
-
-        { tone = 0, length = 1/16 },
-
+        { tone = 0, length = 2 },
         {
             tone = "B5",
-            length = 1/4,
+            length = 8,
             effects = {
                 vibrato = { depth = 0.02, speed = 7 }
             }
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "G5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = -0.6
             }
         },
-        { tone = 0, length = 1/32 },
+        { tone = 0, length = 1 },
 
         {
             tone = "E5",
-            length = 1/4
+            length = 8
         },
-        { tone = 0, length = 1/32 },
-
+        { tone = 0, length = 1 },
         {
             tone = "C5",
-            length = 1/2,
+            length = 16,
             effects = {
                 drop = 2.0,
                 fade_out = 0.15
@@ -180,7 +166,7 @@ function love.load()
     MUSICWITHEFFECTS2 = audio.genMusic({
         {
             tone = "C4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 7, 12},
                 arpSpeed = 0.04,
@@ -189,7 +175,7 @@ function love.load()
         },
         {
             tone = "E4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 7, 12},
                 arpSpeed = 0.04,
@@ -198,7 +184,7 @@ function love.load()
         },
         {
             tone = "G4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 7, 12},
                 arpSpeed = 0.04,
@@ -208,7 +194,7 @@ function love.load()
         { tone = 0, length = 1/16 },
         {
             tone = "C5",
-            length = 1/4,
+            length = 8,
             effects = {
                 vibrato = { depth = 0.02, speed = 6 },
                 duty = 0.5
@@ -216,7 +202,7 @@ function love.load()
         },
         {
             tone = "D5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = 0.3,
                 vibrato = { depth = 0.02, speed = 6 }
@@ -224,7 +210,7 @@ function love.load()
         },
         {
             tone = "E5",
-            length = 1/4,
+            length = 8,
             effects = {
                 slide = 0.3,
                 vibrato = { depth = 0.02, speed = 6 }
@@ -232,16 +218,16 @@ function love.load()
         },
         {
             tone = "G5",
-            length = 1/2,
+            length = 16,
             effects = {
                 fade_out = 0.12,
                 vibrato = { depth = 0.025, speed = 8 }
             }
         },
-        { tone = 0, length = 1/16 },
+        { tone = 0, length = 2 },
         {
             tone = "C3",
-            length = 1/6,
+            length = 6,
             effects = {
                 drop = 2.0,
                 duty = 0.2
@@ -249,7 +235,7 @@ function love.load()
         },
         {
             tone = "C3",
-            length = 1/6,
+            length = 6,
             effects = {
                 drop = 2.0,
                 duty = 0.2
@@ -257,16 +243,16 @@ function love.load()
         },
         {
             tone = "C3",
-            length = 1/6,
+            length = 6,
             effects = {
                 drop = 2.0,
                 duty = 0.2
             }
         },
-        { tone = 0, length = 1/12 },
+        { tone = 0, length = 3 },
         {
             tone = "G4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 4, 7},
                 arpSpeed = 0.05,
@@ -275,7 +261,7 @@ function love.load()
         },
         {
             tone = "E4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 4, 7},
                 arpSpeed = 0.05,
@@ -284,7 +270,7 @@ function love.load()
         },
         {
             tone = "C4",
-            length = 1/6,
+            length = 6,
             effects = {
                 arp = {0, 4, 7},
                 arpSpeed = 0.05,
@@ -295,17 +281,17 @@ function love.load()
         waveType = "square",
         fadeLength = 1/300
     }, 44100)
-
-    --MUSIC = MUSICWITHEFFECTS2
+    
+    --MUSIC = MUSICWITHEFFECTS
 
     SOUNDS = {
-        sine = audio.genSound(1/8, 440, 44100, nil, "sine");
-        square = audio.genSound(1/8, 440, 44100, nil, "square");
-        triangle = audio.genSound(1/8, 440, 44100, nil, "triangle");
-        sawtooth = audio.genSound(1/8, 440, 44100, nil, "sawtooth");
-        pulser = audio.genSound(1/8, 440, 44100, nil, "pulser");
-        composite = audio.genSound(1/8, 440, 44100, nil, "composite");
-        noise = audio.genSound(1/8, 440, 44100, nil, "noise");
+        sine = audio.genSound(4, 440, 44100, nil, "sine");
+        square = audio.genSound(4, 440, 44100, nil, "square");
+        triangle = audio.genSound(4, 440, 44100, nil, "triangle");
+        sawtooth = audio.genSound(4, 440, 44100, nil, "sawtooth");
+        pulser = audio.genSound(4, 440, 44100, nil, "pulser");
+        composite = audio.genSound(4, 440, 44100, nil, "composite");
+        noise = audio.genSound(4, 440, 44100, nil, "noise");
     }
 
     BW, BH = 192, 92
