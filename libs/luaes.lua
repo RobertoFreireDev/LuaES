@@ -71,6 +71,7 @@ function sfx(index)
         SOUNDS[index]:play()
     end
 end
+
 ---------- draw functions ----------------
 local function hexToRGB(hex)
     hex = hex:gsub("#","")
@@ -244,6 +245,8 @@ end
 return {
     -- table functions --
     add    = add,
+    -- math functions --
+    mid = mid,
     -- sfx functions --
     sfx    = sfx,
     -- system functions --
