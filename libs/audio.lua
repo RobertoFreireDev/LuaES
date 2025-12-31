@@ -27,13 +27,15 @@ Modifications:
 - Mormalize amplitude of wave type sounds
 - Add noise wave form
 - Add effects
+- Use integer number for length
+- Make rate and default sound constants
 ]]
 
 local floor = math.floor
 local sin   = math.sin
 local pi    = math.pi
 local exp   = math.exp
-
+local rate = 44100
 local notes = {}; do
     local A4 = 440.0
     local names = {"C","Cs","D","Ds","E","F","Fs","G","Gs","A","As","B"}
@@ -45,7 +47,7 @@ local notes = {}; do
     end
 end
 
-local function envelope(i, total, rate, fadeLength)
+local function envelope(i, total, fadeLength)
     if not fadeLength then return 1 end
     local fs = floor(fadeLength * rate)
 
@@ -62,7 +64,7 @@ local function normalizeLength(length)
     return length / 32
 end
 
-local function genSound(length, tone, rate, p, waveType, fadeLength, getData, effects)
+local function genSound(length, tone, waveType, fadeLength, getData, effects)
 
     if type(tone) == "string" then
         tone = notes[tone]
@@ -70,7 +72,6 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData, ef
 
     length     = normalizeLength(length)
     tone       = tone       or 440
-    rate       = rate       or 44100
     waveType   = waveType   or "square"
     fadeLength = fadeLength or 1/200
     effects    = effects    or {}
@@ -135,7 +136,7 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData, ef
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
         end
 
-        local env = envelope(i, sampleCount, rate, fadeLength)
+        local env = envelope(i, sampleCount, fadeLength)
 
         if effects.fade_in then
             env = math.min(env, t / effects.fade_in)
@@ -169,9 +170,7 @@ local function genSound(length, tone, rate, p, waveType, fadeLength, getData, ef
     return src
 end
 
-local function genMusic(sounds, consts, rate)
-    rate = rate or 44100
-
+local function genMusic(sounds)
     local totalLen = 0
     for _, s in ipairs(sounds) do
         totalLen = totalLen + normalizeLength(s.length)
@@ -186,13 +185,11 @@ local function genMusic(sounds, consts, rate)
     for _, s in ipairs(sounds) do
         local data = genSound(
             s.length,
-            consts and consts.tone       or s.tone,
-            rate,
-            nil,
-            consts and consts.waveType   or s.waveType,
-            consts and consts.fadeLength or s.fadeLength,
+            s.tone,
+            s.waveType,
+            s.fadeLength,
             true,
-            consts and consts.effects    or s.effects
+            s.effects
         )
 
         for i = 0, data:getSampleCount() - 1 do

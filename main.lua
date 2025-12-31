@@ -38,7 +38,7 @@ function love.load()
         {tone = "E5", length = 8},
         {tone = 0,    length = 1},
         {tone = "C5", length = 16},
-    }, nil, 44100)
+    })
 
     MUSICWITHEFFECTS = audio.genMusic({
         {
@@ -161,7 +161,7 @@ function love.load()
                 fade_out = 0.15
             }
         }
-    }, nil, 44100)
+    })
 
     MUSICWITHEFFECTS2 = audio.genMusic({
         {
@@ -277,21 +277,18 @@ function love.load()
                 fade_out = 0.1
             }
         }
-    }, {
-        waveType = "square",
-        fadeLength = 1/300
-    }, 44100)
+    })
     
     --MUSIC = MUSICWITHEFFECTS
 
     SOUNDS = {
-        sine = audio.genSound(4, 440, 44100, nil, "sine");
-        square = audio.genSound(4, 440, 44100, nil, "square");
-        triangle = audio.genSound(4, 440, 44100, nil, "triangle");
-        sawtooth = audio.genSound(4, 440, 44100, nil, "sawtooth");
-        pulser = audio.genSound(4, 440, 44100, nil, "pulser");
-        composite = audio.genSound(4, 440, 44100, nil, "composite");
-        noise = audio.genSound(4, 440, 44100, nil, "noise");
+        sine = audio.genSound(4, 440, "sine");
+        square = audio.genSound(4, 440, "square");
+        triangle = audio.genSound(4, 440, "triangle");
+        sawtooth = audio.genSound(4, 440, "sawtooth");
+        pulser = audio.genSound(4, 440, "pulser");
+        composite = audio.genSound(4, 440, "composite");
+        noise = audio.genSound(4, 440, "noise");
     }
 
     BW, BH = 192, 92
