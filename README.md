@@ -1,5 +1,5 @@
 # LuaES
-Like Pico 8 using Love2d and be able to be played at hardware that supports opengl es
+Game engine like Pico 8 but using Love2d to be able to play at hardware that supports opengl es
 
 ## Resolution with integer scale and full screen
 

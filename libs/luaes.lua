@@ -50,11 +50,28 @@ local function loadsfxdata()
 end
 
 function sfx(index)
-    SOUNDS[index]:play()
+     if SOUNDS[index]:isPlaying() then
+        SOUNDS[index]:stop()
+        SOUNDS[index]:play()
+    else
+        SOUNDS[index]:play()
+    end
+end
+
+---------- draw functions ----------------
+function print(text, x, y, color)
+    color = color or {1, 1, 1} -- default white
+    love.graphics.setColor(color)
+    love.graphics.print(text, x, y)
+    love.graphics.setColor(1, 1, 1) -- reset to white
+end
+
+---------- system functions ----------------
+function gfps()
+    return love.timer.getFPS()
 end
 
 ---------- button functions ----------------
-
 local btnKeys = {
     [0] = "left",
     [1] = "right",
@@ -91,6 +108,8 @@ _update = function(dt) end
 _draw = function() end
 
 function love.load()
+    love.window.setMode(160, 120, { resizable = false })
+    love.graphics.setFont(love.graphics.newFont("fonts/slkscreb.ttf", 16))
     loadsfxdata()
     _init()
 end
@@ -109,6 +128,10 @@ return {
     add    = add,
     -- sfx functions --
     sfx    = sfx,
+    -- system functions --
+    gfps = gfps,
+    -- draw functions --
+    print = print,
     -- input functions --
     btn = btn,
     btnp = btnp,
