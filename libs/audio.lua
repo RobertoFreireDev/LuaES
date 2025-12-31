@@ -150,16 +150,16 @@ local function genSound(length, tone, waveType, getData, effects)
             v = v * 0.4
 
         elseif waveType == "triangle" then
-            v = (2/pi) * math.asin(sin(phase)) * 0.8
+            v = (2/pi) * math.asin(sin(phase)) * 1
 
         elseif waveType == "sawtooth" then
             v = (2 * (phase/(2*pi) - floor(0.5 + phase/(2*pi)))) * 0.5
 
         elseif waveType == "pulser" then
-            v = sin(phase) * sin(phase * 10) * 0.7
+            v = sin(phase) * sin(phase * 10) * 1
 
         elseif waveType == "noise" then
-            v = (love.math.random() * 2 - 1) * 0.35
+            v = (love.math.random() * 2 - 1) * 0.6
 
         elseif waveType == "composite" then
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5

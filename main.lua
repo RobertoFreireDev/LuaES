@@ -108,7 +108,73 @@ function love.load()
         { tone = "C4", length = 6, effects = 4 }
     })
 
-    MUSIC = MUSICWITHEFFECTS2
+    MUSICWITHEFFECTS3 = audio.genMusic({
+        { tone = "C4", length = 8, waveType = "sine",      effects = 5 },
+        { tone = "E4", length = 8, waveType = "sine",      effects = 2 },
+        { tone = "G4", length = 8, waveType = "sine",      effects = 2 },
+        { tone = 0,  length = 1 },
+        { tone = "C5", length = 8, waveType = "square",    effects = 1 },
+        { tone = "E5", length = 8, waveType = "square",    effects = 3 },
+        { tone = "G5", length = 8, waveType = "square",    effects = 3 },
+        { tone = 0,  length = 1 },
+        { tone = "C6", length = 12, waveType = "sawtooth", effects = 4 },
+        { tone = 0,  length = 2 },
+        { tone = "C3", length = 10, waveType = "triangle", effects = 8 },
+        { tone = "C3", length = 10, waveType = "triangle", effects = 8 },
+        { tone = 0,  length = 1 },
+        { tone = "G4", length = 8, waveType = "pulser",    effects = 6 },
+        { tone = "E4", length = 8, waveType = "pulser",    effects = 6 },
+        { tone = 0,  length = 1 },
+        { tone = "C5", length = 4, waveType = "noise",     effects = 4 },
+        { tone = 0,  length = 1 },
+        { tone = "C5", length = 16, waveType = "composite", effects = 4 }
+    })
+
+    JUMPEFFECT = audio.genMusic({
+        { tone = "C2", length = 1 },
+        { tone = "E2", length = 1 },
+        { tone = "G2", length = 1 },
+        { tone = "C3", length = 1 },
+        { tone = "E3", length = 1 },
+        { tone = "G3", length = 2 },
+        { tone = "C4", length = 2 }
+    })
+
+    JUMPEFFECT2 = audio.genMusic({
+        { tone = "C3", length = 1 },
+        { tone = "E3", length = 1 },
+        { tone = "G3", length = 1 },
+        { tone = "C4", length = 1 },
+        { tone = "E4", length = 1 },
+        { tone = "G4", length = 2 },
+        { tone = "C5", length = 2 }
+    })
+
+    GETHITEFFECT = audio.genMusic({     
+        { tone = "C5", length = 1 },
+        { tone = "G4", length = 1 },
+        { tone = "E4", length = 1 },
+        { tone = "C4", length = 1 },
+        { tone = "G3", length = 1 },
+        { tone = "E3", length = 1 },
+        { tone = "C3", length = 1 },
+    })
+
+    GETCOIN = audio.genMusic({
+        { tone = "C5", length = 1 },
+        { tone = "E5", length = 1 },
+        { tone = "G5", length = 1 },
+        { tone = "C6", length = 2 }
+    })
+
+    SHOOTEFFECT = audio.genMusic({
+        { tone = "C5", length = 1 },
+        { tone = "G4", length = 1 },
+        { tone = "E4", length = 1 },
+        { tone = "C4", length = 2 }
+    })
+
+    MUSIC = MUSICWITHEFFECTS3
 
     SOUNDS = {
         sine = audio.genSound(4, "C5", "sine");
