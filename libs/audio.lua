@@ -30,6 +30,7 @@ Modifications:
 - Use integer number for length
 - Make rate and default sound constants
 - Make EFFECTS a number parameter and remove repeatRate effect
+- Make fadeLength a constant
 ]]
 
 local floor = math.floor
@@ -37,6 +38,7 @@ local sin   = math.sin
 local pi    = math.pi
 local exp   = math.exp
 local rate = 44100
+local fadeLength = 1/200
 local notes = {}; do
     local A4 = 440.0
     local names = {"C","Cs","D","Ds","E","F","Fs","G","Gs","A","As","B"}
@@ -76,8 +78,7 @@ local EFFECTS = {
     } -- Pitch drop
 }
 
-local function envelope(i, total, fadeLength)
-    if not fadeLength then return 1 end
+local function envelope(i, total)
     local fs = floor(fadeLength * rate)
 
     if i < fs then
@@ -93,7 +94,7 @@ local function normalizeLength(length)
     return length / 32
 end
 
-local function genSound(length, tone, waveType, fadeLength, getData, effects)
+local function genSound(length, tone, waveType, getData, effects)
 
     if type(tone) == "string" then
         tone = notes[tone]
@@ -102,7 +103,6 @@ local function genSound(length, tone, waveType, fadeLength, getData, effects)
     length     = normalizeLength(length)
     tone       = tone       or 440
     waveType   = waveType   or "square"
-    fadeLength = fadeLength or 1/200
     effects = type(effects) == "number" and EFFECTS[effects] or {}
 
     local sampleCount = floor(length * rate)
@@ -165,7 +165,7 @@ local function genSound(length, tone, waveType, fadeLength, getData, effects)
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
         end
 
-        local env = envelope(i, sampleCount, fadeLength)
+        local env = envelope(i, sampleCount)
 
         if effects.fade_in then
             env = math.min(env, t / effects.fade_in)
@@ -210,7 +210,6 @@ local function genMusic(sounds)
             s.length,
             s.tone,
             s.waveType,
-            s.fadeLength,
             true,
             s.effects
         )
