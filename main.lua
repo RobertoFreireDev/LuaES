@@ -1,16 +1,14 @@
-require("libs/global")
+require("libs/luaes")
 
 -- DEMO --
-function love.load()
-    _loadsfxdata()
+function _init()
     FONT = love.graphics.getFont()
 end
 
 local pressed;
 
-function love.update(dt)
-
-    if love.mouse.isDown(1) or love.mouse.isDown(2) then
+function _update(dt)
+    if btnp(4) or btnp(5) then
         if not pressed then
             sfx(1)
         end
@@ -21,6 +19,5 @@ function love.mousereleased()
     pressed = false
 end
 
-function love.draw()
-    print("test")
+function _draw()
 end

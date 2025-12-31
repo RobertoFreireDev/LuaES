@@ -26,7 +26,7 @@ local function parseSFX(str, length)
     }
 end
 
-function _loadsfxdata()
+local function loadsfxdata()
     local soundIndex = 1
     for line in io.lines("data/sfx.txt") do
         local CHUNK_SIZE = 7
@@ -53,8 +53,67 @@ function sfx(index)
     SOUNDS[index]:play()
 end
 
+---------- button functions ----------------
+
+local btnKeys = {
+    [0] = "left",
+    [1] = "right",
+    [2] = "up",
+    [3] = "down",
+    [4] = "z",
+    [5] = "x"
+}
+
+local prevKeys = {}
+
+local function updatePrevKeys()
+    prevKeys = {}
+    for i = 0, 5 do
+        prevKeys[i] = love.keyboard.isDown(btnKeys[i])
+    end
+end
+
+function btn(n)
+    local key = btnKeys[n]
+    if not key then return false end
+    return love.keyboard.isDown(key)
+end
+
+function btnp(n)
+    local key = btnKeys[n]
+    if not key then return false end
+    return love.keyboard.isDown(key) and not prevKeys[n]
+end
+
+---------- main functions ----------------
+_init = function() end
+_update = function(dt) end
+_draw = function() end
+
+function love.load()
+    loadsfxdata()
+    _init()
+end
+
+function love.update(dt)
+    _update(dt)
+    updatePrevKeys()
+end
+
+function love.draw()
+    _draw()
+end
+
 return {
+    -- table functions --
     add    = add,
+    -- sfx functions --
     sfx    = sfx,
-    _loadsfxdata = _loadsfxdata,
+    -- input functions --
+    btn = btn,
+    btnp = btnp,
+    -- loop functions --
+    _init = _init,
+    _update = _update,
+    _draw = _draw,
 }
