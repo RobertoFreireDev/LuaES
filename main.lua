@@ -174,7 +174,84 @@ function love.load()
         { tone = "C4", length = 2 }
     })
 
-    MUSIC = MUSICWITHEFFECTS3
+    MUSIC_STRESS_STACK = audio.genMusic({
+        { tone="C4", length=4, waveType="square",   effects=1 }, -- arp
+        { tone="C4", length=4, waveType="square",   effects=2 }, -- vibrato
+        { tone="C4", length=4, waveType="square",   effects=3 }, -- slide
+        { tone="C4", length=4, waveType="square",   effects=6 }, -- tremolo
+        { tone="C4", length=4, waveType="square",   effects=7 }, -- pitch drop
+        { tone=0,    length=1 },
+
+        { tone="C5", length=12, waveType="sawtooth", effects=6 },
+        { tone="C3", length=12, waveType="triangle", effects=7 },
+    })
+
+    MUSIC_ENVELOPE_TEST = audio.genMusic({
+        { tone="C5", length=1, effects=5 }, -- fade in only
+        { tone="C5", length=1, effects=4 }, -- fade out only
+        { tone="C5", length=1 },            -- no fade
+        { tone=0,    length=1/32 },
+
+        { tone="C5", length=2, effects=5 },
+        { tone=0,    length=1/64 },
+        { tone="C5", length=2, effects=4 },
+        { tone=0,    length=1/64 },
+
+        { tone="C5", length=8, effects=6 }, -- tremolo vs envelope
+    })
+
+    MUSIC_PITCH_TEST = audio.genMusic({
+        { tone="C4", length=8 },
+        { tone="Cs4", length=8 },
+        { tone="D4", length=8 },
+        { tone="Ds4", length=8 },
+        { tone="E4", length=8 },
+        { tone="F4", length=8 },
+        { tone="Fs4", length=8 },
+        { tone="G4", length=8 },
+        { tone="Gs4", length=8 },
+        { tone="A4", length=8 },
+        { tone="As4", length=8 },
+        { tone="B4", length=8 },
+        { tone="C5", length=16 },
+    })
+
+    MUSIC_WAVE_COMPARE = audio.genMusic({
+        { tone="C4", length=6, waveType="sine" },
+        { tone="C4", length=6, waveType="square" },
+        { tone="C4", length=6, waveType="triangle" },
+        { tone="C4", length=6, waveType="sawtooth" },
+        { tone="C4", length=6, waveType="pulser" },
+        { tone="C4", length=6, waveType="composite" },
+        { tone="C4", length=6, waveType="noise" },
+    })
+
+    MUSIC_TIMING_TEST = audio.genMusic({
+        { tone="C5", length=1 },
+        { tone=0, length=1/64 },
+        { tone="C5", length=1 },
+        { tone=0, length=1/64 },
+        { tone="C5", length=1 },
+        { tone=0, length=1/32 },
+
+        { tone="G4", length=2 },
+        { tone=0, length=1/16 },
+        { tone="E4", length=2 },
+        { tone=0, length=1/16 },
+
+        { tone="C4", length=8 },
+    })
+
+    MUSIC_CHAOS = audio.genMusic({
+        { tone="C2", length=4, waveType="noise",     effects=6 },
+        { tone="G5", length=2, waveType="square",    effects=7 },
+        { tone="E3", length=6, waveType="triangle",  effects=1 },
+        { tone=0,    length=1/8 },
+        { tone="C6", length=10, waveType="sawtooth", effects=3 },
+        { tone="C1", length=12, waveType="sine",     effects=7 },
+    })
+
+    MUSIC = MUSIC_CHAOS
 
     SOUNDS = {
         sine = audio.genSound(4, "C5", "sine");
