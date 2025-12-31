@@ -11,5 +11,8 @@ function _update(dt)
 end
 
 function _draw()
-    print("FPS: " .. gfps(), 10, 20)
+    print("!#$%&'()*+,-./0123456789:;", 10, 10)
+    print("<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10, 30)
+    print("[^_`abcdefghijklmnopqrstuvwxyz{|}~", 10, 50)
+    print("FPS: " .. gfps(), 140, 110)
 end

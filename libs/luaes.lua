@@ -103,13 +103,37 @@ function btnp(n)
 end
 
 ---------- main functions ----------------
+local VIRTUAL_WIDTH = 160
+local VIRTUAL_HEIGHT = 120
+local window_width, window_height = VIRTUAL_WIDTH, VIRTUAL_HEIGHT
+local scaleX, scaleY, scale
+local offsetX, offsetY
+
 _init = function() end
 _update = function(dt) end
 _draw = function() end
 
+function love.resize(w, h)
+    window_width = w
+    window_height = h
+    updateScale()
+end
+
+function updateScale()
+    local scaleXRaw = math.floor(window_width / VIRTUAL_WIDTH)
+    local scaleYRaw = math.floor(window_height / VIRTUAL_HEIGHT)
+    scale = math.min(scaleXRaw, scaleYRaw)
+    scaleX = scale
+    scaleY = scale
+    offsetX = (window_width - VIRTUAL_WIDTH * scale) / 2
+    offsetY = (window_height - VIRTUAL_HEIGHT * scale) / 2
+end
+
 function love.load()
-    love.window.setMode(160, 120, { resizable = false })
-    love.graphics.setFont(love.graphics.newFont("fonts/slkscreb.ttf", 16))
+    love.graphics.setDefaultFilter("nearest", "nearest")
+    love.window.setMode(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, {resizable = true, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
+    love.graphics.setFont(love.graphics.newFont("fonts/Pixelzone.ttf", 16))
+    updateScale()
     loadsfxdata()
     _init()
 end
@@ -120,7 +144,14 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.clear(0, 0, 0)
+    love.graphics.push()
+    love.graphics.translate(offsetX, offsetY)
+    love.graphics.scale(scaleX, scaleY)
+
     _draw()
+
+    love.graphics.pop()
 end
 
 return {
