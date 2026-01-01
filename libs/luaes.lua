@@ -9,6 +9,30 @@ function add(t, v)
     return v
 end
 
+function del(tbl, val)
+    for i = #tbl, 1, -1 do
+        if tbl[i] == val then
+            table.remove(tbl, i)
+            return val
+        end
+    end
+    return nil
+end
+
+function foreach(tbl, func)
+    for i, v in ipairs(tbl) do
+        func(v, i)
+    end
+end
+
+function all(tbl)
+    local t = {}
+    for i, v in ipairs(tbl) do
+        t[i] = v
+    end
+    return t
+end
+
 ---------- math functions --------------
 function floor(v)
     return math.floor(v)

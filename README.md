@@ -41,12 +41,6 @@ Functions:
 - music(n)
 - Implement UI for Sfx Editor
 
-## Table Functions
-
-- del(tbl, val) — Remove value from table.
-- foreach(tbl, func) — Call func for each value.
-- all(tbl) — Return all values in table.
-
 ## Status functions 
 
 - reload() — Reload the game.
