@@ -8,7 +8,6 @@ local player = {
     speed = 50
 }
 
--- DEMO --
 function _init()
     
 end
@@ -40,27 +39,28 @@ end
 function _update(dt)
     local dx, dy = 0, 0
 
-    -- Use btn() for movement
-    if btn(2) then dy = dy - 1 end -- up
-    if btn(3) then dy = dy + 1 end -- down
-    if btn(0) then dx = dx - 1 end -- left
-    if btn(1) then dx = dx + 1 end -- right
+    if btn(2) then dy = dy - 1 end
+    if btn(3) then dy = dy + 1 end
+    if btn(0) then dx = dx - 1 end
+    if btn(1) then dx = dx + 1 end
 
-    -- Normalize vector to prevent faster diagonal movement
     local length = math.sqrt(dx*dx + dy*dy)
     if length > 0 then
         dx = dx / length
         dy = dy / length
     end
 
-    -- Update player position
     player.x = player.x + dx * player.speed * dt
     player.y = player.y + dy * player.speed * dt
 
     update_camera(player)
 
     if btn(4) or btnp(5) then
+        ssfx(1 ,"C3", 10, 2, 1, 8)
+        ssfx(2 ,"C5", 10, 2, 1, 3)
+        ssfx(3 ,"C4", 10, 2, 1, 4)
         sfx(1)
+        save()
     end
 end
 

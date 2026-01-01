@@ -9,6 +9,14 @@ function add(t, v)
 end
 
 ---------- math functions --------------
+function floor(v)
+    return math.floor(v)
+end
+
+function min(v)
+    return math.min(v)
+end
+
 function mid(min, v, max)
     return math.max(min, math.min(max, v))
 end
@@ -153,6 +161,28 @@ function sfx(index)
     end
 end
 
+function ssfx(index, t, v, w, e, l)
+    -- lentgth must be the same for all notes of the same sound
+    local soundIndex = floor(index/16) + 1
+    local newsound = {}
+    local startIndex = floor(index/16)*16 + 1
+    for i=startIndex,startIndex+15 do
+        if index == i then
+            SFX[i] = {
+                tone = t,
+                volume = v,
+                waveType = w,
+                effects = e,
+                length = l
+            }
+        else
+            SFX[i].length = l
+        end
+        add(newsound,SFX[i])
+    end
+    SOUNDS[soundIndex] = audio.genMusic(newsound)
+end
+
 ---------- camera functions ----------------
 --- Always resetcamera in the same frame if camera function was called
 function camera(x, y)
@@ -201,10 +231,10 @@ local function setcolor(c)
 end
 
 local function getRect(x0, y0, x1, y1)
-    local x = math.min(x0, x1)
-    local y = math.min(y0, y1)
-    local w = math.abs(x1 - x0)
-    local h = math.abs(y1 - y0)
+    local x = min(x0, x1)
+    local y = min(y0, y1)
+    local w = abs(x1 - x0)
+    local h = abs(y1 - y0)
     return x, y, w, h
 end
 
@@ -390,9 +420,9 @@ function love.resize(w, h)
 end
 
 function updateScale()
-    local scaleXRaw = math.floor(window_width / VIRTUAL_WIDTH)
-    local scaleYRaw = math.floor(window_height / VIRTUAL_HEIGHT)
-    scale = math.min(scaleXRaw, scaleYRaw)
+    local scaleXRaw = floor(window_width / VIRTUAL_WIDTH)
+    local scaleYRaw = floor(window_height / VIRTUAL_HEIGHT)
+    scale = min(scaleXRaw, scaleYRaw)
     offsetX = (window_width - VIRTUAL_WIDTH * scale) / 2
     offsetY = (window_height - VIRTUAL_HEIGHT * scale) / 2
 end
@@ -435,8 +465,11 @@ return {
     mid = mid,
     sgn = sgn,
     abs = abs,
+    floor = floor,
+    min = min,
     -- sfx functions --
     sfx    = sfx,
+    ssfx   = ssfx,
     -- system functions --
     stat = stat,
     save = save,
