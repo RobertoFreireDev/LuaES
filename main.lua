@@ -13,6 +13,30 @@ function _init()
     
 end
 
+-- camera
+dead_zone_w = 128
+dead_zone_h = 92
+screen_w = 160
+screen_h = 120
+cam_x = 0
+cam_y = 0
+
+function update_camera(o)
+  local cx = cam_x + screen_w / 2
+  local cy = cam_y + screen_h / 2
+
+  local dx = o.x - cx
+  local dy = o.y - cy
+
+  if abs(dx) > dead_zone_w / 2 then
+    cam_x = cam_x + dx - sgn(dx) * dead_zone_w / 2
+  end
+
+  if abs(dy) > dead_zone_h / 2 then
+    cam_y = cam_y + dy - sgn(dy) * dead_zone_h / 2
+  end
+end
+
 function _update(dt)
     local dx, dy = 0, 0
 
@@ -32,9 +56,16 @@ function _update(dt)
     -- Update player position
     player.x = player.x + dx * player.speed * dt
     player.y = player.y + dy * player.speed * dt
+
+    update_camera(player)
 end
 
-function _draw()
-    print("FPS: " .. gfps(), 10, 10, 4)
+function _draw()    
+    print("FPS: " .. gfps(), 10, 10, 4) -- camera not applied to this text
+    camera(cam_x, cam_y)
+    rectfill(0,0,16,16,8)
+    rectfill(144,104,160,120,3)
     circfill(player.x, player.y, player.r, player.c)
+    resetcamera()
+    print("TEST 2!", 10, 50, 5) -- camera not applied to this text
 end

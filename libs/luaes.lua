@@ -13,6 +13,17 @@ function mid(min, v, max)
     return math.max(min, math.min(max, v))
 end
 
+function sgn(x)
+    if x > 0 then return 1
+    elseif x < 0 then return -1
+    else return 0
+    end
+end
+
+function abs(x) 
+    return x < 0 and -x or x
+end
+
 ---------- io functions --------------
 local function loadFile(filename)
     return io.lines(filename..".txt")
@@ -140,6 +151,18 @@ function sfx(index)
     else
         SOUNDS[index]:play()
     end
+end
+
+---------- camera functions ----------------
+--- Always resetcamera in the same frame if camera function was called
+function camera(x, y)
+    love.graphics.push()
+    love.graphics.translate(-x, -y)
+end
+
+-- reset camera
+function resetcamera()
+    love.graphics.pop()
 end
 
 ---------- draw functions ----------------
@@ -392,6 +415,8 @@ return {
     add    = add,
     -- math functions --
     mid = mid,
+    sgn = sgn,
+    abs = abs,
     -- sfx functions --
     sfx    = sfx,
     -- system functions --
@@ -401,6 +426,9 @@ return {
     sdata = sdata,
     gdata = gdata,
     cdata = cdata,
+    -- camera functions --
+    camera = camera,
+    resetcamera = resetcamera,
     -- draw functions --
     print = print,
     rect = rect,
