@@ -5,7 +5,7 @@ function _init()
 end
 
 function _update(dt)
-    if btn(4) then
+    if btnp(4) then
         sfx(1)
     end
 

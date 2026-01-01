@@ -1,4 +1,5 @@
 local audio = require("libs/audio")
+local sfxdata = require("data/sfx")
 
 ---------- table functions --------------
 function add(t, v)
@@ -12,33 +13,39 @@ function mid(min, v, max)
 end
 
 ---------- io functions --------------
-
 local function loadFile(filename)
-    local path = "data/" .. filename
-    
-    if love.system.getOS() == "Windows" then
-        return io.lines(path)
-    else
-        return love.filesystem.lines(path)
-    end
+    return io.lines(filename)
 end
 
 local function saveFile(filename, content)
-    local path = "data/" .. filename
-    
-    if love.system.getOS() == "Windows" then
-        local file, err = io.open(path, "w")
-        assert(file, err)
-        file:write(content)
-        file:close()
-    else
-        love.filesystem.write(path, content)
+    local file, err = io.open(filename, "w")
+    assert(file, err)
+    file:write(content)
+    file:close()
+end
+
+local function fileExists(filename)
+    local f = io.open(filename, "r")
+    if f then
+        f:close()
+        return true
+    end
+    return false
+end
+
+local function createIfDoesntExist(filename, content)
+    if not fileExists(filename) then
+        local f, err = io.open(filename, "w")
+        assert(f, "Failed to create file: " .. (err or "unknown error"))
+        f:write(content)
+        f:close()
     end
 end
 
 ---------- sfx functions ----------------
 local SFX = {}  -- X indexes x 16 notes
 local SOUNDS = {} -- X sounds.
+local LUAESSFXDATA = "luaessfxdata.txt"
 
 local function parseSFX(str, length)
     local tone     = str:sub(1, 3):gsub("X", "")
@@ -56,7 +63,8 @@ local function parseSFX(str, length)
 end
 
 local function loadsfxdata()
-    local lines = loadFile("sfx.txt")
+    createIfDoesntExist(LUAESSFXDATA, sfxdata)
+    local lines = loadFile(LUAESSFXDATA)
     local soundIndex = 1
 
     for line in lines do
@@ -112,7 +120,7 @@ local function savesfxdata()
         add(lines, line)
     end
     local content = table.concat(lines, "\n")
-    saveFile("sfx.txt", content)
+    saveFile(LUAESSFXDATA, content)
 end
 
 local lastPlayedTime = {}
