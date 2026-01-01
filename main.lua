@@ -58,14 +58,26 @@ function _update(dt)
     player.y = player.y + dy * player.speed * dt
 
     update_camera(player)
+
+    if btn(4) or btnp(5) then
+        sfx(1)
+    end
 end
 
 function _draw()    
-    print("FPS: " .. gfps(), 10, 10, 4) -- camera not applied to this text
+    print("FPS: " ..stat(1), 10, 10, 4)
     camera(cam_x, cam_y)
     rectfill(0,0,16,16,8)
     rectfill(144,104,160,120,3)
     circfill(player.x, player.y, player.r, player.c)
     resetcamera()
-    print("TEST 2!", 10, 50, 5) -- camera not applied to this text
+    print(stat(2), 10, 40, 5)
+    print(stat(3), 10, 50, 5)
+    print(stat(4), 10, 60, 5)
+    print(stat(5), 10, 70, 5)
+    print(stat(6), 10, 80, 5)
+    local local_time = stat(7)
+    print(string.format("Local time: %02d:%02d:%02d", local_time.hour, local_time.min, local_time.sec), 10, 90, 5)
+    local utc_time = stat(8)
+    print(string.format("UTC time: %02d:%02d:%02d", utc_time.hour, utc_time.min, utc_time.sec), 10, 100, 5)
 end

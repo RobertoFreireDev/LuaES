@@ -246,9 +246,27 @@ function circfill(x, y, r, c)
     setcolor()
 end
 
----------- system functions ----------------
-function gfps()
-    return love.timer.getFPS()
+---------- status functions ----------------
+function stat(n)
+    if n == 1 then
+        return love.timer.getFPS()
+    elseif n == 2 then
+        return collectgarbage("count")
+    elseif n == 3 then
+        return love.graphics.getWidth()     
+    elseif n == 4 then
+        return love.graphics.getHeight()
+    elseif n == 5 then
+        return love.system.getOS()
+    elseif n == 6 then -- Seconds afte application started
+        return love.timer.getTime()
+    elseif n == 7 then -- Local time as table        
+        return os.date("*t")
+    elseif n == 8 then -- UTC time as table
+        return os.date("!*t")
+    else
+        return nil
+    end
 end
 
 ---------- button functions ----------------
@@ -420,7 +438,7 @@ return {
     -- sfx functions --
     sfx    = sfx,
     -- system functions --
-    gfps = gfps,
+    stat = stat,
     save = save,
     -- save game functions --
     sdata = sdata,

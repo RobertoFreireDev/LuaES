@@ -1,14 +1,75 @@
 # LuaES
 Game engine like Pico 8 but using Love2d to be able to play at hardware that supports opengl es
 
-- alt + l on main.lua to test
-- compact all files in same level as file main.lua to zip file and rename to .love extension
+# TO DO List
 
-## Requirements to implement
+## Graphics / Drawing
+
+### Pixel Editor
 
 - Tiles 8x8
+- Create SpriteSheet
+- Save and Load SpriteSheet
+- Implement UI for Pixel Editor
 
-## Run on ArkOS RG353PS 
+Functions:
 
+- spixel -> set pixel on SpriteSheet
+- gpixel -> get pixel from SpriteSheet
+- spr(n, x, y, [w], [h], [flip_x], [flip_y]) — Draw sprite n.
+- sspr(sx, sy, sw, sh, dx, dy, [dw], [dh]) — Draw a section of the sprite sheet.
+
+## Map Editor
+
+- Tiles 8x8
+- Create MapSheet
+- Save and Load MapSheet
+- Implement UI for Map Editor
+
+Functions:
+
+- map(cel_x, cel_y, sx, sy, [cel_w], [cel_h], [layer]) — Draw map tiles.
+- mget(x, y) — Get map tile.
+- mset(x, y, v) — Set map tile.
+
+## Sfx Editor
+
+- Implement UI for Sfx Editor
+
+## Music Editor
+
+- music(n)
+- Implement UI for Sfx Editor
+
+## Table Functions
+
+- del(tbl, val) — Remove value from table.
+- foreach(tbl, func) — Call func for each value.
+- all(tbl) — Return all values in table.
+
+## Math Functions
+
+- flr(x) — Floor.
+- ceil(x) — Ceiling.
+- rnd([x]) — Random float [0,1) or [0,x).
+- srnd(x) — Set random seed.
+- sqrt(x) — Square root.
+- sin(x) — Sine (radians).
+- cos(x) — Cosine (radians).
+- atan2(y, x) — Angle from x-axis.
+- max(x, y) / min(x, y) — Max/min.
+- band(a, b) / bor(a, b) / bxor(a, b) — Bitwise operations.
+- shl(x, n) / shr(x, n) — Bit shifts.
+
+## Status functions 
+
+- reload() — Reload the game.
+- exit() — Quit game.
+
+# Run on ArkOS RG353PS 
+
+- alt + l on main.lua to test
+- compact all files in same level as file main.lua to zip file and rename to .love extension
+- Copy and paste file.love to roms/love2d folder
 - to validate files: cmd -> ssh ark@192.168.100.86
 - ls -a /opt/love2d (files saved on /opt/love2d)
