@@ -46,8 +46,12 @@ function floor(v)
     return math.floor(v)
 end
 
-function min(v)
-    return math.min(v)
+function min(a, b)
+    return math.min(a, b)
+end
+
+function max(a, b)
+    return math.max(a, b)
 end
 
 function mid(min, v, max)
@@ -95,10 +99,6 @@ end
 
 function atan2(y, x)
     return math.atan2(y, x)
-end
-
-function max(a, b)
-    return math.max(a, b)
 end
 
 function band(a, b)
