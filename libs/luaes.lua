@@ -160,12 +160,15 @@ end
 
 ---------- button functions ----------------
 local btnKeys = {
-    [0] = "left",
-    [1] = "right",
-    [2] = "up",
-    [3] = "down",
-    [4] = "z",
-    [5] = "x"
+    [0] = {"left","a"}, -- left
+    [1] = {"right","d"}, -- right
+    [2] = {"up","w"}, -- up
+    [3] = {"down","s"}, -- down
+    [4] = {"lshift","x"}, -- b
+    [5] = {"z"}, -- a
+    [6] = {"space","c"}, -- x
+    [7] = {"b","v"}, -- y
+    [8] = {"return"} -- start
 }
 
 local prevKeys = {}
@@ -178,15 +181,25 @@ local function updatePrevKeys()
 end
 
 function btn(n)
-    local key = btnKeys[n]
-    if not key then return false end
-    return love.keyboard.isDown(key)
+    local keys = btnKeys[n]
+    if not keys then return false end
+
+    for i = 1, #keys do
+        if love.keyboard.isDown(keys[i]) then
+            return true
+        end
+    end
 end
 
-function btnp(n)
-    local key = btnKeys[n]
-    if not key then return false end
-    return love.keyboard.isDown(key) and not prevKeys[n]
+function btnp(n) 
+    local keys = btnKeys[n] 
+    if not keys then return false end
+
+    for i = 1, #keys do 
+        if love.keyboard.isDown(keys[i]) and not prevKeys[n] then
+            return true
+        end
+    end
 end
 
 ---------- main functions ----------------
