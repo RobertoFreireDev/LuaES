@@ -1,5 +1,6 @@
 local audio = require("libs/audio")
 local sfxdata = require("data/sfx")
+local emptycartdata = require("data/emptycartdata")
 
 ---------- table functions --------------
 function add(t, v)
@@ -271,6 +272,64 @@ function btnp(n)
     end
 end
 
+---------- save game functions ----------------
+local cartDataName = "cartdata_"
+
+function cdata(name)
+    if cartDataName ~= "cartdata_" then
+        error("calling cdata function multiple times")
+        return
+    end
+
+    cartDataName = cartDataName .. name
+end
+
+function gdata(index)
+    if cartDataName == "cartdata_" then
+        error("call cdata function to set name of cart data")
+        return
+    end
+
+    createIfDoesntExist(cartDataName, emptycartdata)
+
+    local lines = loadFile(cartDataName)
+    local lineIndex = 1
+    for line in lines do
+        if lineIndex == index then
+            return line
+        end
+        lineIndex = lineIndex + 1
+    end
+
+    return ""
+end
+
+function sdata(index, value)
+    index = (index ~= nil and type(index) == "number") and index or ""
+
+    if cartDataName == "cartdata_" then
+        error("call cdata function to set name of cart data")
+        return
+    end
+
+    createIfDoesntExist(cartDataName, emptycartdata)
+
+    local lines = loadFile(cartDataName)
+    local lineIndex = 1
+    local newLines =  {}
+    for line in lines do
+        if lineIndex == index then
+            add(newLines, value)
+        else
+            add(newLines, line)
+        end
+        lineIndex = lineIndex + 1        
+    end
+
+    local content = table.concat(newLines, "\n")
+    saveFile(cartDataName, content)
+end
+
 ---------- main functions ----------------
 local VIRTUAL_WIDTH = 160
 local VIRTUAL_HEIGHT = 120
@@ -325,8 +384,6 @@ function love.draw()
 end
 
 function save()
-    -- test
-    SFX[2] = { tone = "C2", volume = 10, waveType = 2, effects = 0 }
     savesfxdata()
 end
 
@@ -340,6 +397,10 @@ return {
     -- system functions --
     gfps = gfps,
     save = save,
+    -- save game functions --
+    sdata = sdata,
+    gdata = gdata,
+    cdata = cdata,
     -- draw functions --
     print = print,
     rect = rect,
