@@ -5,6 +5,10 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 - Tiles 8x8
 
+## Run on Windows
+
+-- you need to have the data folder outside the .love file
+
 ## Run on ArkOS RG353PS 
 
 - alt + l on main.lua to test
