@@ -394,11 +394,33 @@ local btnKeys = {
 }
 
 local prevKeys = {}
+local prevMouseLeft, prevMouseRight = false, false
 
 local function updatePrevKeys()
     prevKeys = {}
-    for i = 0, 5 do
+    for i = 0, 8 do
         prevKeys[i] = love.keyboard.isDown(btnKeys[i])
+    end
+
+    prevMouseLeft  = love.mouse.isDown(1)
+    prevMouseRight = love.mouse.isDown(2)
+end
+
+function mouse(btn)
+    local x, y = love.mouse.getPosition()
+    if btn then
+        local left  = love.mouse.isDown(1)
+        local right = love.mouse.isDown(2)
+        return {
+            x = x,
+            y - y,
+            l = left,
+            r = right,
+            lp = left and not prevMouseLeft,
+            rp = right and not prevMouseRight,
+        }
+    else
+        return x, y
     end
 end
 
@@ -589,6 +611,7 @@ return {
     -- input functions --
     btn = btn,
     btnp = btnp,
+    mouse = mouse,
     -- loop functions --
     _init = _init,
     _update = _update,

@@ -10,6 +10,7 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 - Tiles 8x8
 - Create SpriteSheet
 - Save and Load SpriteSheet
+- Save and Load flags
 - Implement UI for Pixel Editor
 
 Functions:
@@ -18,6 +19,8 @@ Functions:
 - gpixel -> get pixel from SpriteSheet
 - spr(n, x, y, [w], [h], [flip_x], [flip_y]) — Draw sprite n.
 - sspr(sx, sy, sw, sh, dx, dy, [dw], [dh]) — Draw a section of the sprite sheet.
+- sflag -> set flag
+- gflag -> get flag
 
 ## Map Editor
 
