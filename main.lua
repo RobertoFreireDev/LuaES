@@ -44,7 +44,7 @@ function _update(dt)
     if btn(0) then dx = dx - 1 end
     if btn(1) then dx = dx + 1 end
 
-    local length = math.sqrt(dx*dx + dy*dy)
+    local length = sqrt(dx*dx + dy*dy)
     if length > 0 then
         dx = dx / length
         dy = dy / length
@@ -55,12 +55,8 @@ function _update(dt)
 
     update_camera(player)
 
-    if btn(4) or btnp(5) then
-        ssfx(1 ,"C3", 10, 2, 1, 8)
-        ssfx(2 ,"C5", 10, 2, 1, 3)
-        ssfx(3 ,"C4", 10, 2, 1, 4)
+    if btn(4) or btnp(5) then 
         sfx(1)
-        save()
     end
 end
 

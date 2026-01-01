@@ -1,4 +1,5 @@
 local audio = require("libs/audio")
+local bit = require("bit")
 local sfxdata = require("data/sfx")
 local emptycartdata = require("data/emptycartdata")
 
@@ -30,6 +31,62 @@ end
 
 function abs(x) 
     return x < 0 and -x or x
+end
+
+function ceil(x)
+    return math.ceil(x)
+end
+
+function rnd(x)
+    if x then
+        return love.math.random() * x
+    else
+        return love.math.random()
+    end
+end
+
+function srnd(x)
+    love.math.setRandomSeed(x)
+end
+
+function sqrt(x)
+    return math.sqrt(x)
+end
+
+function sin(x)
+    return math.sin(x)
+end
+
+function cos(x)
+    return math.cos(x)
+end
+
+function atan2(y, x)
+    return math.atan2(y, x)
+end
+
+function max(a, b)
+    return math.max(a, b)
+end
+
+function band(a, b)
+    return bit.band(a, b)
+end
+
+function bor(a, b)
+    return bit.bor(a, b)
+end
+
+function bxor(a, b)
+    return bit.bxor(a, b)
+end
+
+function shl(a, n)
+    return bit.lshift(a, n)
+end
+
+function shr(a, n)
+    return bit.rshift(a, n)
 end
 
 ---------- io functions --------------
@@ -462,11 +519,24 @@ return {
     -- table functions --
     add    = add,
     -- math functions --
-    mid = mid,
-    sgn = sgn,
-    abs = abs,
-    floor = floor,
-    min = min,
+    mid    = mid,
+    sgn    = sgn,
+    abs    = abs,
+    floor  = floor,
+    ceil   = ceil,
+    rnd    = rnd,
+    srnd   = srnd,
+    sqrt   = sqrt,
+    sin    = sin,
+    cos    = cos,
+    atan2  = atan2,
+    max    = max,
+    min    = min,
+    band   = band,
+    bor    = bor,
+    bxor   = bxor,
+    shl    = shl,
+    shr    = shr,
     -- sfx functions --
     sfx    = sfx,
     ssfx   = ssfx,

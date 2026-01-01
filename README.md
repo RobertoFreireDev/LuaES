@@ -47,20 +47,6 @@ Functions:
 - foreach(tbl, func) — Call func for each value.
 - all(tbl) — Return all values in table.
 
-## Math Functions
-
-- flr(x) — Floor.
-- ceil(x) — Ceiling.
-- rnd([x]) — Random float [0,1) or [0,x).
-- srnd(x) — Set random seed.
-- sqrt(x) — Square root.
-- sin(x) — Sine (radians).
-- cos(x) — Cosine (radians).
-- atan2(y, x) — Angle from x-axis.
-- max(x, y) / min(x, y) — Max/min.
-- band(a, b) / bor(a, b) / bxor(a, b) — Bitwise operations.
-- shl(x, n) / shr(x, n) — Bit shifts.
-
 ## Status functions 
 
 - reload() — Reload the game.
