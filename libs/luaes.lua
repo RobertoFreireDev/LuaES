@@ -535,6 +535,10 @@ function love.draw()
     love.graphics.setScissor()
 end
 
+function exit()
+    love.event.quit()
+end
+
 function save()
     savesfxdata()
 end
@@ -567,6 +571,7 @@ return {
     -- system functions --
     stat = stat,
     save = save,
+    exit = exit,
     -- save game functions --
     sdata = sdata,
     gdata = gdata,

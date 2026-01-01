@@ -55,8 +55,12 @@ function _update(dt)
 
     update_camera(player)
 
-    if btn(4) or btnp(5) then 
+    if btnp(4) then
         sfx(1)
+    end
+
+    if btnp(5) then
+        exit()
     end
 end
 
