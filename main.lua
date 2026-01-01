@@ -69,7 +69,7 @@ end
 function _draw()    
     print("FPS: " ..stat(1), 10, 10, 4)
     camera(cam_x, cam_y)
-    rectfill(0,0,16,16,8)
+    rectfill(0,0,16,16,16)
     rectfill(144,104,160,120,3)
     circfill(player.x, player.y, player.r, player.c)
     resetcamera()

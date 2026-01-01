@@ -54,8 +54,8 @@ function max(a, b)
     return math.max(a, b)
 end
 
-function mid(min, v, max)
-    return math.max(min, math.min(max, v))
+function mid(a, v, b)
+    return max(a, min(b, v))
 end
 
 function sgn(x)
@@ -281,44 +281,53 @@ function camera(x, y)
     love.graphics.translate(-x, -y)
 end
 
--- reset camera
 function resetcamera()
     love.graphics.pop()
 end
 
+---------- sprite functions ----------------
+local spriteSheets = {}
+
+local function loadspritesheetdata()
+
+end
+
 ---------- draw functions ----------------
-local function hexToRGB(hex)
+local function hexToRGB(hex, alfa)
+    alfa = alfa ~= nil and alfa or "FF"
     hex = hex:gsub("#","")
     local r = tonumber(hex:sub(1,2), 16)/255
     local g = tonumber(hex:sub(3,4), 16)/255
     local b = tonumber(hex:sub(5,6), 16)/255
-    return {r, g, b}
+    local a = tonumber(alfa, 16) / 255
+    return {r, g, b,a}
 end
 
 local PALETTE = {
-    hexToRGB("#f4f4f4"), -- 0
-    hexToRGB("#5d275d"), -- 1
-    hexToRGB("#b13e53"), -- 2
-    hexToRGB("#ef7d57"), -- 3
-    hexToRGB("#ffcd75"), -- 4
-    hexToRGB("#a7f070"), -- 5
-    hexToRGB("#38b764"), -- 6
-    hexToRGB("#257179"), -- 7
-    hexToRGB("#29366f"), -- 8
-    hexToRGB("#3b5dc9"), -- 9
-    hexToRGB("#41a6f6"), -- 10
-    hexToRGB("#73eff7"), -- 11
-    hexToRGB("#94b0c2"), -- 12
-    hexToRGB("#566c86"), -- 13
-    hexToRGB("#333c57"), -- 14
-    hexToRGB("#1a1c2c"), -- 15
+    [0] = hexToRGB("#000000","00"), -- transparent
+    [1] = hexToRGB("#f4f4f4"),   
+    [2] = hexToRGB("#000000"),
+    [3] = hexToRGB("#5d275d"),
+    [4] = hexToRGB("#b13e53"),
+    [5] = hexToRGB("#ef7d57"),
+    [6] = hexToRGB("#ffcd75"),
+    [7] = hexToRGB("#a7f070"),
+    [8] = hexToRGB("#38b764"),
+    [9] = hexToRGB("#257179"),
+    [10] = hexToRGB("#29366f"),
+    [11] = hexToRGB("#3b5dc9"),
+    [12] = hexToRGB("#41a6f6"),
+    [13] = hexToRGB("#73eff7"),
+    [14] = hexToRGB("#94b0c2"),
+    [15] = hexToRGB("#566c86"),
+    [16] = hexToRGB("#6b4226")
 }
 
 local defaultColor = 1
 
 local function setcolor(c)
     c = (c ~= nil and type(c) == "number") and c or defaultColor
-    love.graphics.setColor(PALETTE[mid(0, c, 15)])
+    love.graphics.setColor(PALETTE[mid(0, c, 16)])
 end
 
 local function getRect(x0, y0, x1, y1)
@@ -541,6 +550,7 @@ function love.load()
     love.graphics.setFont(love.graphics.newFont("fonts/Pixelzone.ttf", 16))
     updateScale()
     loadsfxdata()
+    loadspritesheetdata()
     _init()
 end
 
