@@ -406,22 +406,18 @@ local function updatePrevKeys()
     prevMouseRight = love.mouse.isDown(2)
 end
 
-function mouse(btn)
+function mouse()
     local x, y = love.mouse.getPosition()
-    if btn then
-        local left  = love.mouse.isDown(1)
-        local right = love.mouse.isDown(2)
-        return {
-            x = x,
-            y - y,
-            l = left,
-            r = right,
-            lp = left and not prevMouseLeft,
-            rp = right and not prevMouseRight,
-        }
-    else
-        return x, y
-    end
+    local left  = love.mouse.isDown(1)
+    local right = love.mouse.isDown(2)
+    return {
+        x = x,
+        y = y,
+        l = left,
+        r = right,
+        lp = left and not prevMouseLeft,
+        rp = right and not prevMouseRight,
+    }
 end
 
 function btn(n)
