@@ -70,7 +70,7 @@ local function loadsfxdata()
 end
 
 local lastPlayedTime = {}
-local MIN_DELAY = 3/32
+local MIN_DELAY = 2/32
 
 function sfx(index)
     local currentTime = os.clock()
