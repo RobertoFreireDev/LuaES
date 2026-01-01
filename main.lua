@@ -12,6 +12,8 @@ function _init()
     
 end
 
+delay = 1
+
 -- camera
 dead_zone_w = 128
 dead_zone_h = 92
@@ -55,12 +57,12 @@ function _update(dt)
 
     update_camera(player)
 
-    if btnp(4) then
-        sfx(1)
+    if btn(4) then
+        sfx(1, delay)
     end
 
     if btnp(5) then
-        exit()
+        delay = delay + 1
     end
 end
 

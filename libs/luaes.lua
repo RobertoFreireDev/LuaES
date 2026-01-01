@@ -233,11 +233,13 @@ local function savesfxdata()
 end
 
 local lastPlayedTime = {}
-local MIN_DELAY = 2/32
+local MIN_DELAY = 1/32
 
-function sfx(index)
+function sfx(index, d)
+    d = (d ~= nil and type(d) == "number") and d or 3
+    delay = mid(1,d,16)
     local currentTime = os.clock()
-    if lastPlayedTime[index] and (currentTime - lastPlayedTime[index] < MIN_DELAY) then
+    if lastPlayedTime[index] and (currentTime - lastPlayedTime[index] < MIN_DELAY*delay) then
         return
     end
     lastPlayedTime[index] = currentTime
