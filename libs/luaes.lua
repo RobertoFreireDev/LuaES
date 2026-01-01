@@ -11,6 +11,20 @@ function mid(min, v, max)
     return math.max(min, math.min(max, v))
 end
 
+---------- io functions --------------
+
+local function loadFileLines(filename)
+    local path = "data/" .. filename
+    if not love.filesystem.getInfo(path) then return nil end
+
+    return love.filesystem.lines(path)
+end
+
+local function saveFile(path, data)
+    love.filesystem.createDirectory("data")
+    love.filesystem.write(path, data)
+end
+
 ---------- sfx functions ----------------
 local SFX = {}  -- 128 indexes x 16 notes
 
@@ -32,8 +46,9 @@ local function parseSFX(str, length)
 end
 
 local function loadsfxdata()
+   local lines = loadFileLines("sfx.txt")
     local soundIndex = 1
-    for line in io.lines("data/sfx.txt") do
+    for line in lines do
         local CHUNK_SIZE = 7
         local chunks = {}
         local sfxlength = line:sub(-2)
