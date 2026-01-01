@@ -3,6 +3,14 @@ local bit = require("bit")
 local sfxdata = require("data/sfx")
 local emptycartdata = require("data/emptycartdata")
 
+---------- global variables --------------
+local VIRTUAL_WIDTH = 160
+local VIRTUAL_HEIGHT = 120
+local scale = 4
+local window_width = VIRTUAL_WIDTH*scale
+local window_height = VIRTUAL_HEIGHT*scale
+local offsetX, offsetY
+
 ---------- table functions --------------
 function add(t, v)
     t[#t + 1] = v
@@ -53,8 +61,8 @@ function sgn(x)
     end
 end
 
-function abs(x) 
-    return x < 0 and -x or x
+function abs(x)
+    return math.abs(x)
 end
 
 function ceil(x)
@@ -375,6 +383,10 @@ function stat(n)
         return os.date("*t")
     elseif n == 8 then -- UTC time as table
         return os.date("!*t")
+    elseif n == 9 then
+        return { x = VIRTUAL_WIDTH,  y = VIRTUAL_HEIGHT}
+    elseif n == 10 then
+        return { x = window_width,  y = window_height, scale = scale, ofx = offsetX,  ofy = offsetY }
     else
         return nil
     end
@@ -408,6 +420,8 @@ end
 
 function mouse()
     local x, y = love.mouse.getPosition()
+    x = floor((x - offsetX) / scale)
+    y = floor((y - offsetY) / scale)
     local left  = love.mouse.isDown(1)
     local right = love.mouse.isDown(2)
     return {
@@ -501,13 +515,6 @@ function sdata(index, value)
 end
 
 ---------- main functions ----------------
-local VIRTUAL_WIDTH = 160
-local VIRTUAL_HEIGHT = 120
-local scale = 4
-local window_width = VIRTUAL_WIDTH*scale
-local window_height = VIRTUAL_HEIGHT*scale
-local offsetX, offsetY
-
 _init = function() end
 _update = function(dt) end
 _draw = function() end
