@@ -5,8 +5,12 @@ function _init()
 end
 
 function _update(dt)
-    if btn(4) or btnp(5) then
-        sfx(2)
+    if btn(4) then
+        sfx(1)
+    end
+
+    if btnp(5) then
+        save()
     end
 end
 

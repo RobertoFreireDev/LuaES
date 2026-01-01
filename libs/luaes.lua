@@ -13,22 +13,32 @@ end
 
 ---------- io functions --------------
 
-local function loadFileLines(filename)
+local function loadFile(filename)
     local path = "data/" .. filename
-    if not love.filesystem.getInfo(path) then return nil end
-
-    return love.filesystem.lines(path)
+    
+    if love.system.getOS() == "Windows" then
+        return io.lines(path)
+    else
+        return love.filesystem.lines(path)
+    end
 end
 
-local function saveFile(path, data)
-    love.filesystem.createDirectory("data")
-    love.filesystem.write(path, data)
+local function saveFile(filename, content)
+    local path = "data/" .. filename
+    
+    if love.system.getOS() == "Windows" then
+        local file, err = io.open(path, "w")
+        assert(file, err)
+        file:write(content)
+        file:close()
+    else
+        love.filesystem.write(path, content)
+    end
 end
 
 ---------- sfx functions ----------------
-local SFX = {}  -- 128 indexes x 16 notes
-
-local SOUNDS = {} -- 128 sounds.
+local SFX = {}  -- X indexes x 16 notes
+local SOUNDS = {} -- X sounds.
 
 local function parseSFX(str, length)
     local tone     = str:sub(1, 3):gsub("X", "")
@@ -46,8 +56,9 @@ local function parseSFX(str, length)
 end
 
 local function loadsfxdata()
-   local lines = loadFileLines("sfx.txt")
+    local lines = loadFile("sfx.txt")
     local soundIndex = 1
+
     for line in lines do
         local CHUNK_SIZE = 7
         local chunks = {}
@@ -67,6 +78,41 @@ local function loadsfxdata()
         
         soundIndex = soundIndex + 1
     end
+end
+
+local function buildSFX(data)
+    local tone = data.tone or ""
+
+    if tone == "" or #tone == 1 then
+        tone = "XX0"
+    elseif #tone == 2 then
+        tone = ("X"..data.tone)
+    end
+
+    local volume = string.format("%02d", tonumber(data.volume) or 0)
+    local waveType = tostring(tonumber(data.waveType) or 0)
+    local effects  = tostring(tonumber(data.effects) or 0)
+    return tone .. volume .. waveType .. effects
+end
+
+local function savesfxdata()
+    local lines = {}
+    local count = #SFX/16
+
+    for i = 1, count do
+        local line = ""
+
+        for j = 1, 16 do
+            local sfxIdx = (i - 1) * 16 + j
+            line = line .. buildSFX(SFX[sfxIdx])
+        end
+
+        local length = SFX[(i - 1) * 16 + 1].length
+        line = line .. string.format("%02d", tonumber(length) or 0)
+        add(lines, line)
+    end
+    local content = table.concat(lines, "\n")
+    saveFile("sfx.txt", content)
 end
 
 local lastPlayedTime = {}
@@ -270,6 +316,12 @@ function love.draw()
     love.graphics.setScissor()
 end
 
+function save()
+    -- test
+    SFX[2] = { tone = "C2", volume = 10, waveType = 2, effects = 0 }
+    savesfxdata()
+end
+
 return {
     -- table functions --
     add    = add,
@@ -279,6 +331,7 @@ return {
     sfx    = sfx,
     -- system functions --
     gfps = gfps,
+    save = save,
     -- draw functions --
     print = print,
     rect = rect,
