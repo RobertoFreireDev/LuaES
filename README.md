@@ -41,11 +41,6 @@ Functions:
 - music(n)
 - Implement UI for Sfx Editor
 
-## Status functions 
-
-- reload() — Reload the game.
-- exit() — Quit game.
-
 # Run on ArkOS RG353PS 
 
 - alt + l on main.lua to test
