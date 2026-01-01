@@ -15,18 +15,18 @@ end
 
 ---------- io functions --------------
 local function loadFile(filename)
-    return io.lines(filename)
+    return io.lines(filename..".txt")
 end
 
 local function saveFile(filename, content)
-    local file, err = io.open(filename, "w")
+    local file, err = io.open(filename..".txt", "w")
     assert(file, err)
     file:write(content)
     file:close()
 end
 
 local function fileExists(filename)
-    local f = io.open(filename, "r")
+    local f = io.open(filename..".txt", "r")
     if f then
         f:close()
         return true
@@ -36,7 +36,7 @@ end
 
 local function createIfDoesntExist(filename, content)
     if not fileExists(filename) then
-        local f, err = io.open(filename, "w")
+        local f, err = io.open(filename..".txt", "w")
         assert(f, "Failed to create file: " .. (err or "unknown error"))
         f:write(content)
         f:close()
@@ -46,7 +46,7 @@ end
 ---------- sfx functions ----------------
 local SFX = {}  -- X indexes x 16 notes
 local SOUNDS = {} -- X sounds.
-local LUAESSFXDATA = "luaessfxdata.txt"
+local LUAESSFXDATA = "luaessfxdata"
 
 local function parseSFX(str, length)
     local tone     = str:sub(1, 3):gsub("X", "")

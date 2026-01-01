@@ -1,3 +1,6 @@
+# data
+*.txt
+
 # Compiled Lua sources
 luac.out
 
