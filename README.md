@@ -30,7 +30,7 @@ Functions:
 ## Map Editor
 
 - Tiles 8x8
-- Create MapSheet
+- Create MapSheet. 8 maps. Each map 60x45 tiles (3x3 entire screens of map)
 - Save and Load MapSheet
 - Implement UI for Map Editor
 
