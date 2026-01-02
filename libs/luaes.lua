@@ -306,6 +306,67 @@ function ssfx(index, t, v, w, e, l)
     end
     SOUNDS[soundIndex] = audio.genMusic(newsound)
 end
+
+local cmp = nil
+local cmpIndex = 1
+local toPlay = true
+
+local function changecmpindex(i)
+    cmpIndex = i
+    toPlay = true
+end
+
+function music(p)
+    if cmp ~= nil and #cmp > 0 then
+        for i=1, #cmp[cmpIndex].play do
+            SOUNDS[cmp[cmpIndex].play[i]]:stop()
+        end
+        cmp = nil
+        changecmpindex(1)
+    end
+
+    cmp = p
+end
+
+local function updatemusic()
+    if cmp == nil or #cmp == 0 then return end
+
+    if cmp[cmpIndex] ~= nil and type(cmp[cmpIndex].next) == "number" then
+        changecmpindex(cmp[cmpIndex].next)
+    end
+
+    if cmpIndex > #cmp then 
+        changecmpindex(1)
+    end
+
+    if cmp[cmpIndex].stop then
+        cmp = nil
+        changecmpindex(1)
+        return
+    end
+
+    local isPlaying = false
+
+    for i=1, #cmp[cmpIndex].play do
+        if SOUNDS[cmp[cmpIndex].play[i]]:isPlaying() then
+            isPlaying = true
+        end
+    end
+
+    if isPlaying then
+        return
+    end
+
+    if toPlay then
+       for i=1, #cmp[cmpIndex].play do
+            SOUNDS[cmp[cmpIndex].play[i]]:play()
+        end
+        toPlay = false
+        return
+    end
+
+    changecmpindex(cmpIndex + 1)
+end
 --#endregion
 
 --#region camera
@@ -623,7 +684,7 @@ end
 function love.update(dt)
     rerenderImage = { false, false, false, false, false, false, false, false }
     _update(dt)
-
+    updatemusic()
     for i=1,8 do
         if rerenderImage[i] then
             spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
@@ -679,6 +740,7 @@ return {
     -- sfx functions --
     sfx    = sfx,
     ssfx   = ssfx,
+    music  = music,
     -- system functions --
     stat = stat,
     save = save,
