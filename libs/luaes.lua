@@ -4,15 +4,16 @@ local sfxdata = require("data/sfx")
 local spritesheetsdata = require("data/spritesheet")
 local emptycartdata = require("data/emptycartdata")
 
----------- global variables --------------
+--#region global variables
 local VIRTUAL_WIDTH = 160
 local VIRTUAL_HEIGHT = 120
 local scale = 4
 local window_width = VIRTUAL_WIDTH*scale
 local window_height = VIRTUAL_HEIGHT*scale
 local offsetX, offsetY
+--#endregion
 
----------- color variables --------------
+--#region colors
 local function hexToRGB(hex, alfa)
     alfa = alfa ~= nil and alfa or "FF"
     hex = hex:gsub("#","")
@@ -43,8 +44,9 @@ local PALETTE = {
     [16] = hexToRGB("#6b4226")
 }
 local defaultColor = 1
+--#endregion
 
----------- table functions --------------
+--#region table
 function add(t, v)
     t[#t + 1] = v
     return v
@@ -73,8 +75,9 @@ function all(tbl)
     end
     return t
 end
+--#endregion
 
----------- math functions --------------
+--#region math
 function floor(v)
     return math.floor(v)
 end
@@ -153,8 +156,9 @@ end
 function shr(a, n)
     return bit.rshift(a, n)
 end
+--#endregion
 
----------- io functions --------------
+--#region io
 local function loadFile(filename)
     return io.lines(filename..".txt")
 end
@@ -183,8 +187,9 @@ local function createIfDoesntExist(filename, content)
         f:close()
     end
 end
+--#endregion
 
----------- sfx functions ----------------
+--#region sfx
 local SFX = {}  -- X indexes x 16 notes
 local SOUNDS = {} -- X sounds.
 local LUAESSFXDATA = "luaessfxdata"
@@ -306,10 +311,11 @@ function ssfx(index, t, v, w, e, l)
     end
     SOUNDS[soundIndex] = audio.genMusic(newsound)
 end
+--#endregion
 
----------- camera functions ----------------
---- Always resetcamera in the same frame if camera function was called
+--#region camera
 function camera(x, y)
+     -- Always resetcamera in the same frame if camera function was called
     love.graphics.push()
     love.graphics.translate(-x, -y)
 end
@@ -317,8 +323,9 @@ end
 function resetcamera()
     love.graphics.pop()
 end
+--#endregion
 
----------- sprite functions ----------------
+--#region sprite
 local spriteSheets = {}
 local sheetWidth, sheetHeight = 160, 32
 local spriteSheetImages = {}
@@ -382,8 +389,9 @@ function spr(i, n, x, y, w, h, flip_x, flip_y)
         ox, oy
     )
 end
+--#endregion
 
----------- draw functions ----------------
+--#region draw
 local function setcolor(c)
     c = (c ~= nil and type(c) == "number") and c or defaultColor
     love.graphics.setColor(PALETTE[mid(0, c, 16)])
@@ -434,8 +442,9 @@ function circfill(x, y, r, c)
     love.graphics.circle("fill", x, y, r)
     setcolor()
 end
+--#endregion
 
----------- status functions ----------------
+--#region status
 function stat(n)
     if n == 1 then
         return love.timer.getFPS()
@@ -461,8 +470,9 @@ function stat(n)
         return nil
     end
 end
+--#endregion
 
----------- button functions ----------------
+--#region buttons
 local btnKeys = {
     [0] = {"left","a"}, -- left
     [1] = {"right","d"}, -- right
@@ -525,8 +535,9 @@ function btnp(n)
         end
     end
 end
+--#endregion
 
----------- save game functions ----------------
+--#region save game
 local cartDataName = "cartdata_"
 
 function cdata(name)
@@ -583,8 +594,9 @@ function sdata(index, value)
     local content = table.concat(newLines, "\n")
     saveFile(cartDataName, content)
 end
+--#endregion
 
----------- main functions ----------------
+--#region main
 _init = function() end
 _update = function(dt) end
 _draw = function() end
@@ -645,6 +657,7 @@ end
 function save()
     savesfxdata()
 end
+--#endregion
 
 return {
     -- table functions --
