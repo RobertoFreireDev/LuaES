@@ -57,7 +57,7 @@ function _update(dt)
 
     update_camera(player)
 
-    if btn(4) then
+    if btnp(4) then
         sfx(1, delay)
     end
 

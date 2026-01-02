@@ -112,7 +112,7 @@ local function genSound(length, tone, waveType, effects, volume)
     tone       = tone       or 440
     waveType   = type(waveType) == "number" and WAVES[waveType] or "square"
     effects = type(effects) == "number" and EFFECTS[effects] or {}
-    volume = volume or 1.0
+    volume = volume or 0
     volume = math.max(0, math.min(volume or 1.0, 1.0))
 
     local sampleCount = floor(length * rate)
@@ -234,7 +234,5 @@ local function genMusic(sounds)
 end
 
 return {
-    notes    = notes,
-    genSound = genSound,
     genMusic = genMusic
 }

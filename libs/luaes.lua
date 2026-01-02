@@ -194,11 +194,12 @@ local SFX = {}  -- X indexes x 16 notes
 local SOUNDS = {} -- X sounds.
 local LUAESSFXDATA = "luaessfxdata"
 
-local function parseSFX(str, length)
+local function parseSFX(str)
     local tone     = str:sub(1, 3):gsub("X", "")
     local volume   = tonumber(str:sub(4, 5))
     local waveType = tonumber(str:sub(6, 6))
     local effects  = tonumber(str:sub(7, 7))
+    local length  = tonumber(str:sub(8, 9))
 
     return {
         tone = tone,
@@ -215,18 +216,16 @@ local function loadsfxdata()
     local soundIndex = 1
 
     for line in lines do
-        local CHUNK_SIZE = 7
+        local CHUNK_SIZE = 9
         local chunks = {}
-        local sfxlength = line:sub(-2)
-        local main = line:sub(1, -3)
-        for i = 1, #main, CHUNK_SIZE do
-            add(chunks, main:sub(i, i + CHUNK_SIZE - 1))
+        for i = 1, #line, CHUNK_SIZE do
+            add(chunks, line:sub(i, i + CHUNK_SIZE - 1))
         end
         
         local newsound = {}
         for i = 1, #chunks do
             local sfxIdx = (soundIndex-1)*16 + i
-            SFX[sfxIdx] = parseSFX(chunks[i], sfxlength)
+            SFX[sfxIdx] = parseSFX(chunks[i])
             add(newsound,SFX[sfxIdx])
         end
         SOUNDS[soundIndex] = audio.genMusic(newsound)
@@ -247,7 +246,8 @@ local function buildSFX(data)
     local volume = string.format("%02d", tonumber(data.volume) or 0)
     local waveType = tostring(tonumber(data.waveType) or 0)
     local effects  = tostring(tonumber(data.effects) or 0)
-    return tone .. volume .. waveType .. effects
+    local length  = tostring(tonumber(data.length) or "01")
+    return tone .. volume .. waveType .. effects .. length
 end
 
 local function savesfxdata()
@@ -261,9 +261,7 @@ local function savesfxdata()
             local sfxIdx = (i - 1) * 16 + j
             line = line .. buildSFX(SFX[sfxIdx])
         end
-
-        local length = SFX[(i - 1) * 16 + 1].length
-        line = line .. string.format("%02d", tonumber(length) or 0)
+        
         add(lines, line)
     end
     local content = table.concat(lines, "\n")
@@ -291,7 +289,6 @@ function sfx(index, d)
 end
 
 function ssfx(index, t, v, w, e, l)
-    -- lentgth must be the same for all notes of the same sound
     local soundIndex = floor(index/16) + 1
     local newsound = {}
     local startIndex = floor(index/16)*16 + 1
@@ -304,8 +301,6 @@ function ssfx(index, t, v, w, e, l)
                 effects = e,
                 length = l
             }
-        else
-            SFX[i].length = l
         end
         add(newsound,SFX[i])
     end
