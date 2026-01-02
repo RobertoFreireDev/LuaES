@@ -58,11 +58,23 @@ function _update(dt)
     update_camera(player)
 
     if btnp(4) then
-        sfx(1, delay)
+        sfx(1)
     end
 
     if btnp(5) then
-        delay = delay + 1
+        ssfx(1,  247, 0.8, 2, nil, 12)
+        ssfx(2,  277, 0.8, 3, nil, 16)
+        ssfx(3,  330, 0.8, 4, nil, 8)
+        ssfx(4,  277, 0.8, 5, nil, 5)
+        ssfx(5,  247, 0.8, 6, nil, 8)
+        ssfx(6,  220, 0.8, 7, nil, 12)
+        ssfx(7,  220, 0.8, 1, 1, 12)
+        ssfx(8,  220, 0.8, 1, 2, 2)
+        ssfx(9,  220, 0.8, 1, 3, 4)
+        ssfx(10,  220, 0.8, 1, 4, 8)
+        ssfx(11,  220, 0.8, 1, 5, 12)
+        ssfx(12,  220, 0.8, 1, 6, 16)
+        ssfx(13,  220, 0.8, 1, 7, 12)
     end
 end
 
