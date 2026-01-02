@@ -20,7 +20,7 @@ local function hexToRGB(hex, alfa)
     local g = tonumber(hex:sub(3,4), 16)/255
     local b = tonumber(hex:sub(5,6), 16)/255
     local a = tonumber(alfa, 16) / 255
-    return {r, g, b,a}
+    return {r, g, b, a}
 end
 
 local PALETTE = {
@@ -337,7 +337,7 @@ end
 
 function spixel(i, x, y, c)
     local rgb = PALETTE[c]
-    spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], 1) -- 0-based for ImageData
+    spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], rgb[4])
 end
 
 function gpixel(i, x, y)
@@ -347,16 +347,14 @@ end
 local function loadspritesheetdata()
     for i=1,#spritesheetsdata do
         spriteSheets[i] = love.image.newImageData(sheetWidth, sheetHeight)
-        spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
         local y = 1
         for line in spritesheetsdata[i]:gmatch("[^\r\n]+") do
             for x = 1, #line do
-                local c = line:sub(x, x)
-                local color = charToNum(c)
-                spixel(i, x, y, color)
+                spixel(i, x, y, charToNum(line:sub(x, x)))
             end
             y = y + 1
         end
+        spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
     end
 end
 
