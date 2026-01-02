@@ -324,6 +324,7 @@ local sheetWidth, sheetHeight = 160, 32
 local spriteSheetImages = {}
 local SPR_SIZE = 8
 local spritesPerRow = sheetWidth / SPR_SIZE
+local rerenderImage = { false, false, false, false, false, false, false, false } -- 8 spread sheets
 
 local function charToNum(c)
     if c >= '0' and c <= '9' then
@@ -338,6 +339,7 @@ end
 function spixel(i, x, y, c)
     local rgb = PALETTE[c]
     spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], rgb[4])
+    rerenderImage[i] = true
 end
 
 function gpixel(i, x, y)
@@ -612,7 +614,14 @@ function love.load()
 end
 
 function love.update(dt)
+    rerenderImage = { false, false, false, false, false, false, false, false }
     _update(dt)
+
+    for i=1,8 do
+        if rerenderImage[i] then
+            spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
+        end
+    end
     updatePrevKeys()
 end
 
