@@ -1,6 +1,7 @@
 local audio = require("libs/audio")
 local bit = require("bit")
 local sfxdata = require("data/sfx")
+local spritesheetsdata = require("data/spritesheet")
 local emptycartdata = require("data/emptycartdata")
 
 ---------- global variables --------------
@@ -10,6 +11,38 @@ local scale = 4
 local window_width = VIRTUAL_WIDTH*scale
 local window_height = VIRTUAL_HEIGHT*scale
 local offsetX, offsetY
+
+---------- color variables --------------
+local function hexToRGB(hex, alfa)
+    alfa = alfa ~= nil and alfa or "FF"
+    hex = hex:gsub("#","")
+    local r = tonumber(hex:sub(1,2), 16)/255
+    local g = tonumber(hex:sub(3,4), 16)/255
+    local b = tonumber(hex:sub(5,6), 16)/255
+    local a = tonumber(alfa, 16) / 255
+    return {r, g, b,a}
+end
+
+local PALETTE = {
+    [0] = hexToRGB("#000000","00"), -- transparent
+    [1] = hexToRGB("#f4f4f4"),   
+    [2] = hexToRGB("#000000"),
+    [3] = hexToRGB("#5d275d"),
+    [4] = hexToRGB("#b13e53"),
+    [5] = hexToRGB("#ef7d57"),
+    [6] = hexToRGB("#ffcd75"),
+    [7] = hexToRGB("#a7f070"),
+    [8] = hexToRGB("#38b764"),
+    [9] = hexToRGB("#257179"),
+    [10] = hexToRGB("#29366f"),
+    [11] = hexToRGB("#3b5dc9"),
+    [12] = hexToRGB("#41a6f6"),
+    [13] = hexToRGB("#73eff7"),
+    [14] = hexToRGB("#94b0c2"),
+    [15] = hexToRGB("#566c86"),
+    [16] = hexToRGB("#6b4226")
+}
+local defaultColor = 1
 
 ---------- table functions --------------
 function add(t, v)
@@ -287,44 +320,70 @@ end
 
 ---------- sprite functions ----------------
 local spriteSheets = {}
+local sheetWidth, sheetHeight = 160, 32
+local spriteSheetImages = {}
+local SPR_SIZE = 8
+local spritesPerRow = sheetWidth / SPR_SIZE
+
+local function charToNum(c)
+    if c >= '0' and c <= '9' then
+        return tonumber(c)
+    elseif c >= 'A' and c <= 'G' then
+        return 10 + (c:byte() - string.byte('A'))
+    else
+        return 0
+    end
+end
+
+function spixel(i, x, y, c)
+    local rgb = PALETTE[c]
+    spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], 1) -- 0-based for ImageData
+end
+
+function gpixel(i, x, y)
+    return spriteSheets[i]:getPixel(x, y)
+end
 
 local function loadspritesheetdata()
+    for i=1,#spritesheetsdata do
+        spriteSheets[i] = love.image.newImageData(sheetWidth, sheetHeight)
+        spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
+        local y = 1
+        for line in spritesheetsdata[i]:gmatch("[^\r\n]+") do
+            for x = 1, #line do
+                local c = line:sub(x, x)
+                local color = charToNum(c)
+                spixel(i, x, y, color)
+            end
+            y = y + 1
+        end
+    end
+end
 
+function spr(i, n, x, y, w, h, flip_x, flip_y)
+    w = w or 1
+    h = h or 1
+    flip_x = flip_x and -1 or 1
+    flip_y = flip_y and -1 or 1
+
+    local sx = ((n - 1) % spritesPerRow) * SPR_SIZE
+    local sy = ((n - 1) / spritesPerRow) * SPR_SIZE
+    local sw, sh = SPR_SIZE * w, SPR_SIZE * h
+
+    local ox = flip_x == -1 and sw or 0
+    local oy = flip_y == -1 and sh or 0
+
+    love.graphics.draw(
+        spriteSheetImages[i],
+        love.graphics.newQuad(sx, sy, sw, sh, sheetWidth, sheetHeight),
+        x, y,
+        0,
+        flip_x, flip_y,
+        ox, oy
+    )
 end
 
 ---------- draw functions ----------------
-local function hexToRGB(hex, alfa)
-    alfa = alfa ~= nil and alfa or "FF"
-    hex = hex:gsub("#","")
-    local r = tonumber(hex:sub(1,2), 16)/255
-    local g = tonumber(hex:sub(3,4), 16)/255
-    local b = tonumber(hex:sub(5,6), 16)/255
-    local a = tonumber(alfa, 16) / 255
-    return {r, g, b,a}
-end
-
-local PALETTE = {
-    [0] = hexToRGB("#000000","00"), -- transparent
-    [1] = hexToRGB("#f4f4f4"),   
-    [2] = hexToRGB("#000000"),
-    [3] = hexToRGB("#5d275d"),
-    [4] = hexToRGB("#b13e53"),
-    [5] = hexToRGB("#ef7d57"),
-    [6] = hexToRGB("#ffcd75"),
-    [7] = hexToRGB("#a7f070"),
-    [8] = hexToRGB("#38b764"),
-    [9] = hexToRGB("#257179"),
-    [10] = hexToRGB("#29366f"),
-    [11] = hexToRGB("#3b5dc9"),
-    [12] = hexToRGB("#41a6f6"),
-    [13] = hexToRGB("#73eff7"),
-    [14] = hexToRGB("#94b0c2"),
-    [15] = hexToRGB("#566c86"),
-    [16] = hexToRGB("#6b4226")
-}
-
-local defaultColor = 1
-
 local function setcolor(c)
     c = (c ~= nil and type(c) == "number") and c or defaultColor
     love.graphics.setColor(PALETTE[mid(0, c, 16)])
@@ -616,6 +675,10 @@ return {
     -- camera functions --
     camera = camera,
     resetcamera = resetcamera,
+    -- sprite functions --
+    spixel = spixel,
+    gpixel = gpixel,
+    spr = spr,
     -- draw functions --
     print = print,
     rect = rect,
