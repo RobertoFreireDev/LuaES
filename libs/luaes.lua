@@ -606,7 +606,7 @@ end
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
-    love.graphics.setFont(love.graphics.newFont("fonts/Pixelzone.ttf", 16))
+    love.graphics.setFont(love.graphics.newFont("fonts/Tiny5-Regular.ttf", 8))
     updateScale()
     loadsfxdata()
     loadspritesheetdata()
