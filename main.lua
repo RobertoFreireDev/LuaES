@@ -8,89 +8,38 @@ local player = {
     speed = 50
 }
 
-local LEAD = {
--- Phrase 1
-  {note="C4", length=0.25, wave=4, effect=1},
-  {note="Ds4", length=0.25, wave=4, effect=1},
-  {note="G4", length=0.5, wave=4, effect=2},
-  {note="As4", length=0.5, wave=4, effect=2},
-
-  -- Phrase 2
-  {note="G4", length=0.25, wave=4, effect=1},
-  {note="Fs4", length=0.25, wave=4, effect=1},
-  {note="F4", length=0.5, wave=4, effect=4},
-  {note="Ds4", length=0.5, wave=4, effect=4},
-
-  -- Phrase 3
-  {note="C4", length=0.25, wave=3, effect=3},
-  {note="G3", length=0.25, wave=3, effect=3},
-  {note="C4", length=0.5, wave=3, effect=5},
-  {note="Ds4", length=0.5, wave=3, effect=5},
-
-  -- Phrase 4
-  {note="F4", length=0.25, wave=2, effect=6},
-  {note="G4", length=0.25, wave=2, effect=6},
-  {note="As4", length=0.5, wave=2, effect=2},
-  {note="C5", length=0.5, wave=2, effect=2},
-
-  -- Phrase 5 (variation)
-  {note="As4", length=0.25, wave=4, effect=1},
-  {note="G4", length=0.25, wave=4, effect=1},
-  {note="Fs4", length=0.5, wave=4, effect=3},
-  {note="F4", length=0.5, wave=4, effect=4},
-
-  -- Phrase 6 (climax)
-  {note="Ds4", length=0.25, wave=5, effect=6},
-  {note="F4", length=0.25, wave=5, effect=6},
-  {note="G4", length=0.5, wave=5, effect=2},
-  {note="As4", length=0.5, wave=5, effect=2},
-
-  -- Ending
-  {note="C5", length=1.0, wave=7, effect=7},
-  {note="G4", length=1.0, wave=7, effect=4},
-  }
-
-local BASS = {
-  -- Phrase 1
-  {note="C2", length=0.5, wave=2, effect=3},
-  {note="C2", length=0.5, wave=2, effect=3},
-  {note="Gs2", length=0.5, wave=2, effect=3},
-  {note="Gs2", length=0.5, wave=2, effect=3},
-
-  -- Phrase 2
-  {note="F2", length=0.5, wave=2, effect=4},
-  {note="F2", length=0.5, wave=2, effect=4},
-  {note="Ds2", length=0.5, wave=2, effect=4},
-  {note="Ds2", length=0.5, wave=2, effect=4},
-
-  -- Phrase 3
-  {note="C2", length=0.5, wave=3, effect=3},
-  {note="C2", length=0.5, wave=3, effect=3},
-  {note="G2", length=0.5, wave=3, effect=3},
-  {note="G2", length=0.5, wave=3, effect=3},
-
-  -- Phrase 4
-  {note="As2", length=0.5, wave=2, effect=6},
-  {note="As2", length=0.5, wave=2, effect=6},
-  {note="C3", length=0.5, wave=2, effect=6},
-  {note="C3", length=0.5, wave=2, effect=6},
-
-  -- Phrase 5
-  {note="Gs2", length=0.5, wave=4, effect=3},
-  {note="Gs2", length=0.5, wave=4, effect=3},
-  {note="F2", length=0.5, wave=4, effect=3},
-  {note="F2", length=0.5, wave=4, effect=3},
-
-  -- Phrase 6
-  {note="Ds2", length=0.5, wave=2, effect=4},
-  {note="Ds2", length=0.5, wave=2, effect=4},
-  {note="As2", length=0.5, wave=2, effect=4},
-  {note="As2", length=0.5, wave=2, effect=4},
-
-  -- Ending
-  {note="C2", length=1.0, wave=7, effect=7},
-  {note="C2", length=1.0, wave=7, effect=4},
+local SFX1 = {
+  {note="C7", volume = 1,   length=0.25, wave=6, effect=5},
+  {note="C7", volume = 0.8, length=0.25, wave=6, effect=5},
+  {note="C7", volume = 0.7, length=0.25, wave=6, effect=5},
+  {note="C7", volume = 0.6, length=0.25, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=0.25, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=0.25, wave=6, effect=5},
+  {note="G6", volume = 0.8, length=0.25, wave=6, effect=5},
+  {note="G6", volume = 0.6, length=0.25, wave=6, effect=5},
 }
+
+local SFX2 = {
+  {note="C3", volume = 0.4,   length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.4, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.4, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.1, length=0.25, wave=1, effect=0},
+  {note=0, volume = 0.0, length=0.25, wave=1, effect=0},
+}
+
+local SFX3 = {
+  {note="Ds2", volume = 0.2,   length=0.25, wave=7, effect=5},
+  {note="C5", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note=0, volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="Ds2", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="C5", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="Ds4", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="As4", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="Ds2", volume = 0.2, length=0.25, wave=7, effect=5},
+} 
 
 function _init()
     
@@ -124,7 +73,7 @@ end
 
 function _update(dt)
     local dx, dy = 0, 0
-
+ 
     if btn(2) then dy = dy - 1 end
     if btn(3) then dy = dy + 1 end
     if btn(0) then dx = dx - 1 end
@@ -143,21 +92,22 @@ function _update(dt)
 
     if btnp(4) then
         music({
-            { play = {1} },
-            { play = {2} },
-            { next = 4},
-            { play = {1,2} },
+            { play = {1,2,3} },
             { stop = true }
           })
     end
 
     if btnp(5) then
-      for i=1,16 do
-        ssfx(i, LEAD[i].note, 10, LEAD[i].wave, LEAD[i].effect, LEAD[i].length*16)
+      for i=1,8 do
+        ssfx(i, SFX1[i].note, SFX1[i].volume, SFX1[i].wave, SFX1[i].effect, SFX1[i].length*16)
+      end
+      
+      for i=1,8 do
+        ssfx(i+16, SFX2[i].note, 10, SFX2[i].wave, SFX2[i].effect, SFX2[i].length*16)
       end
 
-      for i=1,16 do
-        ssfx(i+16, BASS[i].note, 10, BASS[i].BASS, BASS[i].effect, BASS[i].length*16)
+      for i=1,8 do
+        ssfx(i+32, SFX3[i].note, 10, SFX3[i].wave, SFX3[i].effect, SFX3[i].length*16)
       end
     end
 end

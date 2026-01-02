@@ -26,6 +26,7 @@ Modifications:
 - Fix clicks/abrupt sounds generated when sound starts and/or ends at a non-zero sample value
 - Mormalize amplitude of wave type sounds
 - Add noise wave form
+- Add organ wave form
 - Add effects as a number parameter
 - Use integer number for length
 - Make rate and default sound constants
@@ -52,39 +53,40 @@ end
 
 local EFFECTS = {
     [1] = {
+        slide = 0.4
+    }, -- Slide   
+    [2] = {
+        vibrato = { depth = 0.02, speed = 6 },
+        duty = 0.5
+    }, -- Vibrato   
+    [3] = {
+        drop = 2.0
+    }, -- drop
+    [4] = {
+        fade_in = 0.1
+    }, -- Fade in
+    [5] = {
+        fade_out = 0.1
+    }, -- Fade out
+    [6] = {
         arp = {0, 4, 7},
         arpSpeed = 0.06,
         duty = 0.25
     }, -- Arpeggio
-    [2] = {
-        vibrato = { depth = 0.02, speed = 6 },
-        duty = 0.5
-    }, -- Vibrato    
-    [3] = {
-        slide = 0.4
-    }, -- Slide    
-    [4] = {
-        fade_out = 0.1
-    }, -- Fade out
-    [5] = {
-        fade_in = 0.1
-    }, -- Fade in
-    [6] = {
-        tremolo = { depth = 0.8, speed = 6 }
-    }, -- Tremolo
     [7] = {
-        drop = 2.0
-    } -- Pitch drop
+        tremolo = { depth = 0.8, speed = 6 }
+    } -- Tremolo
 }
 
 local WAVES = {
-    [1] = "sine",
-    [2] = "square",
-    [3] = "triangle",
-    [4] = "sawtooth",
+    [1] = "triangle",
+    [2] = "sawtooth",
+    [3] = "sine",
+    [4] = "square",
     [5] = "pulser",
-    [6] = "noise",
-    [7] = "composite",
+    [6] = "organ",
+    [7] = "noise",
+    [8] = "composite",
 }
 
 local function envelope(i, total)
@@ -169,10 +171,17 @@ local function genSound(length, tone, waveType, effects, volume)
             v = sin(phase) * sin(phase * 10) * 1
 
         elseif waveType == "noise" then
-            v = (love.math.random() * 2 - 1) * 0.6
+            v = (love.math.random() * 2 - 1) * 0.2
 
         elseif waveType == "composite" then
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
+        elseif waveType == "organ" then
+            v = 1.00 * sin(phase) +        -- fundamental
+                0.50 * sin(phase * 2) +    -- octave
+                0.30 * sin(phase * 3) +    -- fifth
+                0.20 * sin(phase * 4) +    -- second octave
+                0.10 * sin(phase * 6)      -- brightness
+            v = v * 0.25
         end
 
         local env = envelope(i, sampleCount)

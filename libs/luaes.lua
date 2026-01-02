@@ -317,7 +317,7 @@ local function changecmpindex(i)
 end
 
 function music(p)
-    if cmp ~= nil and #cmp > 0 then
+    if cmp ~= nil and #cmp > 0 and cmp[cmpIndex].play ~= nil then
         for i=1, #cmp[cmpIndex].play do
             SOUNDS[cmp[cmpIndex].play[i]]:stop()
         end
