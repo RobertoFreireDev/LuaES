@@ -23,11 +23,8 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 Functions:
 
-- spixel -> set pixel on SpriteSheet
-- gpixel -> get pixel from SpriteSheet
 - sflag -> set flag
 - gflag -> get flag
-- spr(n, x, y, [w], [h], [flip_x], [flip_y]) — Draw sprite n.
 - sspr(sx, sy, sw, sh, dx, dy, [dw], [dh]) — Draw a section of the sprite sheet.
 
 ## Map Editor
