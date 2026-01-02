@@ -8,6 +8,90 @@ local player = {
     speed = 50
 }
 
+local LEAD = {
+-- Phrase 1
+  {note="C4", length=0.25, wave=4, effect=1},
+  {note="Ds4", length=0.25, wave=4, effect=1},
+  {note="G4", length=0.5, wave=4, effect=2},
+  {note="As4", length=0.5, wave=4, effect=2},
+
+  -- Phrase 2
+  {note="G4", length=0.25, wave=4, effect=1},
+  {note="Fs4", length=0.25, wave=4, effect=1},
+  {note="F4", length=0.5, wave=4, effect=4},
+  {note="Ds4", length=0.5, wave=4, effect=4},
+
+  -- Phrase 3
+  {note="C4", length=0.25, wave=3, effect=3},
+  {note="G3", length=0.25, wave=3, effect=3},
+  {note="C4", length=0.5, wave=3, effect=5},
+  {note="Ds4", length=0.5, wave=3, effect=5},
+
+  -- Phrase 4
+  {note="F4", length=0.25, wave=2, effect=6},
+  {note="G4", length=0.25, wave=2, effect=6},
+  {note="As4", length=0.5, wave=2, effect=2},
+  {note="C5", length=0.5, wave=2, effect=2},
+
+  -- Phrase 5 (variation)
+  {note="As4", length=0.25, wave=4, effect=1},
+  {note="G4", length=0.25, wave=4, effect=1},
+  {note="Fs4", length=0.5, wave=4, effect=3},
+  {note="F4", length=0.5, wave=4, effect=4},
+
+  -- Phrase 6 (climax)
+  {note="Ds4", length=0.25, wave=5, effect=6},
+  {note="F4", length=0.25, wave=5, effect=6},
+  {note="G4", length=0.5, wave=5, effect=2},
+  {note="As4", length=0.5, wave=5, effect=2},
+
+  -- Ending
+  {note="C5", length=1.0, wave=7, effect=7},
+  {note="G4", length=1.0, wave=7, effect=4},
+  }
+
+local BASS = {
+  -- Phrase 1
+  {note="C2", length=0.5, wave=2, effect=3},
+  {note="C2", length=0.5, wave=2, effect=3},
+  {note="Gs2", length=0.5, wave=2, effect=3},
+  {note="Gs2", length=0.5, wave=2, effect=3},
+
+  -- Phrase 2
+  {note="F2", length=0.5, wave=2, effect=4},
+  {note="F2", length=0.5, wave=2, effect=4},
+  {note="Ds2", length=0.5, wave=2, effect=4},
+  {note="Ds2", length=0.5, wave=2, effect=4},
+
+  -- Phrase 3
+  {note="C2", length=0.5, wave=3, effect=3},
+  {note="C2", length=0.5, wave=3, effect=3},
+  {note="G2", length=0.5, wave=3, effect=3},
+  {note="G2", length=0.5, wave=3, effect=3},
+
+  -- Phrase 4
+  {note="As2", length=0.5, wave=2, effect=6},
+  {note="As2", length=0.5, wave=2, effect=6},
+  {note="C3", length=0.5, wave=2, effect=6},
+  {note="C3", length=0.5, wave=2, effect=6},
+
+  -- Phrase 5
+  {note="Gs2", length=0.5, wave=4, effect=3},
+  {note="Gs2", length=0.5, wave=4, effect=3},
+  {note="F2", length=0.5, wave=4, effect=3},
+  {note="F2", length=0.5, wave=4, effect=3},
+
+  -- Phrase 6
+  {note="Ds2", length=0.5, wave=2, effect=4},
+  {note="Ds2", length=0.5, wave=2, effect=4},
+  {note="As2", length=0.5, wave=2, effect=4},
+  {note="As2", length=0.5, wave=2, effect=4},
+
+  -- Ending
+  {note="C2", length=1.0, wave=7, effect=7},
+  {note="C2", length=1.0, wave=7, effect=4},
+}
+
 function _init()
     
 end
@@ -60,81 +144,21 @@ function _update(dt)
     if btnp(4) then
         music({
             { play = {1} },
-            { next = 3 },
             { play = {2} },
-            --{ stop = true },
-            { play = {1,2} }
+            { next = 4},
+            { play = {1,2} },
+            { stop = true }
           })
     end
 
     if btnp(5) then
-        ssfx(1, "B2", 10, 2, 0, 12)
-        ssfx(2, "C2", 10, 2, 0, 12)
-        ssfx(3, "D2", 10, 2, 0, 12)
-        ssfx(4, "E2", 10, 2, 0, 12)
-        ssfx(5, "D2", 10, 2, 0, 12)
-        ssfx(6, "C2", 10, 2, 0, 12)
-        ssfx(7, "B2", 10, 2, 0, 16)
-        ssfx(8, "E2", 10, 2, 0, 16)
-        ssfx(9, "B2", 10, 2, 0, 12)
-        ssfx(10, "C2", 10, 2, 0, 12)
-        ssfx(11, "D2", 10, 2, 0, 12)
-        ssfx(12, "E2", 10, 2, 0, 12)
-        ssfx(13, "D2", 10, 2, 0, 12)
-        ssfx(14, "C2", 10, 2, 0, 12)
-        ssfx(15, "B2", 10, 2, 0, 16)
-        ssfx(16, "E2", 10, 2, 0, 16)
+      for i=1,16 do
+        ssfx(i, LEAD[i].note, 10, LEAD[i].wave, LEAD[i].effect, LEAD[i].length*16)
+      end
 
-        ssfx(17, "C3", 10, 2, 0, 12)
-        ssfx(18, "D3", 10, 2, 0, 12)
-        ssfx(19, "D3", 10, 2, 0, 12)
-        ssfx(20, "F3", 10, 2, 0, 12)
-        ssfx(21, "A4", 10, 1, 0, 12)
-        ssfx(22, "A4", 10, 1, 0, 12)
-        ssfx(23, "A4", 10, 1, 2, 16)
-        ssfx(24, "F4", 10, 3, 0, 16)
-        ssfx(25, "F4", 10, 3, 0, 16)
-        ssfx(26, "B3", 10, 3, 3, 12)
-        ssfx(27, "C3", 10, 3, 0, 12)
-        ssfx(28, "D3", 10, 2, 0, 12)
-        ssfx(29, "C3", 10, 2, 1, 12)
-        ssfx(30, "D3", 10, 3, 0, 12)
-        ssfx(31, "A3", 10, 3, 4, 12)
-        ssfx(32, "B3", 10, 3, 0, 16)
-        
-        ssfx(33, "E2", 10, 2, 0, 12)
-        ssfx(34, "G2", 10, 2, 0, 12)
-        ssfx(35, "A2", 10, 2, 0, 12)
-        ssfx(36, "B2", 10, 2, 0, 12)
-        ssfx(37, "A2", 10, 2, 0, 12)
-        ssfx(38, "G2", 10, 2, 0, 12)
-        ssfx(39, "E2", 10, 2, 0, 16)
-        ssfx(40, "B2", 10, 2, 0, 16)
-        ssfx(41, "E3", 10, 2, 0, 12)
-        ssfx(42, "G3", 10, 2, 0, 12)
-        ssfx(43, "A3", 10, 2, 0, 12)
-        ssfx(44, "B3", 10, 2, 0, 12)
-        ssfx(45, "A3", 10, 2, 0, 12)
-        ssfx(46, "G3", 10, 2, 0, 12)
-        ssfx(47, "E3", 10, 2, 1, 16)
-        ssfx(48, "B3", 10, 2, 2, 16)
-
-        ssfx(49, "C3", 10, 4, 0, 12)
-        ssfx(50, "D3", 10, 4, 0, 12)
-        ssfx(51, "E3", 10, 4, 0, 12)
-        ssfx(52, "G3", 10, 4, 0, 12)
-        ssfx(53, "E3", 10, 4, 0, 12)
-        ssfx(54, "D3", 10, 4, 0, 12)
-        ssfx(55, "C3", 10, 4, 1, 16)
-        ssfx(56, "G2", 10, 4, 2, 16)
-        ssfx(57, "C4", 10, 1, 0, 12)
-        ssfx(58, "D4", 10, 1, 0, 12)
-        ssfx(59, "E4", 10, 1, 0, 12)
-        ssfx(60, "G4", 10, 1, 0, 12)
-        ssfx(61, "A4", 10, 1, 0, 12)
-        ssfx(62, "G4", 10, 1, 0, 12)
-        ssfx(63, "E4", 10, 1, 3, 16)
-        ssfx(64, "C4", 10, 1, 4, 24)
+      for i=1,16 do
+        ssfx(i+16, BASS[i].note, 10, BASS[i].BASS, BASS[i].effect, BASS[i].length*16)
+      end
     end
 end
 
