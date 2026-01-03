@@ -157,6 +157,21 @@ local SFX12 = {
 }
 
 indexsound = 0
+SOUNDINDEX = 5
+SOUNDS = {
+  {{ play = {1,2,3} }},
+  {{ play = {2} } , { stop = true } },
+  {{ play = {3} } , { stop = true } },
+  {{ play = {4} } , { stop = true } },
+  {{ play = {5} } , { stop = true } },
+  {{ play = {6} } , { stop = true } },
+  {{ play = {7} } , { stop = true } },
+  {{ play = {8} } , { stop = true } },
+  {{ play = {9} } , { stop = true } },
+  {{ play = {10} } , { stop = true } },
+  {{ play = {11} } , { stop = true } },
+  {{ play = {12} } , { stop = true } },
+}
 
 function addsounds(s)
   for i=1,#s do
@@ -178,25 +193,11 @@ function _init()
   addsounds(SFX10)
   addsounds(SFX11)
   addsounds(SFX12)
+
+  for i=1,#SOUNDS do
+    smusic(i,SOUNDS[i])
+  end
 end
-
-SOUNDINDEX = 5
-SOUNDS = {
-  { play = {1,2,3} },
-  { play = {2} },
-  { play = {3} },
-  { play = {4} },
-  { play = {5} },
-  { play = {6} },
-  { play = {7} },
-  { play = {8} },
-  { play = {9} },
-  { play = {10} },
-  { play = {11} },
-  { play = {12} },
-}
-
-delay = 1
 
 -- camera
 dead_zone_w = 128
@@ -242,10 +243,7 @@ function _update(dt)
     update_camera(player)
 
     if btnp(4) then
-        music({
-            SOUNDS[SOUNDINDEX],
-            { stop = true }
-          })
+        music(SOUNDINDEX)
     end
 
     if btnp(1) and SOUNDINDEX < #SOUNDS  then

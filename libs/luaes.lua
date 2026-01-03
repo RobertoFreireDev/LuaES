@@ -316,7 +316,11 @@ local function changecmpindex(i)
     toPlay = true
 end
 
-function music(p)
+local MUSICS = {}
+
+function music(i)
+    i = mid(1,i,16)
+    local p = MUSICS[i]
     if cmp ~= nil and #cmp > 0 and cmp[cmpIndex].play ~= nil then
         for i=1, #cmp[cmpIndex].play do
             SOUNDS[cmp[cmpIndex].play[i]]:stop()
@@ -326,6 +330,11 @@ function music(p)
     end
 
     cmp = p
+end
+
+function smusic(i,p)
+    i = mid(1,i,16)
+    MUSICS[i] = p
 end
 
 local function updatemusic()
@@ -741,6 +750,7 @@ return {
     sfx    = sfx,
     ssfx   = ssfx,
     music  = music,
+    smusic = smusic,
     -- system functions --
     stat = stat,
     save = save,
