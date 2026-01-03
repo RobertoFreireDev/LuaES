@@ -61,5 +61,5 @@ function _draw()
     rectfill(0,0,8,8,16)
     circfill(player.x, player.y, player.r, player.c)
     resetcamera()
-    rectfill(144,104,160,120,3)
+    rectfill(144,104,16,16,3)
 end

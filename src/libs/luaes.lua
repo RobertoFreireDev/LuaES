@@ -24,26 +24,35 @@ local function hexToRGB(hex, alfa)
     return {r, g, b, a}
 end
 
-local PALETTE = {
-    [0] = hexToRGB("#000000","00"), -- transparent
-    [1] = hexToRGB("#f4f4f4"),   
-    [2] = hexToRGB("#000000"),
-    [3] = hexToRGB("#5d275d"),
-    [4] = hexToRGB("#b13e53"),
-    [5] = hexToRGB("#ef7d57"),
-    [6] = hexToRGB("#ffcd75"),
-    [7] = hexToRGB("#a7f070"),
-    [8] = hexToRGB("#38b764"),
-    [9] = hexToRGB("#257179"),
-    [10] = hexToRGB("#29366f"),
-    [11] = hexToRGB("#3b5dc9"),
-    [12] = hexToRGB("#41a6f6"),
-    [13] = hexToRGB("#73eff7"),
-    [14] = hexToRGB("#94b0c2"),
-    [15] = hexToRGB("#566c86"),
-    [16] = hexToRGB("#6b4226")
+local COLORPALETTE = {
+    [1] = "#f4f4f4",
+    [2] = "#000000",
+    [3] = "#5d275d",
+    [4] = "#b13e53",
+    [5] = "#ef7d57",
+    [6] = "#ffcd75",
+    [7] = "#a7f070",
+    [8] = "#38b764",
+    [9] = "#257179",
+    [10] = "#29366f",
+    [11] = "#3b5dc9",
+    [12] = "#41a6f6",
+    [13] = "#73eff7",
+    [14] = "#94b0c2",
+    [15] = "#566c86",
+    [16] = "#6b4226"
 }
+
 local defaultColor = 1
+
+local function getpalette(i, a)
+    i = mid(0, i, 16)
+    if i <= 0 then
+        return hexToRGB("#000000","00") -- transparent
+    end
+
+    return hexToRGB(COLORPALETTE[i], a)
+end
 --#endregion
 
 --#region table
@@ -409,7 +418,7 @@ local function charToNum(c)
 end
 
 function spixel(i, x, y, c)
-    local rgb = PALETTE[c]
+    local rgb = getpalette(c)
     spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], rgb[4])
     rerenderImage[i] = true
 end
@@ -457,53 +466,49 @@ end
 --#endregion
 
 --#region draw
-local function setcolor(c)
+function alphaToHex(v)
+    v = (v ~= nil and type(v) == "number") and v or 10
+    v = mid(0,v,10)
+    return string.format("%02X", floor((v / 10) * 255 + 0.5))
+end
+
+local function setcolor(c,a)
     c = (c ~= nil and type(c) == "number") and c or defaultColor
-    love.graphics.setColor(PALETTE[mid(0, c, 16)])
+    love.graphics.setColor(getpalette(c,alphaToHex(a)))
 end
 
-local function getRect(x0, y0, x1, y1)
-    local x = min(x0, x1)
-    local y = min(y0, y1)
-    local w = abs(x1 - x0)
-    local h = abs(y1 - y0)
-    return x, y, w, h
-end
-
-function print(text, x, y, c)
-    setcolor(c)
+function print(text, x, y, c, a)
+    setcolor(c, a)
     love.graphics.print(text, x, y)
     setcolor()
 end
 
-function rect(x0, y0, x1, y1, c)
-    setcolor(c)
-    local x, y, w, h = getRect(x0, y0, x1, y1)
+function rect(x, y, w, h, c, a)
+    setcolor(c, a)
     love.graphics.rectangle("line", x, y, w, h)
     setcolor()
 end
 
-function rectfill(x0, y0, x1, y1, c)
-    setcolor(c)
-    local x, y, w, h = getRect(x0, y0, x1, y1)
+function rectfill(x, y, w, h, c, a)
+    setcolor(c, a)
     love.graphics.rectangle("fill", x, y, w, h)
     setcolor()
 end
 
-function line(x0, y0, x1, y1, c)
-    setcolor(c)
+function line(x0, y0, x1, y1, c, a)
+    setcolor(c, a)
     love.graphics.line(x0, y0, x1, y1)
     setcolor()
 end
 
-function circ(x, y, r, c)
-    setcolor(c)
+function circ(x, y, r, c, a)
+    setcolor(c, a)
     love.graphics.circle("line", x, y, r)
     setcolor()
 end
 
-function circfill(x, y, r, c)
-    setcolor(c)
+function circfill(x, y, r, c, a)
+    setcolor(c, a)
     love.graphics.circle("fill", x, y, r)
     setcolor()
 end
