@@ -46,7 +46,6 @@ Functions:
 
 ## Music Editor
 
-- music(n)
 - Implement UI for Sfx Editor
 
 # Run on ArkOS RG353PS 
