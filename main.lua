@@ -52,30 +52,34 @@ local SFX4 = {
   {note="G3", volume = 1, length=4, wave=5, effect=0},
 }
 
-function _init()
-  for i=1,8 do
-    ssfx(i, SFX1[i].note, SFX1[i].volume, SFX1[i].wave, SFX1[i].effect, SFX1[i].length)
-  end
-  
-  for i=1,8 do
-    ssfx(i+16, SFX2[i].note, 10, SFX2[i].wave, SFX2[i].effect, SFX2[i].length)
-  end
+local SFX5 = {
+  {note="F3", volume = 1,   length=1, wave=1, effect=0},
+  {note="G3", volume = 1, length=1, wave=1, effect=0},
+  {note="D4", volume = 1, length=1, wave=1, effect=0},
+  {note="C5", volume = 1, length=1, wave=1, effect=0},
+}
 
-  for i=1,8 do
-    ssfx(i+32, SFX3[i].note, 10, SFX3[i].wave, SFX3[i].effect, SFX3[i].length)
+function addsounds(s, c)
+  for i=1,#s do
+    ssfx(i + c, s[i].note, s[i].volume, s[i].wave, s[i].effect, s[i].length)
   end
-
-  for i=1,8 do
-    ssfx(i+48, SFX4[i].note, 10, SFX4[i].wave, SFX4[i].effect, SFX4[i].length)
-  end  
 end
 
-SOUNDINDEX = 4
+function _init()
+  addsounds(SFX1, 0)
+  addsounds(SFX2, 16)
+  addsounds(SFX3, 32)
+  addsounds(SFX4, 48)
+  addsounds(SFX5, 64)
+end
+
+SOUNDINDEX = 5
 SOUNDS = {
   { play = {1,2,3} },
   { play = {2} },
   { play = {3} },
   { play = {4} },
+  { play = {5} },
 }
 
 delay = 1
@@ -129,16 +133,23 @@ function _update(dt)
             { stop = true }
           })
     end
+
+    if btnp(1) and SOUNDINDEX < #SOUNDS  then
+        SOUNDINDEX = SOUNDINDEX + 1
+    elseif btnp(0) and SOUNDINDEX > 1 then
+        SOUNDINDEX = SOUNDINDEX - 1
+    end
 end
 
-function _draw()
+function _draw()    
+    print("Ifx: " ..SOUNDINDEX, 10, 10, 4)
     --print("FPS: " ..stat(1), 10, 10, 4)
-    camera(cam_x, cam_y)
+    --camera(cam_x, cam_y)
     --rectfill(0,0,8,8,16)
     --rectfill(144,104,160,120,3)
     --spr(1, 1, player.x, player.y)
-    circfill(player.x, player.y, player.r, player.c)
-    resetcamera()
+    --circfill(player.x, player.y, player.r, player.c)
+    --resetcamera()
     --local m = mouse()
     --print(string.format("Mouse: x=%d y=%d",m.x, m.y), 10, 0, 4)
     --local info = stat(10)
