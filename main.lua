@@ -17,9 +17,25 @@ local SFX1 = {
   {note="C7", volume = 0.4, length=6, wave=6, effect=5},
   {note="G6", volume = 0.8, length=6, wave=6, effect=5},
   {note="G6", volume = 0.6, length=6, wave=6, effect=5},
+  {note="C7", volume = 1,   length=6, wave=6, effect=5},
+  {note="C7", volume = 0.8, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.7, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.6, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=6, wave=6, effect=5},
+  {note="G6", volume = 0.8, length=6, wave=6, effect=5},
+  {note="G6", volume = 0.6, length=6, wave=6, effect=5},
 }
 
-local SFX2 = { 
+local SFX2 = {
+  {note="C3", volume = 0.4,   length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.1, length=6, wave=1, effect=9},
+  {note=0, volume = 0.0, length=6, wave=0, effect=9},
   {note="C3", volume = 0.4,   length=6, wave=1, effect=9},
   {note="C3", volume = 0.2, length=6, wave=1, effect=9},
   {note="C3", volume = 0.4, length=6, wave=1, effect=9},
@@ -31,6 +47,14 @@ local SFX2 = {
 }
 
 local SFX3 = {
+  {note="Ds2", volume = 0.2,   length=6, wave=7, effect=5},
+  {note="C5", volume = 0.1, length=6, wave=7, effect=5},
+  {note=0, volume = 0.0, length=6, wave=0, effect=5},
+  {note="Ds2", volume = 0.1, length=6, wave=7, effect=5},
+  {note="C5", volume = 0.2, length=6, wave=7, effect=5},
+  {note="Ds4", volume = 0.1, length=6, wave=7, effect=5},
+  {note="As4", volume = 0.2, length=6, wave=7, effect=5},
+  {note="Ds2", volume = 0.1, length=6, wave=7, effect=5},
   {note="Ds2", volume = 0.2,   length=6, wave=7, effect=5},
   {note="C5", volume = 0.1, length=6, wave=7, effect=5},
   {note=0, volume = 0.0, length=6, wave=0, effect=5},
@@ -164,7 +188,7 @@ SOUNDS = {
   {{ play = {3} } , { stop = true } },
   {{ play = {4} } , { stop = true } },
   {{ play = {5} } , { stop = true } },
-  {{ play = {6} } , { stop = true } },
+  {{ play = {6} } },
   {{ play = {7} } , { stop = true } },
   {{ play = {8} } , { stop = true } },
   {{ play = {9} } , { stop = true } },
