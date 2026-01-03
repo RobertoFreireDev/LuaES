@@ -102,7 +102,7 @@ function _update(dt)
 
     if btnp(4) then
         music({
-            { play = {2} },
+            { play = {1,2,3} },
             { stop = true }
           })
     end
