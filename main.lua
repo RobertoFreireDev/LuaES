@@ -39,7 +39,18 @@ local SFX3 = {
   {note="Ds4", volume = 0.1, length=6, wave=7, effect=5},
   {note="As4", volume = 0.2, length=6, wave=7, effect=5},
   {note="Ds2", volume = 0.1, length=6, wave=7, effect=5},
-} 
+}
+
+local SFX4 = {
+  {note="Fs6", volume = 1,   length=4, wave=4, effect=0},
+  {note="B4", volume = 1, length=4, wave=5, effect=0},
+  {note="B5", volume = 1, length=4, wave=4, effect=0},
+  {note="F6", volume = 1, length=4, wave=5, effect=0},
+  {note="Fs5", volume = 1, length=4, wave=4, effect=0},
+  {note="B3", volume = 1, length=4, wave=5, effect=0},
+  {note="Ds5", volume = 1, length=4, wave=4, effect=0},
+  {note="G3", volume = 1, length=4, wave=5, effect=0},
+}
 
 function _init()
   for i=1,8 do
@@ -52,8 +63,20 @@ function _init()
 
   for i=1,8 do
     ssfx(i+32, SFX3[i].note, 10, SFX3[i].wave, SFX3[i].effect, SFX3[i].length)
+  end
+
+  for i=1,8 do
+    ssfx(i+48, SFX4[i].note, 10, SFX4[i].wave, SFX4[i].effect, SFX4[i].length)
   end  
 end
+
+SOUNDINDEX = 4
+SOUNDS = {
+  { play = {1,2,3} },
+  { play = {2} },
+  { play = {3} },
+  { play = {4} },
+}
 
 delay = 1
 
@@ -102,7 +125,7 @@ function _update(dt)
 
     if btnp(4) then
         music({
-            { play = {1,2,3} },
+            SOUNDS[SOUNDINDEX],
             { stop = true }
           })
     end

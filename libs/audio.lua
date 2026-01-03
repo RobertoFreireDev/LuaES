@@ -60,7 +60,6 @@ local EFFECTS = {
     }, -- Slide   
     [2] = {
         vibrato = { depth = 0.02, speed = 6 },
-        duty = 0.5
     }, -- Vibrato   
     [3] = {
         drop = 2.0
@@ -74,7 +73,6 @@ local EFFECTS = {
     [6] = {
         arp = {0, 4, 7},
         arpSpeed = 0.06,
-        duty = 0.25
     }, -- Arpeggio
     [7] = {
         tremolo = { depth = 0.8, speed = 6 }
@@ -164,8 +162,8 @@ local function genSound(length, tone, waveType, effects, volume)
             v = sin(phase)
 
         elseif waveType == "square" then
-            local duty = effects.duty or 0.5
-            v = (phase % (2*pi) < 2*pi*duty) and 1 or -1
+            local step = math.floor((phase / (2*pi)) * 32) % 32
+            v = (step < 16) and 1 or -1
             v = v * 0.4
 
         elseif waveType == "triangle" then
@@ -184,7 +182,10 @@ local function genSound(length, tone, waveType, effects, volume)
             v = (2 * (phase/(2*pi) - floor(0.5 + phase/(2*pi)))) * 0.5
 
         elseif waveType == "pulser" then
-            v = sin(phase) * sin(phase * 10) * 1
+            local step = math.floor(phase * 32 / (2*pi)) % 32
+            local duty = 4 + math.floor((math.sin(phase * 0.25) + 1) * 6)
+            v = (step < duty) and 1 or -1
+            v = v * 0.4
 
         elseif waveType == "noise" then
             noiseCounter = noiseCounter + 1
