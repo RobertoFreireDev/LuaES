@@ -98,7 +98,7 @@ local WAVES = {
     [5] = "pulser",
     [6] = "organ",
     [7] = "noise",
-    [8] = "composite",
+    [8] = "phaser",
 }
 
 local function envelope(i, total)
@@ -204,14 +204,15 @@ local function genSound(length, tone, waveType, effects, volume)
             end
             v = noiseValue * 0.5
 
-        elseif waveType == "composite" then
-            v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
+        elseif waveType == "phaser" then
+            local lfo = 0.5 * sin(phase * 0.5)
+            v = sin(phase + lfo * 3)
         elseif waveType == "organ" then
-            v = 1.00 * sin(phase) +        -- fundamental
-                0.50 * sin(phase * 2) +    -- octave
-                0.30 * sin(phase * 3) +    -- fifth
-                0.20 * sin(phase * 4) +    -- second octave
-                0.10 * sin(phase * 6)      -- brightness
+            v = 1.00 * sin(phase) +      
+                0.50 * sin(phase * 2) + 
+                0.30 * sin(phase * 3) +
+                0.20 * sin(phase * 4) +
+                0.10 * sin(phase * 6)  
             v = v * 0.25
         end
 

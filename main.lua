@@ -53,10 +53,10 @@ local SFX4 = {
 }
 
 local SFX5 = {
-  {note="F2", volume = 1,   length=3, wave=1, effect=7},
-  {note="G2", volume = 1, length=3, wave=1, effect=7},
-  {note="D3", volume = 1, length=3, wave=1, effect=7},
-  {note="C4", volume = 1, length=3, wave=1, effect=7},
+  {note="F2", volume = 1,   length=3, wave=1, effect=0},
+  {note="G2", volume = 1, length=3, wave=1, effect=0},
+  {note="D3", volume = 1, length=3, wave=1, effect=0},
+  {note="C4", volume = 1, length=3, wave=1, effect=0},
 }
 
 local SFX6 = {
@@ -96,7 +96,7 @@ function _init()
   addsounds(SFX6)
 end
 
-SOUNDINDEX = 6
+SOUNDINDEX = 5
 SOUNDS = {
   { play = {1,2,3} },
   { play = {2} },
