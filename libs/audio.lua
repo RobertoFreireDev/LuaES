@@ -75,12 +75,16 @@ local EFFECTS = {
     }, -- Fade out
     [6] = {
         arp = {0, 4, 7},
-        arpSpeed = 0.06,
-    }, -- Arpeggio
+        arpSpeed = 0.03,
+    }, -- Fast Arpeggio
     [7] = {
+        arp = {0, 4, 7},
+        arpSpeed = 0.12,
+    }, -- Slow Arpeggio
+    [8] = {
         tremolo = { depth = 0.8, speed = 6 }
     }, -- Tremolo
-    [8] = {
+    [9] = {
         fade_in = 0.05,
         fade_out = 0.05
     } -- Fade in and Fade out- 

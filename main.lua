@@ -19,15 +19,15 @@ local SFX1 = {
   {note="G6", volume = 0.6, length=6, wave=6, effect=5},
 }
 
-local SFX2 = {
-  {note="C3", volume = 0.4,   length=6, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
-  {note="C3", volume = 0.1, length=6, wave=1, effect=8},
-  {note=0, volume = 0.0, length=6, wave=0, effect=8},
+local SFX2 = { 
+  {note="C3", volume = 0.4,   length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
+  {note="C3", volume = 0.1, length=6, wave=1, effect=9},
+  {note=0, volume = 0.0, length=6, wave=0, effect=9},
 }
 
 local SFX3 = {
@@ -53,10 +53,10 @@ local SFX4 = {
 }
 
 local SFX5 = {
-  {note="F1", volume = 1,   length=3, wave=1, effect=1},
-  {note="G1", volume = 1, length=3, wave=1, effect=1},
-  {note="D2", volume = 1, length=3, wave=1, effect=1},
-  {note="C3", volume = 1, length=3, wave=1, effect=1},
+  {note="F2", volume = 1,   length=3, wave=1, effect=7},
+  {note="G2", volume = 1, length=3, wave=1, effect=7},
+  {note="D3", volume = 1, length=3, wave=1, effect=7},
+  {note="C4", volume = 1, length=3, wave=1, effect=7},
 }
 
 function addsounds(s, c)
