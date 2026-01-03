@@ -56,7 +56,10 @@ end
 
 local EFFECTS = {
     [1] = {
-        slide = 0.4
+        slide = {
+            depth = 12,
+            speed = 3
+        }
     }, -- Slide   
     [2] = {
         vibrato = { depth = 0.02, speed = 6 },
@@ -142,7 +145,9 @@ local function genSound(length, tone, waveType, effects, volume)
         end
 
         if effects.slide then
-            freq = freq * (2 ^ ((effects.slide * k) / 12))
+            local bubble = math.exp(-t * (effects.slide.speed or 10))
+            local semi = (effects.slide.depth or 6) * bubble
+            freq = freq * (2 ^ (semi / 12))
         end
 
         if effects.drop then

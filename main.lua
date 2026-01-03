@@ -53,10 +53,10 @@ local SFX4 = {
 }
 
 local SFX5 = {
-  {note="F3", volume = 1,   length=1, wave=1, effect=0},
-  {note="G3", volume = 1, length=1, wave=1, effect=0},
-  {note="D4", volume = 1, length=1, wave=1, effect=0},
-  {note="C5", volume = 1, length=1, wave=1, effect=0},
+  {note="F1", volume = 1,   length=3, wave=1, effect=1},
+  {note="G1", volume = 1, length=3, wave=1, effect=1},
+  {note="D2", volume = 1, length=3, wave=1, effect=1},
+  {note="C3", volume = 1, length=3, wave=1, effect=1},
 }
 
 function addsounds(s, c)
