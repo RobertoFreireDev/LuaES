@@ -92,8 +92,8 @@ local EFFECTS = {
 
 local WAVES = {
     [1] = "triangle",
-    [2] = "sawtooth",
-    [3] = "sine",
+    [2] = "tilted saw",
+    [3] = "saw",
     [4] = "square",
     [5] = "pulser",
     [6] = "organ",
@@ -167,8 +167,13 @@ local function genSound(length, tone, waveType, effects, volume)
 
         local v = 0
 
-        if waveType == "sine" then
-            v = sin(phase)
+        if waveType == "tilted saw" then
+            local t = (phase / (2 * pi)) % 1
+            if t < 0.25 then
+                v = -1 + t * 2
+            else
+                v = -0.5 + (t - 0.25) * 2.6666667
+            end
 
         elseif waveType == "square" then
             local step = math.floor((phase / (2*pi)) * 32) % 32
@@ -187,8 +192,8 @@ local function genSound(length, tone, waveType, effects, volume)
                 v = -(t - 0.75) * 4
             end
 
-        elseif waveType == "sawtooth" then
-            v = (2 * (phase/(2*pi) - floor(0.5 + phase/(2*pi)))) * 0.5
+        elseif waveType == "saw" then
+            v = 2 * ((phase / (2 * pi)) % 1) - 1
 
         elseif waveType == "pulser" then
             local step = math.floor(phase * 32 / (2*pi)) % 32

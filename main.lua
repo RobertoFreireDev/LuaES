@@ -53,10 +53,10 @@ local SFX4 = {
 }
 
 local SFX5 = {
-  {note="F2", volume = 1,   length=3, wave=1, effect=0},
-  {note="G2", volume = 1, length=3, wave=1, effect=0},
-  {note="D3", volume = 1, length=3, wave=1, effect=0},
-  {note="C4", volume = 1, length=3, wave=1, effect=0},
+  {note="F2", volume = 1,   length=3, wave=2, effect=0},
+  {note="G2", volume = 1, length=3, wave=2, effect=0},
+  {note="D3", volume = 1, length=3, wave=2, effect=0},
+  {note="C4", volume = 1, length=3, wave=2, effect=0},
 }
 
 local SFX6 = {
