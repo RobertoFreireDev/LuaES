@@ -681,6 +681,9 @@ function updateScale()
 end
 
 function love.load()
+    local icon = love.image.newImageData("icon.png")
+    love.window.setIcon(icon)
+    love.window.setTitle("LuaES")
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
     love.graphics.setFont(love.graphics.newFont("fonts/Tiny5-Regular.ttf", 8))
