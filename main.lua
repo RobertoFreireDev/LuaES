@@ -20,25 +20,25 @@ local SFX1 = {
 }
 
 local SFX2 = {
-  {note="C3", volume = 0.4,   length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.4, length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.4, length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=0},
-  {note="C3", volume = 0.1, length=0.25, wave=1, effect=0},
-  {note=0, volume = 0.0, length=0.25, wave=1, effect=0},
+  {note="C3", volume = 0.4,   length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.4, length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.4, length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
+  {note="C3", volume = 0.1, length=0.25, wave=1, effect=8},
+  {note=0, volume = 0.0, length=0.25, wave=0, effect=8},
 }
 
 local SFX3 = {
   {note="Ds2", volume = 0.2,   length=0.25, wave=7, effect=5},
+  {note="C5", volume = 0.1, length=0.25, wave=7, effect=5},
+  {note=0, volume = 0.0, length=0.25, wave=0, effect=5},
+  {note="Ds2", volume = 0.1, length=0.25, wave=7, effect=5},
   {note="C5", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note=0, volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="Ds2", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="C5", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="Ds4", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="Ds4", volume = 0.1, length=0.25, wave=7, effect=5},
   {note="As4", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="Ds2", volume = 0.2, length=0.25, wave=7, effect=5},
+  {note="Ds2", volume = 0.1, length=0.25, wave=7, effect=5},
 } 
 
 function _init()

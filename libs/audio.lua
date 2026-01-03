@@ -66,7 +66,7 @@ local EFFECTS = {
         drop = 2.0
     }, -- drop
     [4] = {
-        fade_in = 0.1
+        fade_in = 0.1,
     }, -- Fade in
     [5] = {
         fade_out = 0.1
@@ -78,7 +78,11 @@ local EFFECTS = {
     }, -- Arpeggio
     [7] = {
         tremolo = { depth = 0.8, speed = 6 }
-    } -- Tremolo
+    }, -- Tremolo
+    [8] = {
+        fade_in = 0.05,
+        fade_out = 0.05
+    } -- Fade in and Fade out- 
 }
 
 local WAVES = {
@@ -187,7 +191,7 @@ local function genSound(length, tone, waveType, effects, volume)
                 noiseCounter = 0
                 noiseValue = (love.math.random(0, 1) * 2 - 1)
             end
-            v = noiseValue * 0.15
+            v = noiseValue * 0.1
 
         elseif waveType == "composite" then
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
