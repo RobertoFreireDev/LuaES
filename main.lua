@@ -9,40 +9,50 @@ local player = {
 }
 
 local SFX1 = {
-  {note="C7", volume = 1,   length=0.25, wave=6, effect=5},
-  {note="C7", volume = 0.8, length=0.25, wave=6, effect=5},
-  {note="C7", volume = 0.7, length=0.25, wave=6, effect=5},
-  {note="C7", volume = 0.6, length=0.25, wave=6, effect=5},
-  {note="C7", volume = 0.4, length=0.25, wave=6, effect=5},
-  {note="C7", volume = 0.4, length=0.25, wave=6, effect=5},
-  {note="G6", volume = 0.8, length=0.25, wave=6, effect=5},
-  {note="G6", volume = 0.6, length=0.25, wave=6, effect=5},
+  {note="C7", volume = 1,   length=6, wave=6, effect=5},
+  {note="C7", volume = 0.8, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.7, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.6, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=6, wave=6, effect=5},
+  {note="C7", volume = 0.4, length=6, wave=6, effect=5},
+  {note="G6", volume = 0.8, length=6, wave=6, effect=5},
+  {note="G6", volume = 0.6, length=6, wave=6, effect=5},
 }
 
 local SFX2 = {
-  {note="C3", volume = 0.4,   length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.4, length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.4, length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.2, length=0.25, wave=1, effect=8},
-  {note="C3", volume = 0.1, length=0.25, wave=1, effect=8},
-  {note=0, volume = 0.0, length=0.25, wave=0, effect=8},
+  {note="C3", volume = 0.4,   length=6, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=8},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=8},
+  {note="C3", volume = 0.1, length=6, wave=1, effect=8},
+  {note=0, volume = 0.0, length=6, wave=0, effect=8},
 }
 
 local SFX3 = {
-  {note="Ds2", volume = 0.2,   length=0.25, wave=7, effect=5},
-  {note="C5", volume = 0.1, length=0.25, wave=7, effect=5},
-  {note=0, volume = 0.0, length=0.25, wave=0, effect=5},
-  {note="Ds2", volume = 0.1, length=0.25, wave=7, effect=5},
-  {note="C5", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="Ds4", volume = 0.1, length=0.25, wave=7, effect=5},
-  {note="As4", volume = 0.2, length=0.25, wave=7, effect=5},
-  {note="Ds2", volume = 0.1, length=0.25, wave=7, effect=5},
+  {note="Ds2", volume = 0.2,   length=6, wave=7, effect=5},
+  {note="C5", volume = 0.1, length=6, wave=7, effect=5},
+  {note=0, volume = 0.0, length=6, wave=0, effect=5},
+  {note="Ds2", volume = 0.1, length=6, wave=7, effect=5},
+  {note="C5", volume = 0.2, length=6, wave=7, effect=5},
+  {note="Ds4", volume = 0.1, length=6, wave=7, effect=5},
+  {note="As4", volume = 0.2, length=6, wave=7, effect=5},
+  {note="Ds2", volume = 0.1, length=6, wave=7, effect=5},
 } 
 
 function _init()
-    
+  for i=1,8 do
+    ssfx(i, SFX1[i].note, SFX1[i].volume, SFX1[i].wave, SFX1[i].effect, SFX1[i].length)
+  end
+  
+  for i=1,8 do
+    ssfx(i+16, SFX2[i].note, 10, SFX2[i].wave, SFX2[i].effect, SFX2[i].length)
+  end
+
+  for i=1,8 do
+    ssfx(i+32, SFX3[i].note, 10, SFX3[i].wave, SFX3[i].effect, SFX3[i].length)
+  end  
 end
 
 delay = 1
@@ -95,20 +105,6 @@ function _update(dt)
             { play = {1,2,3} },
             { stop = true }
           })
-    end
-
-    if btnp(5) then
-      for i=1,8 do
-        ssfx(i, SFX1[i].note, SFX1[i].volume, SFX1[i].wave, SFX1[i].effect, SFX1[i].length*16)
-      end
-      
-      for i=1,8 do
-        ssfx(i+16, SFX2[i].note, 10, SFX2[i].wave, SFX2[i].effect, SFX2[i].length*16)
-      end
-
-      for i=1,8 do
-        ssfx(i+32, SFX3[i].note, 10, SFX3[i].wave, SFX3[i].effect, SFX3[i].length*16)
-      end
     end
 end
 

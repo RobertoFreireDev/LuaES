@@ -169,7 +169,7 @@ local function genSound(length, tone, waveType, effects, volume)
             v = v * 0.4
 
         elseif waveType == "triangle" then
-             local t = (phase / (2 * math.pi)) % 1
+            local t = (phase / (2 * math.pi)) % 1
             if t < 0.25 then
                 v = t * 4
             elseif t < 0.75 then
