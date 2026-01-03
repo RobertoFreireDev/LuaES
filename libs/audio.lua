@@ -40,6 +40,9 @@ local pi    = math.pi
 local exp   = math.exp
 local rate = 44100
 local fadeLength = 1/200
+local noiseValue = 0
+local noiseCounter = 0
+local noiseRate = 32
 local notes = {}; do
     local A4 = 440.0
     local names = {"C","Cs","D","Ds","E","F","Fs","G","Gs","A","As","B"}
@@ -162,7 +165,15 @@ local function genSound(length, tone, waveType, effects, volume)
             v = v * 0.4
 
         elseif waveType == "triangle" then
-            v = (2/pi) * math.asin(sin(phase)) * 1
+             local t = (phase / (2 * math.pi)) % 1
+            if t < 0.25 then
+                v = t * 4
+            elseif t < 0.75 then
+                v = 2 - t * 4
+            else
+                v = t * 4 - 4
+            end
+            v = v * 0.5
 
         elseif waveType == "sawtooth" then
             v = (2 * (phase/(2*pi) - floor(0.5 + phase/(2*pi)))) * 0.5
@@ -171,7 +182,12 @@ local function genSound(length, tone, waveType, effects, volume)
             v = sin(phase) * sin(phase * 10) * 1
 
         elseif waveType == "noise" then
-            v = (love.math.random() * 2 - 1) * 0.2
+            noiseCounter = noiseCounter + 1
+            if noiseCounter >= noiseRate then
+                noiseCounter = 0
+                noiseValue = (love.math.random(0, 1) * 2 - 1)
+            end
+            v = noiseValue * 0.15
 
         elseif waveType == "composite" then
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5
