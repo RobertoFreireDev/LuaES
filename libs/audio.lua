@@ -202,7 +202,7 @@ local function genSound(length, tone, waveType, effects, volume)
                 noiseCounter = 0
                 noiseValue = (love.math.random(0, 1) * 2 - 1)
             end
-            v = noiseValue * 0.1
+            v = noiseValue * 0.5
 
         elseif waveType == "composite" then
             v = (sin(phase) + 0.5 * sin(phase * 2)) * 0.5

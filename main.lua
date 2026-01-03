@@ -59,27 +59,51 @@ local SFX5 = {
   {note="C4", volume = 1, length=3, wave=1, effect=7},
 }
 
-function addsounds(s, c)
+local SFX6 = {
+  {note="Fs2", volume = 0.2, length=6, wave=5, effect=0},
+  {note="Gs2", volume = 0.2, length=6, wave=5, effect=0},
+  {note="A2", volume = 0.2, length=6, wave=5, effect=0},
+  {note="B2", volume = 0.2, length=6, wave=5, effect=0},
+  {note="As4", volume = 0.2, length=6, wave=5, effect=0},
+  {note="Fs5", volume = 0.2, length=6, wave=5, effect=0},
+  {note="C7", volume = 1, length=6, wave=7, effect=0},
+  {note="B6", volume = 1, length=6, wave=7, effect=0},
+  {note="B6", volume = 1, length=6, wave=7, effect=0},
+  {note="A6", volume = 1, length=6, wave=7, effect=0},
+  {note="Fs6", volume = 1, length=6, wave=7, effect=0},
+  {note="D6", volume = 1, length=6, wave=7, effect=0},
+  {note="A5", volume = 1, length=6, wave=7, effect=0},
+  {note="E5", volume = 1, length=6, wave=7, effect=0},
+  {note="C5", volume = 1, length=6, wave=7, effect=0},
+  {note="A4", volume = 1, length=6, wave=7, effect=0},
+}
+
+indexsound = 0
+
+function addsounds(s)
   for i=1,#s do
-    ssfx(i + c, s[i].note, s[i].volume, s[i].wave, s[i].effect, s[i].length)
+    ssfx(i + indexsound, s[i].note, s[i].volume, s[i].wave, s[i].effect, s[i].length)
   end
+  indexsound = indexsound + 16
 end
 
 function _init()
-  addsounds(SFX1, 0)
-  addsounds(SFX2, 16)
-  addsounds(SFX3, 32)
-  addsounds(SFX4, 48)
-  addsounds(SFX5, 64)
+  addsounds(SFX1)
+  addsounds(SFX2)
+  addsounds(SFX3)
+  addsounds(SFX4)
+  addsounds(SFX5)
+  addsounds(SFX6)
 end
 
-SOUNDINDEX = 5
+SOUNDINDEX = 6
 SOUNDS = {
   { play = {1,2,3} },
   { play = {2} },
   { play = {3} },
   { play = {4} },
   { play = {5} },
+  { play = {6} },
 }
 
 delay = 1
