@@ -102,7 +102,8 @@ local WAVES = {
 }
 
 local function envelope(i, total)
-    local fs = floor(fadeLength * rate)
+    local fs = math.floor(fadeLength * rate)
+    fs = math.min(fs, math.floor(3*total/4))
 
     if i < fs then
         return i / fs
