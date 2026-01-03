@@ -169,10 +169,10 @@ local function genSound(length, tone, waveType, effects, volume)
 
         if waveType == "tilted saw" then
             local t = (phase / (2 * pi)) % 1
-            if t < 0.25 then
-                v = -1 + t * 2
+            if t < 0.5 then
+                v = -1 + t * 4
             else
-                v = -0.5 + (t - 0.25) * 2.6666667
+                v = 1 - (t - 0.5) * 2
             end
 
         elseif waveType == "square" then
