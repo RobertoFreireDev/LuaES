@@ -53,6 +53,17 @@ local function getpalette(i, a)
 
     return hexToRGB(COLORPALETTE[i], a)
 end
+
+function alphaToHex(v)
+    v = (v ~= nil and type(v) == "number") and v or 10
+    v = mid(0,v,10)
+    return string.format("%02X", floor((v / 10) * 255 + 0.5))
+end
+
+local function setcolor(c,a)
+    c = (c ~= nil and type(c) == "number") and c or defaultColor
+    love.graphics.setColor(getpalette(c,alphaToHex(a)))
+end
 --#endregion
 
 --#region table
@@ -406,6 +417,7 @@ local spriteSheetImages = {}
 local SPR_SIZE = 8
 local spritesPerRow = sheetWidth / SPR_SIZE
 local rerenderImage = { false, false, false, false, false, false, false, false } -- 8 spread sheets
+local LUAESSPRITESSHEETSDATA = "luaesspritesheetsdata"
 
 local function charToNum(c)
     if c >= '0' and c <= '9' then
@@ -428,20 +440,36 @@ function gpixel(i, x, y)
 end
 
 local function loadspritesheetdata()
-    for i=1,#spritesheetsdata do
-        spriteSheets[i] = love.image.newImageData(sheetWidth, sheetHeight)
-        local y = 1
-        for line in spritesheetsdata[i]:gmatch("[^\r\n]+") do
-            for x = 1, #line do
-                spixel(i, x, y, charToNum(line:sub(x, x)))
-            end
-            y = y + 1
+    createIfDoesntExist(LUAESSPRITESSHEETSDATA, spritesheetsdata)
+
+    local lineIter = loadFile(LUAESSPRITESSHEETSDATA)
+    local LINES_PER_IMAGE = 32
+
+    local img = 1
+    local y = 1
+
+    spriteSheets[img] = love.image.newImageData(sheetWidth, sheetHeight)
+
+    for line in lineIter do
+        for x = 1, #line do
+            spixel(img, x, y, charToNum(line:sub(x, x)))
         end
-        spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
+
+        y = y + 1
+
+        if y > LINES_PER_IMAGE then
+            spriteSheetImages[img] = love.graphics.newImage(spriteSheets[img])
+
+            img = img + 1
+            if img > 8 then break end
+
+            spriteSheets[img] = love.image.newImageData(sheetWidth, sheetHeight)
+            y = 1
+        end
     end
 end
 
-function spr(i, n, x, y, w, h, flip_x, flip_y)
+function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
     w = w or 1
     h = h or 1
     flip_x = flip_x and -1 or 1
@@ -454,6 +482,7 @@ function spr(i, n, x, y, w, h, flip_x, flip_y)
     local ox = flip_x == -1 and sw or 0
     local oy = flip_y == -1 and sh or 0
 
+    setcolor(c, a)
     love.graphics.draw(
         spriteSheetImages[i],
         love.graphics.newQuad(sx, sy, sw, sh, sheetWidth, sheetHeight),
@@ -462,21 +491,11 @@ function spr(i, n, x, y, w, h, flip_x, flip_y)
         flip_x, flip_y,
         ox, oy
     )
+    setcolor()
 end
 --#endregion
 
 --#region draw
-function alphaToHex(v)
-    v = (v ~= nil and type(v) == "number") and v or 10
-    v = mid(0,v,10)
-    return string.format("%02X", floor((v / 10) * 255 + 0.5))
-end
-
-local function setcolor(c,a)
-    c = (c ~= nil and type(c) == "number") and c or defaultColor
-    love.graphics.setColor(getpalette(c,alphaToHex(a)))
-end
-
 function print(text, x, y, c, a)
     setcolor(c, a)
     love.graphics.print(text, x, y)
