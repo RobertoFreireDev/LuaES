@@ -697,15 +697,19 @@ function circfill(x, y, r, c, a)
     setcolor()
 end
 
-function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
-    w = w or 1
-    h = h or 1
+function spr(i, n, x, y, w, h, flip_x, flip_y, scale_x, scale_y, c, a)
+    w = w and floor(w) or 1
+    h = h and floor(h) or 1
+
     flip_x = flip_x and -1 or 1
     flip_y = flip_y and -1 or 1
+    scale_x = mid(1, floor(scale_x or 1), 4)
+    scale_y = mid(1, floor(scale_y or 1), 4)
 
     local sx = floor((n - 1) % spritesPerRow) * SPR_SIZE
     local sy = floor((n - 1) / spritesPerRow) * SPR_SIZE
-    local sw, sh = SPR_SIZE * w, SPR_SIZE * h
+    local sw = SPR_SIZE * w
+    local sh = SPR_SIZE * h
 
     local ox = flip_x == -1 and sw or 0
     local oy = flip_y == -1 and sh or 0
@@ -716,8 +720,10 @@ function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
         love.graphics.newQuad(sx, sy, sw, sh, sheetWidth, sheetHeight),
         x, y,
         0,
-        flip_x, flip_y,
-        ox, oy
+        flip_x * scale_x,
+        flip_y * scale_y,
+        ox,
+        oy
     )
     setcolor()
 end

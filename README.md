@@ -5,7 +5,6 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 ## Pixel Editor
 
-- Tiles 8x8
 - Save and Load flags
 - Implement UI for Pixel Editor
 
@@ -13,7 +12,6 @@ Functions:
 
 - sflag -> set flag
 - gflag -> get flag
-- sspr(sx, sy, sw, sh, dx, dy, [dw], [dh]) — Draw a section of the sprite sheet.
 
 ## Map Editor
 
