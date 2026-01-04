@@ -614,6 +614,50 @@ local function savemapsdata()
 
     saveFile(LUAESMAPSDATA, table.concat(lines, "\n"))
 end
+
+function mget(i, x, y)
+    i = mid(1,i,MAP_COUNT)
+    x = math.floor(x)
+    y = math.floor(y)
+
+    if x < 1 or x > MAP_WIDTH_TILES then
+        return 0, 0
+    end
+    if y < 1 or y > MAP_HEIGHT then
+        return 0, 0
+    end
+
+    local map = maps[i]
+    if not map or not map[y] or not map[y][x] then
+        return 0, 0
+    end
+
+    local tile = map[y][x]
+
+    return tonumber(tile.sheet) or 0,
+           tonumber(tile.sprite) or 0
+end
+
+function mset(i, x, y, sheet, sprite)
+    i = mid(1,i,MAP_COUNT)
+    x = math.floor(x)
+    y = math.floor(y)
+
+    if x < 1 or x > MAP_WIDTH_TILES then return end
+    if y < 1 or y > MAP_HEIGHT then return end
+
+    sheet  = mid(0,(tonumber(sheet)  or 0),8)
+    sprite = mid(0,(tonumber(sprite) or 0),80)
+
+    maps[i] = maps[i] or {}
+    maps[i][y] = maps[i][y] or {}
+
+    maps[i][y][x] = {
+        sheet  = tostring(sheet),
+        sprite = (sprite < 10) and ("0" .. sprite) or tostring(sprite)
+    }
+end
+
 --#endregion
 
 --#region draw
@@ -676,6 +720,49 @@ function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
         ox, oy
     )
     setcolor()
+end
+
+function map(i, cel_x, cel_y, sx, sy, cel_w, cel_h)
+    i = floor(i or 1)
+    local mapdata = maps[i]
+    if not mapdata then return end
+
+    cel_x = floor(cel_x or 1)
+    cel_y = floor(cel_y or 1)
+    sx    = floor(sx or 0)
+    sy    = floor(sy or 0)
+
+    cel_w = cel_w or (MAP_WIDTH_TILES - cel_x + 1)
+    cel_h = cel_h or (MAP_HEIGHT      - cel_y + 1)
+
+    for my = 0, cel_h - 1 do
+        local ty = cel_y + my
+        if ty >= 1 and ty <= MAP_HEIGHT then
+            local row = mapdata[ty]
+            if row then
+                for mx = 0, cel_w - 1 do
+                    local tx = cel_x + mx
+                    if tx >= 1 and tx <= MAP_WIDTH_TILES then
+                        local tile = row[tx]
+
+                        if tile then
+                            local sheet  = tonumber(tile.sheet)  or 0
+                            local sprite = tonumber(tile.sprite) or 0
+
+                            if sprite ~= 0 then
+                                spr(
+                                    sheet,
+                                    sprite,
+                                    sx + mx * SPR_SIZE,
+                                    sy + my * SPR_SIZE
+                                )
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 --#endregion
 
@@ -998,6 +1085,9 @@ return {
     -- sprite --
     spixel = spixel,
     gpixel = gpixel,
+    -- map --
+    mget = mget,
+    mset = mset,
     -- draw --
     print = print,
     rect = rect,
@@ -1006,6 +1096,7 @@ return {
     circ = circ,
     circfill = circfill,
     spr = spr,
+    map = map,
     -- time --
     timer = timer,
     -- input --

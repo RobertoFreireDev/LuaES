@@ -3,7 +3,6 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 # TO DO List
 
-
 ## Pixel Editor
 
 - Tiles 8x8
@@ -18,16 +17,7 @@ Functions:
 
 ## Map Editor
 
-- Tiles 8x8
-- Create MapSheet. 8 maps. Each map 60x45 tiles (3x3 entire screens of map)
-- Save and Load MapSheet
 - Implement UI for Map Editor
-
-Functions:
-
-- map(cel_x, cel_y, sx, sy, [cel_w], [cel_h], [layer]) — Draw map tiles.
-- mget(x, y) — Get map tile.
-- mset(x, y, v) — Set map tile.
 
 ## Sfx Editor
 
