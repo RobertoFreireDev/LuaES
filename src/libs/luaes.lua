@@ -2,6 +2,7 @@ local audio = require("libs/audio")
 local bit = require("bit")
 local sfxdata = require("data/sfx")
 local spritesheetsdata = require("data/spritesheet")
+local mapsdata = require("data/map")
 local emptycartdata = require("data/emptycartdata")
 
 --#region global variables
@@ -541,11 +542,77 @@ end
 -- spritesheet index 0 means no spritesheet selected
 -- sprite index 0 means no tile
 local maps = {}
+local MAP_WIDTH_TILES  = 60
+local MAP_HEIGHT       = 45
+local MAP_COUNT        = 8
+local CHARS_PER_TILE   = 3
+local LUAESMAPSDATA    = "luaesmapsdata"
 
 local function loadmapsdata()
+    createIfDoesntExist(LUAESMAPSDATA, mapsdata)
+
+    local lineIter = loadFile(LUAESMAPSDATA)
+
+    maps = {}
+
+    local mapIndex = 1
+    local y = 1
+
+    maps[mapIndex] = {}
+
+    for line in lineIter do
+        maps[mapIndex][y] = {}
+
+        local x = 1
+        local i = 1
+
+        while i <= #line do
+            local spritesheetindex = line:sub(i, i)
+            local spriteindex    = line:sub(i + 1, i + 2)
+
+            maps[mapIndex][y][x] = {
+                sheet  = spritesheetindex,
+                sprite = spriteindex
+            }
+
+            x = x + 1
+            i = i + CHARS_PER_TILE
+        end
+
+        y = y + 1
+
+        if y > MAP_HEIGHT then
+            mapIndex = mapIndex + 1
+            if mapIndex > MAP_COUNT then
+                break
+            end
+            maps[mapIndex] = {}
+            y = 1
+        end
+    end
 end
 
 local function savemapsdata()
+    local lines = {}
+
+    for mapIndex = 1, MAP_COUNT do
+        local map = maps[mapIndex] or {}
+
+        for y = 1, MAP_HEIGHT do
+            local row = {}
+            local line = map[y] or {}
+
+            for x = 1, MAP_WIDTH_TILES do
+                local tile = line[x] or { sheet = 0, sprite = 0 }
+                row[#row + 1] = tile.sheet or 0
+                row[#row + 1] = tonumber(tile.sprite) < 10 and ("0"..tile.sprite) or tile.sprite
+            end
+
+            lines[#lines + 1] = table.concat(row)
+        end
+    end
+
+    saveFile(LUAESMAPSDATA, table.concat(lines, "\n"))
 end
 --#endregion
 
