@@ -58,8 +58,8 @@ end
 function _draw()    
     print("FPS: " ..stat(1), 10, 10, 4)
     camera(cam_x, cam_y)
-    rectfill(0,0,8,8,16)
+    rectfill(0,0,8,8,24)
     circfill(player.x, player.y, player.r, player.c)
     resetcamera()
-    rectfill(144,104,16,16,3)
+    rectfill(144,104,16,16,21)
 end
