@@ -618,8 +618,8 @@ end
 
 function mget(i, x, y)
     i = mid(1,i,MAP_COUNT)
-    x = math.floor(x)
-    y = math.floor(y)
+    x = floor(x)
+    y = floor(y)
 
     if x < 1 or x > MAP_WIDTH_TILES then
         return 0, 0
@@ -641,8 +641,8 @@ end
 
 function mset(i, x, y, sheet, sprite)
     i = mid(1,i,MAP_COUNT)
-    x = math.floor(x)
-    y = math.floor(y)
+    x = floor(x)
+    y = floor(y)
 
     if x < 1 or x > MAP_WIDTH_TILES then return end
     if y < 1 or y > MAP_HEIGHT_TILES then return end
@@ -815,6 +815,39 @@ function spr(i, n, x, y, w, h, flip_x, flip_y, scale_x, scale_y, c, a)
         oy
     )
     setcolor()
+end
+
+function fillsp(i, n, x, y, w, h, gap_x, gap_y, c, a)
+    w = floor(w or 1)
+    h = floor(h or 1)
+
+    gap_x = floor(gap_x or 0)
+    gap_y = floor(gap_y or 0)
+
+    x = floor(x or 0)
+    y = floor(y or 0)
+
+    local step_x = (1 + gap_x) * SPR_SIZE
+    local step_y = (1 + gap_y) * SPR_SIZE
+
+    for ty = 0, h - 1 do
+        for tx = 0, w - 1 do
+            spr(
+                i,
+                n,
+                x + tx * step_x,
+                y + ty * step_y,
+                1,
+                1,
+                false,
+                false,
+                1,
+                1,
+                c,
+                a
+            )
+        end
+    end
 end
 
 function map(i, cel_x, cel_y, sx, sy, cel_w, cel_h)
@@ -1195,6 +1228,7 @@ return {
     circ = circ,
     circfill = circfill,
     spr = spr,
+    fillsp = fillsp,
     map = map,
     -- time --
     timer = timer,
