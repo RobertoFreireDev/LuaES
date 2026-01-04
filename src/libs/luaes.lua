@@ -27,8 +27,8 @@ local function hexToRGB(hex, alfa)
 end
 
 local COLORPALETTE = {
-    [1] = "#f4f4f4",
-    [2] = "#000000",
+    [1] = "#ffffff",
+    [2] = "#1a1a1a",
     [3] = "#5d275d",
     [4] = "#b13e53",
     [5] = "#ef7d57",
@@ -42,13 +42,29 @@ local COLORPALETTE = {
     [13] = "#73eff7",
     [14] = "#94b0c2",
     [15] = "#566c86",
-    [16] = "#6b4226"
+    [16] = "#6b4226",
+    [17]  = "#f4f4f4",
+    [18]  = "#000000",
+    [19]  = "#421c42",
+    [20]  = "#7d2c3d",
+    [21]  = "#b35e41",
+    [22]  = "#c79f5a",
+    [23]  = "#7fb353",
+    [24]  = "#2a8a4c",
+    [25]  = "#1b5258",
+    [26] = "#1d254d",
+    [27] = "#2b4391",
+    [28] = "#2f78b8",
+    [29] = "#55b4ba",
+    [30] = "#6f8494",
+    [31] = "#3f5066",
+    [32] = "#4a2e1a"
 }
 
 local defaultColor = 1
 
 local function getpalette(i, a)
-    i = mid(0, i, 16)
+    i = mid(0, i, 32)
     if i <= 0 then
         return hexToRGB("#000000","00") -- transparent
     end
@@ -452,14 +468,10 @@ local function validCoord(x, y)
        and y >= 1 and y <= sheetHeight
 end
 
-local function validColor(c)
-    return type(c) == "number" and c >= 0 and c <= 16
-end
-
 function spixel(i, x, y, c)
     if not validSheet(i) then return end
     if not validCoord(x, y) then return end
-    if not validColor(c) then c = 0 end
+    c = (type(c) == "number" and c >= 0 and c <= 16) and c or 0
 
     spritesheetsdataastable[i] = spritesheetsdataastable[i] or {}
     spritesheetsdataastable[i][y] = spritesheetsdataastable[i][y] or {}
