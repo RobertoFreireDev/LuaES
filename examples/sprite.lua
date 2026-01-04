@@ -26,6 +26,11 @@ end
 
 function _draw()
     spr(1, 1, 20, 40)
-    spr(1, 1, 20, 60, 1, 1, false, false, 12, 6)
-    spr(1, 1, 20, 80, 1, 1, false, false, 4, 10)
+    spr(1, 1, 30, 40, 1, 2)
+    spr(1, 2, 40, 40, 1, 2)
+    spr(1, 1, 30, 50, 2, 1)
+    spr(1, 1, 20, 48, 1, 1, true, false)
+    spr(1, 1, 20, 56, 1, 1, false, true)
+    spr(1, 1, 20, 70, 1, 1, false, false, 12, 2)
+    spr(1, 1, 20, 80, 1, 1, false, false, 4, 8)
 end

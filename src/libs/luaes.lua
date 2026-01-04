@@ -523,6 +523,13 @@ local function savespritesheetdata()
     saveFile(LUAESSPRITESSHEETSDATA, table.concat(lines, "\n"))
 end
 
+function updatespritesheetimages()
+    for i=1,8 do
+        if rerenderImage[i] then
+            spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
+        end
+    end
+end
 
 function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
     w = w or 1
@@ -827,17 +834,14 @@ function love.load()
     loadsfxdata()
     loadspritesheetdata()
     _init()
+    updatespritesheetimages()
 end
 
 function love.update(dt)
     rerenderImage = { false, false, false, false, false, false, false, false }
     _update(dt)
     updatemusic()
-    for i=1,8 do
-        if rerenderImage[i] then
-            spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
-        end
-    end
+    updatespritesheetimages()
     updatePrevKeys()
 end
 
