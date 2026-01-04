@@ -989,8 +989,8 @@ function updateScale()
     local scaleXRaw = floor(window_width / VIRTUAL_WIDTH)
     local scaleYRaw = floor(window_height / VIRTUAL_HEIGHT)
     scale = min(scaleXRaw, scaleYRaw)
-    offsetX = (window_width - VIRTUAL_WIDTH * scale) / 2
-    offsetY = (window_height - VIRTUAL_HEIGHT * scale) / 2
+    offsetX = floor((window_width - VIRTUAL_WIDTH * scale) / 2)
+    offsetY = floor((window_height - VIRTUAL_HEIGHT * scale) / 2)
 end
 
 function love.load()
