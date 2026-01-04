@@ -266,7 +266,7 @@ local function buildSFX(data)
     local volume = string.format("%02d", tonumber(data.volume) or 0)
     local waveType = tostring(tonumber(data.waveType) or 0)
     local effects  = tostring(tonumber(data.effects) or 0)
-    local length  = tostring(tonumber(data.length) or "01")
+    local length   = string.format("%02d", tonumber(data.length) or "01")
     return tone .. volume .. waveType .. effects .. length
 end
 
@@ -412,9 +412,11 @@ end
 
 --#region sprite
 local spriteSheets = {}
+local spritesheetsdataastable = {}
 local sheetWidth, sheetHeight = 160, 32
 local spriteSheetImages = {}
 local SPR_SIZE = 8
+local MAX_SHEETS = 8
 local spritesPerRow = sheetWidth / SPR_SIZE
 local rerenderImage = { false, false, false, false, false, false, false, false } -- 8 spread sheets
 local LUAESSPRITESSHEETSDATA = "luaesspritesheetsdata"
@@ -429,14 +431,48 @@ local function charToNum(c)
     end
 end
 
+local function numToChar(n)
+    if n >= 0 and n <= 9 then
+        return tostring(n)
+    else
+        return string.char(string.byte('A') + (n - 10))
+    end
+end
+
+local function validSheet(i)
+    return type(i) == "number" and i >= 1 and i <= MAX_SHEETS
+end
+
+local function validCoord(x, y)
+    return type(x) == "number"
+       and type(y) == "number"
+       and x >= 1 and x <= sheetWidth
+       and y >= 1 and y <= sheetHeight
+end
+
+local function validColor(c)
+    return type(c) == "number" and c >= 0 and c <= 16
+end
+
 function spixel(i, x, y, c)
+    if not validSheet(i) then return end
+    if not validCoord(x, y) then return end
+    if not validColor(c) then c = 0 end
+
+    spritesheetsdataastable[i] = spritesheetsdataastable[i] or {}
+    spritesheetsdataastable[i][y] = spritesheetsdataastable[i][y] or {}
+    spritesheetsdataastable[i][y][x] = c
+
     local rgb = getpalette(c)
     spriteSheets[i]:setPixel(x-1, y-1, rgb[1], rgb[2], rgb[3], rgb[4])
     rerenderImage[i] = true
 end
 
 function gpixel(i, x, y)
-    return spriteSheets[i]:getPixel(x, y)
+    if not validSheet(i) then return 0 end
+    if not validCoord(x, y) then return 0 end
+    
+    return spritesheetsdataastable[i][y][x]
 end
 
 local function loadspritesheetdata()
@@ -468,6 +504,25 @@ local function loadspritesheetdata()
         end
     end
 end
+
+local function savespritesheetdata()
+    local lines = {}
+    local LINES_PER_IMAGE = 32
+
+    for img = 1, 8 do
+        for y = 1, LINES_PER_IMAGE do
+            local row = {}
+            for x = 1, sheetWidth do
+                local c = gpixel(img, x, y)
+                row[#row + 1] = numToChar(c)
+            end
+            lines[#lines + 1] = table.concat(row)
+        end
+    end
+
+    saveFile(LUAESSPRITESSHEETSDATA, table.concat(lines, "\n"))
+end
+
 
 function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
     w = w or 1
@@ -805,6 +860,7 @@ end
 
 function save()
     savesfxdata()
+    savespritesheetdata()
 end
 --#endregion
 
