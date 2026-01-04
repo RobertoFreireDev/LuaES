@@ -413,7 +413,7 @@ end
 --#region sprite
 local spriteSheets = {}
 local spritesheetsdataastable = {}
-local sheetWidth, sheetHeight = 160, 32
+local sheetWidth, sheetHeight = 160, 32 -- each spritesheet has 160x32 pixels with tile 8x8. Each spritesheet has 20x4 tiles => 1 to 80 index.
 local spriteSheetImages = {}
 local SPR_SIZE = 8
 local MAX_SHEETS = 8
@@ -529,6 +529,23 @@ function updatespritesheetimages()
             spriteSheetImages[i] = love.graphics.newImage(spriteSheets[i])
         end
     end
+end
+--#endregion
+
+--#region maps
+-- each map 180x45
+-- 45 x 8 maps = 360 lines
+-- 180 chars per line => 60 tiles. Each tile contains 3 chars
+-- each tile => 1 char (for spritesheet index 0 to 8) + 2 chars (for sprite index 0 to 80)
+-- notes:
+-- spritesheet index 0 means no spritesheet selected
+-- sprite index 0 means no tile
+local maps = {}
+
+local function loadmapsdata()
+end
+
+local function savemapsdata()
 end
 --#endregion
 
@@ -833,6 +850,7 @@ function love.load()
     updateScale()
     loadsfxdata()
     loadspritesheetdata()
+    loadmapsdata()
     _init()
     updatespritesheetimages()
 end
@@ -865,6 +883,7 @@ end
 function save()
     savesfxdata()
     savespritesheetdata()
+    savemapsdata()
 end
 --#endregion
 
