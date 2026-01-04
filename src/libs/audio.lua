@@ -68,10 +68,10 @@ local EFFECTS = {
         drop = 2.0
     }, -- drop
     [4] = {
-        fade_in = 0.1,
+        fade_in = 0.05,
     }, -- Fade in
     [5] = {
-        fade_out = 0.1
+        fade_out = 0.05
     }, -- Fade out
     [6] = {
         arp = {0, 4, 7},
@@ -85,8 +85,8 @@ local EFFECTS = {
         tremolo = { depth = 0.8, speed = 6 }
     }, -- Tremolo
     [9] = {
-        fade_in = 0.05,
-        fade_out = 0.05
+        fade_in = 0.025,
+        fade_out = 0.025
     } -- Fade in and Fade out- 
 }
 
