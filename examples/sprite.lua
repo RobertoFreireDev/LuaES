@@ -16,7 +16,7 @@ function _init()
     for y = 1, 8 do
         for x = 1, 8 do
             local color = ((x * y) % 16) + 1
-            spixel(imageIndex, x + 8, y, color)
+            spixel(imageIndex, x + 8, y, color + 16)
         end
     end
 end

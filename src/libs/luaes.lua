@@ -442,7 +442,7 @@ local LUAESSPRITESSHEETSDATA = "luaesspritesheetsdata"
 local function charToNum(c)
     if c >= '0' and c <= '9' then
         return tonumber(c)
-    elseif c >= 'A' and c <= 'G' then
+    elseif c >= 'A' and c <= 'X' then
         return 10 + (c:byte() - string.byte('A'))
     else
         return 0
@@ -452,8 +452,10 @@ end
 local function numToChar(n)
     if n >= 0 and n <= 9 then
         return tostring(n)
-    else
+    elseif n >= 10 and n <= 32 then
         return string.char(string.byte('A') + (n - 10))
+    else
+        return '0'
     end
 end
 
@@ -471,7 +473,7 @@ end
 function spixel(i, x, y, c)
     if not validSheet(i) then return end
     if not validCoord(x, y) then return end
-    c = (type(c) == "number" and c >= 0 and c <= 16) and c or 0
+    c = (type(c) == "number" and c >= 0 and c <= 32) and c or 0
 
     spritesheetsdataastable[i] = spritesheetsdataastable[i] or {}
     spritesheetsdataastable[i][y] = spritesheetsdataastable[i][y] or {}
