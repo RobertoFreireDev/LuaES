@@ -12,6 +12,10 @@ function _update(dt)
     if btnp(5) then
         sflag(1,5, 0, false)
     end
+
+    if btnp(1) then
+        save()
+    end
 end
 
 function _draw()

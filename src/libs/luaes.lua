@@ -3,6 +3,7 @@ local bit = require("bit")
 local sfxdata = require("data/sfx")
 local spritesheetsdata = require("data/spritesheet")
 local mapsdata = require("data/map")
+local flagdata = require("data/flag")
 local emptycartdata = require("data/emptycartdata")
 
 --#region global variables
@@ -546,7 +547,7 @@ local MAP_WIDTH_TILES  = 60
 local MAP_HEIGHT_TILES = 45
 local MAP_COUNT        = 8
 local CHARS_PER_TILE   = 3
-local LUAESMAPSDATA    = "luaesmapsdata"
+local LUAESMAPSDATA    = "luaesmapdata"
 
 local function loadmapsdata()
     createIfDoesntExist(LUAESMAPSDATA, mapsdata)
@@ -661,7 +662,11 @@ end
 --#endregion
 
 --#region flags
-local spritesFlags = {{},{},{},{},{},{},{},{}} -- Flags per spritesheets. 8 spritesheetss. each spritesheet has 80 flags
+local spritesFlags = {{},{},{},{},{},{},{},{}} -- Flags per spritesheets. 8 spritesheets. each spritesheet has 80 flags
+local LUAESFLAGSDATA = "luaesflagdata"
+local FLAGS_PER_LINE  = 80
+local CHARS_PER_FLAG  = 3
+local FLAG_LINES      = 8
 
 function sflag(spritesheetindex, spriteindex, f, v)
     if type(spritesheetindex) ~= "number" or type(spriteindex) ~= "number" or type(f) ~= "number" or (f < 0 or f > 7) or (spritesheetindex < 1 or spritesheetindex > 8) or (spritesheetindex < 1 or spritesheetindex > 80) then
@@ -693,6 +698,54 @@ function gflag(spritesheetindex, spriteindex, f)
     if f < 0 or f > 7 then return false end
     local mask  = shl(1, f)
     return band(flags, mask) ~= 0
+end
+
+local function loadflagsdata()
+    createIfDoesntExist(LUAESFLAGSDATA, flagdata)
+    local lineIter = loadFile(LUAESFLAGSDATA)
+
+    local lineIndex = 1
+
+    for line in lineIter do
+        if lineIndex > FLAG_LINES then break end
+
+        spritesFlags[lineIndex] = {}
+
+        local i = 1
+        local flagIndex = 1
+
+        while i <= #line and flagIndex <= FLAGS_PER_LINE do
+            local value = tonumber(line:sub(i, i + 2)) or 0
+            spritesFlags[lineIndex][flagIndex] = value
+
+            i = i + CHARS_PER_FLAG
+            flagIndex = flagIndex + 1
+        end
+
+        lineIndex = lineIndex + 1
+    end
+end
+
+local function saveflagsdata()
+    local lines = {}
+
+    for lineIndex = 1, FLAG_LINES do
+        local row = {}
+        local line = spritesFlags[lineIndex] or {}
+
+        for i = 1, FLAGS_PER_LINE do
+            local value = line[i] or 0
+            value = mid(0, value, 255)
+            row[#row + 1] = -- always 3 chars (000–255)
+                value < 10  and ("00" .. value) or
+                value < 100 and ("0"  .. value) or
+                tostring(value)
+        end
+
+        lines[#lines + 1] = table.concat(row)
+    end
+
+    saveFile(LUAESFLAGSDATA, table.concat(lines, "\n"))
 end
 --#endregion
 
@@ -1046,6 +1099,7 @@ function love.load()
     loadsfxdata()
     loadspritesheetdata()
     loadmapsdata()
+    loadflagsdata()
     _init()
     updatespritesheetimages()
 end
@@ -1079,6 +1133,7 @@ function save()
     savesfxdata()
     savespritesheetdata()
     savemapsdata()
+    saveflagsdata()
 end
 --#endregion
 
