@@ -530,31 +530,6 @@ function updatespritesheetimages()
         end
     end
 end
-
-function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
-    w = w or 1
-    h = h or 1
-    flip_x = flip_x and -1 or 1
-    flip_y = flip_y and -1 or 1
-
-    local sx = ((n - 1) % spritesPerRow) * SPR_SIZE
-    local sy = ((n - 1) / spritesPerRow) * SPR_SIZE
-    local sw, sh = SPR_SIZE * w, SPR_SIZE * h
-
-    local ox = flip_x == -1 and sw or 0
-    local oy = flip_y == -1 and sh or 0
-
-    setcolor(c, a)
-    love.graphics.draw(
-        spriteSheetImages[i],
-        love.graphics.newQuad(sx, sy, sw, sh, sheetWidth, sheetHeight),
-        x, y,
-        0,
-        flip_x, flip_y,
-        ox, oy
-    )
-    setcolor()
-end
 --#endregion
 
 --#region draw
@@ -591,6 +566,31 @@ end
 function circfill(x, y, r, c, a)
     setcolor(c, a)
     love.graphics.circle("fill", x, y, r)
+    setcolor()
+end
+
+function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
+    w = w or 1
+    h = h or 1
+    flip_x = flip_x and -1 or 1
+    flip_y = flip_y and -1 or 1
+
+    local sx = ((n - 1) % spritesPerRow) * SPR_SIZE
+    local sy = ((n - 1) / spritesPerRow) * SPR_SIZE
+    local sw, sh = SPR_SIZE * w, SPR_SIZE * h
+
+    local ox = flip_x == -1 and sw or 0
+    local oy = flip_y == -1 and sh or 0
+
+    setcolor(c, a)
+    love.graphics.draw(
+        spriteSheetImages[i],
+        love.graphics.newQuad(sx, sy, sw, sh, sheetWidth, sheetHeight),
+        x, y,
+        0,
+        flip_x, flip_y,
+        ox, oy
+    )
     setcolor()
 end
 --#endregion
@@ -912,7 +912,6 @@ return {
     -- sprite --
     spixel = spixel,
     gpixel = gpixel,
-    spr = spr,
     -- draw --
     print = print,
     rect = rect,
@@ -920,6 +919,7 @@ return {
     line = line,
     circ = circ,
     circfill = circfill,
+    spr = spr,
     -- time --
     timer = timer,
     -- input --
