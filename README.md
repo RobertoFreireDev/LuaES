@@ -7,8 +7,6 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 ## Pixel Editor
 
 - Tiles 8x8
-- Create SpriteSheet
-- Save and Load SpriteSheet
 - Save and Load flags
 - Implement UI for Pixel Editor
 
