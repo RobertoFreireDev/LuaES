@@ -84,6 +84,24 @@ local function setcolor(c,a)
 end
 --#endregion
 
+--#region fonts
+local fonts = {
+    [1] = { font = "fonts/Bytesized-Regular.ttf", size = 8 },
+    [2] = { font = "fonts/Micro5-Regular.ttf", size = 11 },
+    [3] = { font = "fonts/Tiny5-Regular.ttf", size = 8 },    
+    [4] = { font = "fonts/PressStart2P-Regular.ttf", size = 8 },
+    [5] = { font = "fonts/JacquardaBastarda9-Regular.ttf", size = 13 },
+    [6] = { font = "fonts/Tiny5-Regular.ttf", size = 16 },
+}
+
+function font(i)
+    i = mid(1,i,6)
+    local f = love.graphics.newFont(fonts[i].font, fonts[i].size)
+    f:setFilter("nearest", "nearest")
+    love.graphics.setFont(f)
+end
+--#endregion
+
 --#region table
 function add(t, v)
     t[#t + 1] = v
@@ -1141,7 +1159,7 @@ function love.load()
     love.window.setTitle("LuaES")
     love.graphics.setDefaultFilter("nearest", "nearest")
     love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
-    love.graphics.setFont(love.graphics.newFont("fonts/Tiny5-Regular.ttf", 8))
+    font(1)
     updateScale()
     loadsfxdata()
     loadspritesheetdata()
@@ -1214,6 +1232,8 @@ return {
     ssfx   = ssfx,
     music  = music,
     smusic = smusic,
+    -- font --
+    font = font,
     -- system --
     stat = stat,
     save = save,
