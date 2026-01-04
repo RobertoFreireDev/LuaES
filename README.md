@@ -8,11 +8,6 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 - Save and Load flags
 - Implement UI for Pixel Editor
 
-Functions:
-
-- sflag -> set flag
-- gflag -> get flag
-
 ## Map Editor
 
 - Implement UI for Map Editor

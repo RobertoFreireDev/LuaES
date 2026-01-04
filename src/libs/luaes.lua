@@ -660,6 +660,42 @@ end
 
 --#endregion
 
+--#region flags
+local spritesFlags = {{},{},{},{},{},{},{},{}} -- Flags per spritesheets. 8 spritesheetss. each spritesheet has 80 flags
+
+function sflag(spritesheetindex, spriteindex, f, v)
+    if type(spritesheetindex) ~= "number" or type(spriteindex) ~= "number" or type(f) ~= "number" or (f < 0 or f > 7) or (spritesheetindex < 1 or spritesheetindex > 8) or (spritesheetindex < 1 or spritesheetindex > 80) then
+        return
+    end
+
+    local flags = spritesFlags[spritesheetindex][spriteindex] or 0
+    local mask  = shl(1, f)
+
+    if v then
+        flags = bor(flags, mask) -- set bit
+    else
+        flags = band(flags, bxor(mask, -1)) -- clear bit
+    end
+
+    spritesFlags[spritesheetindex][spriteindex] = flags
+end
+
+function gflag(spritesheetindex, spriteindex, f)
+    if (type(spritesheetindex) ~= "number" or type(spriteindex) ~= "number") or (spritesheetindex < 1 or spritesheetindex > 8) or (spritesheetindex < 1 or spritesheetindex > 80) then
+        return false
+    end
+    local flags = spritesFlags[spritesheetindex][spriteindex] or 0
+
+    if f == nil or type(f) ~= "number" then
+        return flags
+    end
+
+    if f < 0 or f > 7 then return false end
+    local mask  = shl(1, f)
+    return band(flags, mask) ~= 0
+end
+--#endregion
+
 --#region draw
 function print(text, x, y, c, a)
     setcolor(c, a)
@@ -1093,6 +1129,9 @@ return {
     -- map --
     mget = mget,
     mset = mset,
+    -- flags --
+    gflag = gflag,
+    sflag = sflag,
     -- draw --
     print = print,
     rect = rect,
