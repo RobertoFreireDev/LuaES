@@ -3,15 +3,6 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 # TO DO List
 
-## Input
-
-- add Scroll up and down to mouse()
-
-## Timer Functions
-
-- custom timer parameter
-- pause timer parameter
-- resume timer parameter
 
 ## Pixel Editor
 

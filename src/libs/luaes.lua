@@ -533,6 +533,63 @@ function circfill(x, y, r, c, a)
 end
 --#endregion
 
+--#region time
+timer = {
+    list = {}
+}
+
+local function newTime()
+    return {
+        startTime = love.timer.getTime(),
+        pauseTime = 0,
+        offset    = 0,
+        paused    = false
+    }
+end
+
+local function normIndex(i)
+    i = (type(i) == "number") and i or 1
+    return mid(1, i, 64)
+end
+
+function timer:create(i)
+    i = normIndex(i)
+    self.list[i] = newTime()
+end
+
+function timer:get(i)
+    i = normIndex(i)
+    local t = self.list[i]
+    if not t then return 0 end
+
+    if t.paused then
+        return t.pauseTime
+    end
+
+    return love.timer.getTime() - t.startTime + t.offset
+end
+
+function timer:pause(i)
+    i = normIndex(i)
+    local t = self.list[i]
+    if not t or t.paused then return end
+
+    t.pauseTime = self:get(i)
+    t.paused = true
+end
+
+function timer:resume(i)
+    i = normIndex(i)
+    local t = self.list[i]
+    if not t or not t.paused then return end
+
+    t.startTime = love.timer.getTime()
+    t.offset    = t.pauseTime
+    t.paused    = false
+end
+
+--#endregion
+
 --#region status
 function stat(n)
     if n == 1 then
@@ -545,7 +602,7 @@ function stat(n)
         return love.graphics.getHeight()
     elseif n == 5 then
         return love.system.getOS()
-    elseif n == 6 then -- Seconds afte application started
+    elseif n == 6 then -- Seconds after application started
         return love.timer.getTime()
     elseif n == 7 then -- Local time as table        
         return os.date("*t")
@@ -752,9 +809,12 @@ end
 --#endregion
 
 return {
-    -- table functions --
-    add    = add,
-    -- math functions --
+    -- table --
+    add     = add,
+    del     = del,
+    foreach = foreach,
+    all     = all,
+    -- math --
     mid    = mid,
     sgn    = sgn,
     abs    = abs,
@@ -773,38 +833,40 @@ return {
     bxor   = bxor,
     shl    = shl,
     shr    = shr,
-    -- sfx functions --
+    -- sfx --
     sfx    = sfx,
     ssfx   = ssfx,
     music  = music,
     smusic = smusic,
-    -- system functions --
+    -- system --
     stat = stat,
     save = save,
     exit = exit,
-    -- save game functions --
+    -- save game --
     sdata = sdata,
     gdata = gdata,
     cdata = cdata,
-    -- camera functions --
+    -- camera --
     camera = camera,
     resetcamera = resetcamera,
-    -- sprite functions --
+    -- sprite --
     spixel = spixel,
     gpixel = gpixel,
     spr = spr,
-    -- draw functions --
+    -- draw --
     print = print,
     rect = rect,
     rectfill = rectfill,
     line = line,
     circ = circ,
     circfill = circfill,
-    -- input functions --
+    -- time --
+    timer = timer,
+    -- input --
     btn = btn,
     btnp = btnp,
     mouse = mouse,
-    -- loop functions --
+    -- loop --
     _init = _init,
     _update = _update,
     _draw = _draw,
