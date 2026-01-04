@@ -543,7 +543,7 @@ end
 -- sprite index 0 means no tile
 local maps = {}
 local MAP_WIDTH_TILES  = 60
-local MAP_HEIGHT       = 45
+local MAP_HEIGHT_TILES = 45
 local MAP_COUNT        = 8
 local CHARS_PER_TILE   = 3
 local LUAESMAPSDATA    = "luaesmapsdata"
@@ -581,7 +581,7 @@ local function loadmapsdata()
 
         y = y + 1
 
-        if y > MAP_HEIGHT then
+        if y > MAP_HEIGHT_TILES then
             mapIndex = mapIndex + 1
             if mapIndex > MAP_COUNT then
                 break
@@ -598,7 +598,7 @@ local function savemapsdata()
     for mapIndex = 1, MAP_COUNT do
         local map = maps[mapIndex] or {}
 
-        for y = 1, MAP_HEIGHT do
+        for y = 1, MAP_HEIGHT_TILES do
             local row = {}
             local line = map[y] or {}
 
@@ -623,7 +623,7 @@ function mget(i, x, y)
     if x < 1 or x > MAP_WIDTH_TILES then
         return 0, 0
     end
-    if y < 1 or y > MAP_HEIGHT then
+    if y < 1 or y > MAP_HEIGHT_TILES then
         return 0, 0
     end
 
@@ -644,7 +644,7 @@ function mset(i, x, y, sheet, sprite)
     y = math.floor(y)
 
     if x < 1 or x > MAP_WIDTH_TILES then return end
-    if y < 1 or y > MAP_HEIGHT then return end
+    if y < 1 or y > MAP_HEIGHT_TILES then return end
 
     sheet  = mid(0,(tonumber(sheet)  or 0),8)
     sprite = mid(0,(tonumber(sprite) or 0),80)
@@ -703,8 +703,8 @@ function spr(i, n, x, y, w, h, flip_x, flip_y, c, a)
     flip_x = flip_x and -1 or 1
     flip_y = flip_y and -1 or 1
 
-    local sx = ((n - 1) % spritesPerRow) * SPR_SIZE
-    local sy = ((n - 1) / spritesPerRow) * SPR_SIZE
+    local sx = floor((n - 1) % spritesPerRow) * SPR_SIZE
+    local sy = floor((n - 1) / spritesPerRow) * SPR_SIZE
     local sw, sh = SPR_SIZE * w, SPR_SIZE * h
 
     local ox = flip_x == -1 and sw or 0
@@ -732,19 +732,18 @@ function map(i, cel_x, cel_y, sx, sy, cel_w, cel_h)
     sx    = floor(sx or 0)
     sy    = floor(sy or 0)
 
-    cel_w = cel_w or (MAP_WIDTH_TILES - cel_x + 1)
-    cel_h = cel_h or (MAP_HEIGHT      - cel_y + 1)
+    cel_w = floor(cel_w or (MAP_WIDTH_TILES  - cel_x + 1))
+    cel_h = floor(cel_h or (MAP_HEIGHT_TILES - cel_y + 1))
 
     for my = 0, cel_h - 1 do
         local ty = cel_y + my
-        if ty >= 1 and ty <= MAP_HEIGHT then
+        if ty >= 1 and ty <= MAP_HEIGHT_TILES then
             local row = mapdata[ty]
             if row then
                 for mx = 0, cel_w - 1 do
                     local tx = cel_x + mx
                     if tx >= 1 and tx <= MAP_WIDTH_TILES then
                         local tile = row[tx]
-
                         if tile then
                             local sheet  = tonumber(tile.sheet)  or 0
                             local sprite = tonumber(tile.sprite) or 0
