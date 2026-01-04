@@ -5,12 +5,12 @@ end
 
 function _update(dt)
     if btnp(4) then
-        sflag(1,5, 0, true)
-        sflag(1,5, 2, true)
+        fset(1,5, 0, true)
+        fset(1,5, 2, true)
     end
 
     if btnp(5) then
-        sflag(1,5, 0, false)
+        fset(1,5, 0, false)
     end
 
     if btnp(1) then
@@ -19,7 +19,7 @@ function _update(dt)
 end
 
 function _draw()
-    print(tostring(gflag(1, 5, 0) and "true" or "false"), 10, 10)
-    print(tostring(gflag(1, 5, 2) and "true" or "false"), 10, 20)
-    print(gflag(1,5), 10, 30)
+    print(tostring(fget(1, 5, 0) and "true" or "false"), 10, 10)
+    print(tostring(fget(1, 5, 2) and "true" or "false"), 10, 20)
+    print(fget(1,5), 10, 30)
 end

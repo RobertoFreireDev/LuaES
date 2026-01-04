@@ -668,7 +668,7 @@ local FLAGS_PER_LINE  = 80
 local CHARS_PER_FLAG  = 3
 local FLAG_LINES      = 8
 
-function sflag(spritesheetindex, spriteindex, f, v)
+function fset(spritesheetindex, spriteindex, f, v)
     if type(spritesheetindex) ~= "number" or type(spriteindex) ~= "number" or type(f) ~= "number" or (f < 0 or f > 7) or (spritesheetindex < 1 or spritesheetindex > 8) or (spritesheetindex < 1 or spritesheetindex > 80) then
         return
     end
@@ -685,7 +685,7 @@ function sflag(spritesheetindex, spriteindex, f, v)
     spritesFlags[spritesheetindex][spriteindex] = flags
 end
 
-function gflag(spritesheetindex, spriteindex, f)
+function fget(spritesheetindex, spriteindex, f)
     if (type(spritesheetindex) ~= "number" or type(spriteindex) ~= "number") or (spritesheetindex < 1 or spritesheetindex > 8) or (spritesheetindex < 1 or spritesheetindex > 80) then
         return false
     end
@@ -1185,8 +1185,8 @@ return {
     mget = mget,
     mset = mset,
     -- flags --
-    gflag = gflag,
-    sflag = sflag,
+    fget = fget,
+    fset = fset,
     -- draw --
     print = print,
     rect = rect,
