@@ -1,23 +1,10 @@
 # LuaES
 Game engine like Pico 8 but using Love2d to be able to play at hardware that supports opengl es
 
-# TO DO List
+# Implement UI
 
-## Pixel Editor
-
-- Implement UI for Pixel Editor
-
-## Map Editor
-
-- Implement UI for Map Editor
-
-## Sfx Editor
-
-- Implement UI for Sfx Editor
-
-## Music Editor
-
-- Implement UI for Sfx Editor
+- Implement UI for Sprite/Map Editor
+- Implement UI for Sfx/Music Editor
 
 # Run on ArkOS RG353PS 
 
