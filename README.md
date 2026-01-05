@@ -3,6 +3,8 @@ Game engine like Pico 8 but using Love2d to be able to play at hardware that sup
 
 # Implement UI
 
+- Add joystick in buttons as well
+- Save/Load Music patterns in txt file
 - Implement UI for Sprite/Map Editor
 - Implement UI for Sfx/Music Editor
 
