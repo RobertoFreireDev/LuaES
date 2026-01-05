@@ -42,6 +42,18 @@ local noiseValue = 0
 local noiseCounter = 0
 local noiseRate = 32
 
+local function envelope(i, total, fadeLength)
+    local fs = math.floor(fadeLength * rate)
+    fs = math.min(fs, math.floor(3*total/4))
+
+    if i < fs then
+        return i / fs
+    elseif i > total - fs then
+        return (total - i) / fs
+    end
+    return 1
+end
+
 local function sampleWave(phase, wave)
     if wave == "square" then
         return (sin(phase) > 0) and 0.4 or -0.4
@@ -86,7 +98,8 @@ local function sampleWave(phase, wave)
     return 0
 end
 
-local function genMusic(pattern)
+local function genMusic(pattern, fadeLength)
+    fadeLength = fadeLength and fadeLength or 1/10
     local totalLen = 0
     for _, n in ipairs(pattern) do
         totalLen = totalLen + (n.length or 1) / 32
@@ -143,7 +156,8 @@ local function genMusic(pattern)
 
         local v = sampleWave(phase, WAVES[note.waveType] or "square")
 
-        local env = 1
+        local env = envelope(i, sampleCount, fadeLength)
+
         if effects.fade_in then
             env = math.min(1, noteTime / effects.fade_in)
         end
