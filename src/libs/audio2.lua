@@ -2,13 +2,12 @@ local floor = math.floor
 local sin   = math.sin
 local pi    = math.pi
 local exp   = math.exp
-local rate = 22050
+local rate  = 22050
 
 local notes = {}
 do
     local A4 = 440.0
     local names = {"C","Cs","D","Ds","E","F","Fs","G","Gs","A","As","B"}
-
     for n = 12, 131 do
         local freq = A4 * 2 ^ ((n - 69) / 12)
         local octave = floor(n / 12) - 1
@@ -25,6 +24,7 @@ local EFFECTS = {
     [6] = { arp = {0,4,7}, arpSpeed = 0.03 },
     [7] = { arp = {0,4,7}, arpSpeed = 0.12 },
     [8] = { tremolo = { depth = 0.8, speed = 6 } },
+    [9] = { fade_in = 0.025, fade_out = 0.025 },
 }
 
 local WAVES = {
@@ -38,19 +38,15 @@ local WAVES = {
     [8] = "phaser",
 }
 
-local noiseValue = 0
+local noiseValue   = 0
 local noiseCounter = 0
-local noiseRate = 32
+local noiseRate    = 32
 
 local function envelope(i, total, fadeLength)
-    local fs = math.floor(fadeLength * rate)
-    fs = math.min(fs, math.floor(3*total/4))
-
-    if i < fs then
-        return i / fs
-    elseif i > total - fs then
-        return (total - i) / fs
-    end
+    local fs = floor(fadeLength * rate)
+    fs = math.min(fs, floor(3 * total / 4))
+    if i < fs then return i / fs end
+    if i > total - fs then return (total - i) / fs end
     return 1
 end
 
@@ -99,7 +95,7 @@ local function sampleWave(phase, wave)
 end
 
 local function genMusic(pattern, fadeLength)
-    fadeLength = fadeLength and fadeLength or 1/10
+    fadeLength = fadeLength or 1/10
     local totalLen = 0
     for _, n in ipairs(pattern) do
         totalLen = totalLen + (n.length or 1) / 32
@@ -113,7 +109,7 @@ local function genMusic(pattern, fadeLength)
     local dt = 1 / rate
 
     local noteIndex = 1
-    local noteTime = 0
+    local noteTime  = 0
 
     for i = 0, sampleCount - 1 do
         local note = pattern[noteIndex]
@@ -125,10 +121,7 @@ local function genMusic(pattern, fadeLength)
             note = pattern[noteIndex]
         end
 
-        local freq = type(note.tone) == "string"
-            and notes[note.tone]
-            or note.tone or 440
-
+        local freq = type(note.tone) == "string" and notes[note.tone] or note.tone or 440
         local effects = EFFECTS[note.effects or 0] or {}
 
         if effects.arp then
@@ -147,19 +140,16 @@ local function genMusic(pattern, fadeLength)
         end
 
         if effects.vibrato then
-            freq = freq * (1 + sin(t * effects.vibrato.speed * 2*pi)
-                * effects.vibrato.depth)
+            freq = freq * (1 + sin(t * effects.vibrato.speed * 2*pi) * effects.vibrato.depth)
         end
 
-        local phaseInc = 2 * pi * freq * dt
-        phase = phase + phaseInc
-
+        phase = phase + 2 * pi * freq * dt
         local v = sampleWave(phase, WAVES[note.waveType] or "square")
 
         local env = envelope(i, sampleCount, fadeLength)
 
         if effects.fade_in then
-            env = math.min(1, noteTime / effects.fade_in)
+            env = math.min(env, noteTime / effects.fade_in)
         end
         if effects.fade_out then
             env = math.min(env, (noteLen - noteTime) / effects.fade_out)
