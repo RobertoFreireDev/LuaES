@@ -95,7 +95,7 @@ local function sampleWave(phase, wave)
 end
 
 local function genMusic(pattern, fadeLength)
-    fadeLength = fadeLength or 1/10
+    fadeLength = fadeLength or 1/200
     local totalLen = 0
     for _, n in ipairs(pattern) do
         totalLen = totalLen + (n.length or 1) / 32

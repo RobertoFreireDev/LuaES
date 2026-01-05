@@ -1,4 +1,4 @@
-local audio = require("libs/audio")
+local audio = require("libs/audio2")
 local bit = require("bit")
 local sfxdata = require("data/sfx")
 local spritesheetsdata = require("data/spritesheet")
