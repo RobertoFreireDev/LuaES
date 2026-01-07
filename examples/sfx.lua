@@ -1,6 +1,6 @@
 require("libs/luaes")
 
-local n,v,l,w,e ="C3",1,4,1,4
+local n,v,l,w,e ="C3",1,1,1,4
 
 function addsounds()
   for i=1,16 do
@@ -27,7 +27,7 @@ function _update(dt)
         addsounds()
     end
 
-    if btnp(2) and e < 9 then
+    if btnp(2) and e < 8 then
         e = e + 1
         addsounds()
     elseif btnp(3) and e > 0 then
@@ -57,7 +57,6 @@ local EFFECTS = {
     [6] = "fast arp",
     [7] = "slow arp",
     [8] = "tremolo",
-    [9] ="fade_in fade_out",
 }
 
 function _draw()

@@ -19,12 +19,11 @@ local EFFECTS = {
     [1] = { slide = { depth = 12, speed = 3 } },
     [2] = { vibrato = { depth = 0.02, speed = 6 } },
     [3] = { drop = 2.0 },
-    [4] = { fade_in = 0.01 },
-    [5] = { fade_out =  0.01 },
+    [4] = { fade_in = 0.04, fade_out = 0.01 },
+    [5] = { fade_in = 0.01, fade_out = 0.04 },
     [6] = { arp = {0,4,7}, arpSpeed = 0.03 },
     [7] = { arp = {0,4,7}, arpSpeed = 0.12 },
     [8] = { tremolo = { depth = 0.8, speed = 6 } },
-    [9] = { fade_in = 0.025, fade_out = 0.025 },
 }
 
 local WAVES = {

@@ -20,22 +20,22 @@ local SFX1 = {
 }
 
 local SFX2 = {
-  {note="C3", volume = 0.4,   length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.1, length=6, wave=1, effect=9},
-  {note=0, volume = 0.0, length=6, wave=0, effect=9},
-  {note="C3", volume = 0.4,   length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=6, wave=1, effect=9},
-  {note="C3", volume = 0.1, length=6, wave=1, effect=9},
-  {note=0, volume = 0.0, length=6, wave=0, effect=9},
+  {note="C3", volume = 0.4,   length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.1, length=6, wave=1, effect=5},
+  {note=0, volume = 0.0, length=6, wave=0, effect=5},
+  {note="C3", volume = 0.4,   length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=6, wave=1, effect=5},
+  {note="C3", volume = 0.1, length=6, wave=1, effect=5},
+  {note=0, volume = 0.0, length=6, wave=0, effect=5},
 }
 
 local SFX3 = {
@@ -110,14 +110,14 @@ local SFX7 = {
 }
 
 local SFX8 = { 
-  {note="C3", volume = 0.4,   length=1, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=1, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=1, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=1, wave=1, effect=9},
-  {note="C3", volume = 0.4, length=1, wave=1, effect=9},
-  {note="C3", volume = 0.2, length=1, wave=1, effect=9},
-  {note="C3", volume = 0.1, length=1, wave=1, effect=9},
-  {note=0, volume = 0.0, length=1, wave=0, effect=9},
+  {note="C3", volume = 0.4,   length=1, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=1, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=1, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=1, wave=1, effect=5},
+  {note="C3", volume = 0.4, length=1, wave=1, effect=5},
+  {note="C3", volume = 0.2, length=1, wave=1, effect=5},
+  {note="C3", volume = 0.1, length=1, wave=1, effect=5},
+  {note=0, volume = 0.0, length=1, wave=0, effect=5},
 }
 
 local SFX9 = {
