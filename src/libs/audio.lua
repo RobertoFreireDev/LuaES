@@ -19,8 +19,8 @@ local EFFECTS = {
     [1] = { slide = { depth = 12, speed = 3 } },
     [2] = { vibrato = { depth = 0.02, speed = 6 } },
     [3] = { drop = 2.0 },
-    [4] = { fade_in = 0.05 },
-    [5] = { fade_out = 0.05 },
+    [4] = { fade_in = 0.01 },
+    [5] = { fade_out =  0.01 },
     [6] = { arp = {0,4,7}, arpSpeed = 0.03 },
     [7] = { arp = {0,4,7}, arpSpeed = 0.12 },
     [8] = { tremolo = { depth = 0.8, speed = 6 } },
@@ -55,7 +55,7 @@ local function sampleWave(phase, wave)
         return (sin(phase) > 0) and 0.4 or -0.4
 
     elseif wave == "triangle" then
-        return (2 / pi) * math.asin(sin(phase))
+        return (2 / pi) * math.asin(math.sin(phase - pi/2))
 
     elseif wave == "saw" then
         return 2 * ((phase / (2*pi)) % 1) - 1
@@ -79,7 +79,7 @@ local function sampleWave(phase, wave)
         ) * 0.25
 
     elseif wave == "phaser" then
-        local lfo = 0.5 * sin(phase * 0.5)
+        local lfo = 0.5 * sin(phase * 0.5 + pi/2)
         return sin(phase + lfo * 3)
 
     elseif wave == "noise" then
@@ -95,7 +95,7 @@ local function sampleWave(phase, wave)
 end
 
 local function genMusic(pattern, fadeLength)
-    fadeLength = fadeLength or 1/200
+    fadeLength = fadeLength or 1/10
     local totalLen = 0
     for _, n in ipairs(pattern) do
         totalLen = totalLen + (n.length or 1) / 32
