@@ -1,11 +1,25 @@
 require("libs/luaes")
 
-local n,v,l,w,e ="C3",1,1,1,4
+local v,l,w,e =1,4,1,4
 
 function addsounds()
-  for i=1,16 do
-    ssfx(i, n, v, w, e, l)
-  end
+  ssfx(1, "C3", v, w, e, l)
+  ssfx(2, "C3", v, w, e, l)
+  ssfx(3, "C3", v, w, e, l)
+  ssfx(4, "C3", v, w, e, l)
+  ssfx(5, "C3", v, w, e, l)
+  ssfx(6, "C3", v, w, e, l)
+  ssfx(7, "C3", v, w, e, l)
+  ssfx(8, "C3", v, w, e, l)
+
+  ssfx(17, "C3", v, w, e, l)
+  ssfx(18, "D3", v, w, e, l)
+  ssfx(19, "E3", v, w, e, l)
+  ssfx(20, "F3", v, w, e, l)
+  ssfx(21, "G3", v, w, e, l)
+  ssfx(22, "A3", v, w, e, l)
+  ssfx(23, "B3", v, w, e, l)
+  ssfx(24, "C4", v, w, e, l)
 end
 
 function _init()
@@ -17,6 +31,10 @@ end
 function _update(dt)
     if btnp(4) then
         sfx(1)
+    end
+
+    if btnp(5) then
+        sfx(2)
     end
 
     if btnp(1) and w < 8  then
