@@ -41,14 +41,6 @@ local noiseValue   = 0
 local noiseCounter = 0
 local noiseRate    = 32
 
-local function envelope(i, total, fadeLength)
-    local fs = floor(fadeLength * rate)
-    fs = math.min(fs, floor(3 * total / 4))
-    if i < fs then return i / fs end
-    if i > total - fs then return (total - i) / fs end
-    return 1
-end
-
 local function sampleWave(phase, wave)
     if wave == "square" then
         return (sin(phase) > 0) and 0.4 or -0.4

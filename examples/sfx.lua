@@ -37,19 +37,35 @@ function _update(dt)
         sfx(2)
     end
 
-    if btnp(1) and w < 8  then
-        w = w + 1
-        addsounds()
-    elseif btnp(0) and w > 1 then
-        w = w - 1
+    if btnp(0)  then
+        v = v + 0.2
+        if v > 1 then
+            v = 0
+        end
         addsounds()
     end
 
-    if btnp(2) and e < 8 then
-        e = e + 1
+    if btnp(1)  then
+        w = w + 1
+        if w == 8 then
+            w = 1
+        end
         addsounds()
-    elseif btnp(3) and e > 0 then
-        e = e - 1
+    end
+
+    if btnp(2)  then
+        l = l + 2
+        if l > 14 then
+            l = 1
+        end
+        addsounds()
+    end
+
+    if btnp(3)  then
+        e = e + 1
+        if e == 8 then
+            e = 0
+        end
         addsounds()
     end
 end
@@ -78,7 +94,9 @@ local EFFECTS = {
 }
 
 function _draw()
-    print("length: " ..l, 10, 10, 4)
-    print("Wave: " ..WAVES[w], 10, 20, 4)
-    print("Effects: " ..EFFECTS[e], 10, 30, 4)
+    print("vol: " ..tostring(v), 10, 40, 3)
+    print("time: " ..l, 60, 10, 7)
+    print("(z/x)", 60, 40, 4)
+    print("wv: " ..WAVES[w], 100, 40, 5)
+    print("efx: " ..EFFECTS[e], 60, 80, 6)
 end
