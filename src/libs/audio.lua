@@ -94,7 +94,8 @@ local function sampleWave(phase, wave)
 end
 
 local function genMusic(pattern, fadeLength)
-    fadeLength = fadeLength or 1/10
+    fadeLength = fadeLength or 1/40
+
     local totalLen = 0
     for _, n in ipairs(pattern) do
         totalLen = totalLen + (n.length or 1) / 32
@@ -103,62 +104,90 @@ local function genMusic(pattern, fadeLength)
     local sampleCount = floor(totalLen * rate)
     local soundData = love.sound.newSoundData(sampleCount, rate, 16, 1)
 
-    local phase = 0
-    local t = 0
     local dt = 1 / rate
+    local t  = 0
 
     local noteIndex = 1
     local noteTime  = 0
 
+    -- current note state
+    local curPhase = 0
+    local curNote  = pattern[1]
+
+    -- previous note state (for fade-out)
+    local prevNote, prevPhase, prevTime
+
     for i = 0, sampleCount - 1 do
-        local note = pattern[noteIndex]
-        local noteLen = (note.length or 1) / 32
+        local noteLen = (curNote.length or 1) / 32
 
-        if noteTime >= noteLen then
-            noteTime = noteTime - noteLen
-            noteIndex = math.min(noteIndex + 1, #pattern)
-            note = pattern[noteIndex]
+        -- advance note
+        if noteTime >= noteLen and noteIndex < #pattern then
+            -- move current to previous
+            prevNote  = curNote
+            prevPhase = curPhase
+            prevTime  = 0
+
+            noteIndex = noteIndex + 1
+            curNote   = pattern[noteIndex]
+            curPhase  = curPhase -- keep phase continuity
+            noteTime  = 0
         end
 
-        local freq = type(note.tone) == "string" and notes[note.tone] or note.tone or 440
-        local effects = EFFECTS[note.effects or 0] or {}
+        local function renderNote(note, phase, noteTime)
+            local freq = type(note.tone) == "string" and notes[note.tone] or note.tone or 440
+            local effects = EFFECTS[note.effects or 0] or {}
 
-        if effects.arp then
-            local step = floor(t / (effects.arpSpeed or 0.05))
-            local semi = effects.arp[(step % #effects.arp) + 1]
-            freq = freq * (2 ^ (semi / 12))
+            if effects.arp then
+                local step = floor(t / (effects.arpSpeed or 0.05))
+                local semi = effects.arp[(step % #effects.arp) + 1]
+                freq = freq * (2 ^ (semi / 12))
+            end
+
+            if effects.slide then
+                local bubble = exp(-noteTime * effects.slide.speed)
+                freq = freq * (2 ^ ((effects.slide.depth * bubble) / 12))
+            end
+
+            if effects.drop then
+                freq = freq * exp(-effects.drop * noteTime)
+            end
+
+            if effects.vibrato then
+                freq = freq * (1 + sin(t * effects.vibrato.speed * 2*pi) * effects.vibrato.depth)
+            end
+
+            phase = phase + 2 * pi * freq * dt
+            local v = sampleWave(phase, WAVES[note.waveType] or "square")
+
+            return v, phase
         end
 
-        if effects.slide then
-            local bubble = exp(-noteTime * effects.slide.speed)
-            freq = freq * (2 ^ ((effects.slide.depth * bubble) / 12))
+        local sample = 0
+
+        -- current note (fade in)
+        do
+            local v
+            v, curPhase = renderNote(curNote, curPhase, noteTime)
+
+            local env = math.min(noteTime / fadeLength, 1)
+            sample = sample + v * env * (curNote.volume or 1)
         end
 
-        if effects.drop then
-            freq = freq * exp(-effects.drop * noteTime)
+        -- previous note (fade out)
+        if prevNote then
+            local v
+            v, prevPhase = renderNote(prevNote, prevPhase, prevTime)
+
+            local env = math.max(1 - prevTime / fadeLength, 0)
+            sample = sample + v * env * (prevNote.volume or 1)
+
+            prevTime = prevTime + dt
+            if prevTime >= fadeLength then
+                prevNote = nil
+            end
         end
 
-        if effects.vibrato then
-            freq = freq * (1 + sin(t * effects.vibrato.speed * 2*pi) * effects.vibrato.depth)
-        end
-
-        phase = phase + 2 * pi * freq * dt
-        local v = sampleWave(phase, WAVES[note.waveType] or "square")
-
-        local env = envelope(i, sampleCount, fadeLength)
-
-        if effects.fade_in then
-            env = math.min(env, noteTime / effects.fade_in)
-        end
-        if effects.fade_out then
-            env = math.min(env, (noteLen - noteTime) / effects.fade_out)
-        end
-        if effects.tremolo then
-            env = env * (1 - effects.tremolo.depth *
-                (0.5 + 0.5 * sin(t * effects.tremolo.speed * 2*pi)))
-        end
-
-        soundData:setSample(i, v * env * (note.volume or 1))
+        soundData:setSample(i, sample)
 
         t = t + dt
         noteTime = noteTime + dt
