@@ -1,7 +1,7 @@
 # LuaES
 Game engine like Pico 8 but using Love2d to be able to play at hardware that supports opengl es
 
-# Implement UI
+# TO DO
 
 - Add joystick in buttons as well
 - Save/Load Music patterns in txt file
