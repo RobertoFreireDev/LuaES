@@ -325,22 +325,43 @@ local function savesfxdata()
 end
 
 local lastPlayedTime = {}
-local MIN_DELAY = 1/32
 
-function sfx(index, d)
-    d = (d ~= nil and type(d) == "number") and d or 3
-    delay = mid(1,d,16)
-    local currentTime = os.clock()
-    if lastPlayedTime[index] and (currentTime - lastPlayedTime[index] < MIN_DELAY*delay) then
+function sfx(index)
+    d = (type(d) == "number") and d or 3
+    local delay = 1/8
+    local fadefactor = 0.05
+    local fadevolume = 0.5
+    local now = os.clock()
+
+    local e = lastPlayedTime[index]
+
+    if e and (now - e.time < delay) then
+        if e.fading == false then
+            e.fading = true
+            e.fadefactor = fadefactor
+            e.volume = fadevolume
+        end
         return
     end
-    lastPlayedTime[index] = currentTime
-    
-    if SOUNDS[index]:isPlaying() then
-        SOUNDS[index]:stop()
-        SOUNDS[index]:play()
-    else
-        SOUNDS[index]:play()
+
+    -- Valid new play
+    lastPlayedTime[index] = {
+        time = now,
+        fading = false,
+        volume = 1
+    }
+
+    SOUNDS[index]:stop()
+    SOUNDS[index]:setVolume(1)
+    SOUNDS[index]:play()
+end
+
+function updatesfx(dt)
+    for index, e in pairs(lastPlayedTime) do
+        if e.fading then
+            e.volume = e.volume - e.fadefactor
+            SOUNDS[index]:setVolume(e.volume)
+        end
     end
 end
 
@@ -1172,6 +1193,7 @@ end
 function love.update(dt)
     rerenderImage = { false, false, false, false, false, false, false, false }
     _update(dt)
+    updatesfx(dt)
     updatemusic()
     updatespritesheetimages()
     updatePrevKeys()
