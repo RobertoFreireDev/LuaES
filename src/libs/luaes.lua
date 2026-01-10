@@ -1158,7 +1158,7 @@ function love.load()
     love.window.setIcon(icon)
     love.window.setTitle("LuaES")
     love.graphics.setDefaultFilter("nearest", "nearest")
-    love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT})
+    love.window.setMode(window_width, window_height, {resizable = true, fullscreen = false, minwidth = VIRTUAL_WIDTH, minheight = VIRTUAL_HEIGHT, vsync = 1})
     font(1)
     updateScale()
     loadsfxdata()
@@ -1188,6 +1188,58 @@ function love.draw()
 
     love.graphics.pop()
     love.graphics.setScissor()
+end
+
+function love.run()
+	if love.load then love.load(love.arg.parseGameArguments(arg), arg) end
+
+	if love.timer then love.timer.step() end
+
+	local dt = 0
+	local TARGET_FPS = 60
+	local FRAME_TIME = 1 / TARGET_FPS
+
+	return function()
+		local frameStart = love.timer and love.timer.getTime() or 0
+
+		-- Process events
+		if love.event then
+			love.event.pump()
+			for name, a,b,c,d,e,f in love.event.poll() do
+				if name == "quit" then
+					if not love.quit or not love.quit() then
+						return a or 0
+					end
+				end
+				love.handlers[name](a,b,c,d,e,f)
+			end
+		end
+
+		-- Update dt
+		if love.timer then dt = love.timer.step() end
+
+		if love.update then love.update(dt) end
+
+		if love.graphics and love.graphics.isActive() then
+			love.graphics.origin()
+			love.graphics.clear(love.graphics.getBackgroundColor())
+
+			if love.draw then love.draw() end
+
+			love.graphics.present()
+		end
+
+		-- FPS cap
+		if love.timer then
+			local frameEnd = love.timer.getTime()
+			local frameDuration = frameEnd - frameStart
+			local sleepTime = FRAME_TIME - frameDuration
+
+			if sleepTime > 0 then
+				love.timer.sleep(sleepTime)
+			end
+		end
+	end
 end
 
 function exit()
